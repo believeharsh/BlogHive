@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('./partials/head') %>
+        <title>Add new blog </title>
+</head>
+
+<body>
+    <%- include('./partials/navbar') %>
+        <div class="container">
+            <form action="/blog" method="POST" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="coverImage" class="form-lable">Cover Image</label>
+                    <input 
+                        type="file" 
+                        class="form-control" 
+                        id="coverImage" 
+                        name="coverImage"
+                        aria-describedby="coverImage">
+                </div>
+                <div class="mb-3">
+                    <label for="title" class="form-lable">Title</label>
+                    <input type="title" class="form-control" id="title" name="title">
+                </div>
+                <div class="mb-3">
+                    <label for="body" class="form-lable">Body</label>
+                    <textarea name="body" class="form-control" placeholder="Laeve a comment here"
+                        id="floatingTextarea"></textarea>
+
+                </div>
+                <div class="mb-3">
+                    <button class="btn btn-primary">submit</button>
+
+                </div>
+
+            </form>
+        </div>
+        <p>
+            <%=JSON.stringify(user) %>
+        </p>
+        <%- include('./partials/scripts') %>
+
+</body>
+
+</html>
