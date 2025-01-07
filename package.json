@@ -4,14 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start" : "node index.js",
-    "dev"   : "nodemon index.jd"
+    "start": "node index.js",
+    "dev": "nodemon index.jd"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cookie-parser": "^1.4.7",
     "ejs": "^3.1.10",
     "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.9.3"
   },
   "devDependencies": {
