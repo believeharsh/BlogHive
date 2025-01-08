@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require('express');
 const mongoose = require("mongoose");
 const app = express();
@@ -8,12 +9,11 @@ const cookieParser = require("cookie-parser");
 const { checkForAuthCookie } = require("./middlewares/authentication");
 const Blog = require("./models/blog");
 
-const PORT = 8000;
+const PORT = process.env.PORT || 8000;
 
-
-mongoose.connect('mongodb://127.0.0.1:27017/Blog-Network').then(() => {
-    console.log("mongoDB is connected now");
-})
+mongoose
+    .connect(process.env.MONGO_URL)
+    .then((e) => console.log("MongoDB Connected"));
 app.set("view engine", "ejs");
 app.set("views", path.resolve("./views"));
 
@@ -35,4 +35,4 @@ app.get("/", async (req, res) => {
 app.use("/user", userRoute);
 app.use("/blog", blogRoute);
 
-app.listen(PORT, () => console.log("server is running at port 8000")); 
+app.listen(PORT, () => console.log(`server is running at port ${PORT}`)); 
