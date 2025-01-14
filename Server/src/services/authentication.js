@@ -1,4 +1,4 @@
-const JWT = require("jsonwebtoken");
+import JWT from "jsonwebtoken";
 const secret = "$helloback--end6789()&*";
 
 function createTokenForUser(user) {
@@ -19,7 +19,7 @@ function validateToken(token) {
     return payload;
 }
 
-module.exports = {
+export {
     createTokenForUser,
     validateToken,
 }

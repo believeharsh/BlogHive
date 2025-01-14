@@ -1,8 +1,8 @@
-const { Router } = require("express");
-const multer = require('multer');
-const path = require('path');
-const Blog = require("../models/blog");
-const Comments = require("../models/comments");
+import { Router } from "express" ; 
+import multer from 'multer' ; 
+import path from 'path' ; 
+import Blog from "../models/blog.js" ; 
+import Comments from "../models/comments.js" ; 
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -53,4 +53,4 @@ router.post("/", upload.single("coverImage"), async (req, res) => {
     return res.redirect(`/blog/${blog._id}`);
 });
 
-module.exports = router; 
+export default router; 
