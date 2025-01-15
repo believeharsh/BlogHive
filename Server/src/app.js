@@ -1,6 +1,4 @@
 import express from "express";
-import mongoose from "mongoose";
-
 import userRoute from "./routes/user.js";
 import blogRoute from "./routes/blog.js"
 import path from "path";
