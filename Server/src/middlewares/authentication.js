@@ -2,19 +2,19 @@ import { validateToken } from "../services/authentication.js" ;
 
 const checkForAuthCookie = (cookieName) => {
     return (req, res, next) => {
-        const tokenCookieValue = req.cookies[cookieName]; // Get cookie value
+        const tokenCookieValue = req.cookies[cookieName]; 
         if (!tokenCookieValue) {
-            req.user = null; // Ensure req.user is null if no cookie is found
-            return next(); // Proceed to the next middleware or route
+            req.user = null; 
+            return next(); 
         }
         try {
-            const userpayload = validateToken(tokenCookieValue); // Validate the token
-            req.user = userpayload; // Attach decoded user data to req.user
+            const userpayload = validateToken(tokenCookieValue); 
+            req.user = userpayload; 
         } catch (error) {
-            console.error("Invalid token:", error); // Log the error for debugging
-            req.user = null; // Clear user in case of an invalid token
+            console.error("Invalid token:", error); 
+            req.user = null; 
         }
-        next(); // Proceed to the next middleware or route
+        next();
     };
 };
 

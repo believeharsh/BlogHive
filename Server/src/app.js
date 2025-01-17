@@ -21,6 +21,14 @@ app.set("views", path.resolve("./src/views"));
 
 app.get("/", async (req, res) => {
     try {
+        if (!req.user) {
+            // Handle unauthenticated user
+            return res.render("home", {
+                user: null,
+                blogs: [], // Show no blogs for unauthenticated users
+            });
+        }
+
         const userId = req.user._id;
         const userBlogs = await Blog.find({ createdBy: userId });
 

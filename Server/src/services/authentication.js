@@ -1,5 +1,4 @@
 import JWT from "jsonwebtoken";
-const secret = "$helloback--end6789()&*";
 
 function createTokenForUser(user) {
     const payload = {
@@ -10,12 +9,12 @@ function createTokenForUser(user) {
 
 
     }
-    const token = JWT.sign(payload, secret);
+    const token = JWT.sign(payload, process.env.ACCESS_TOKEN_SECRET);
     return token;
 }
 
 function validateToken(token) {
-    const payload = JWT.verify(token, secret);
+    const payload = JWT.verify(token, process.env.ACCESS_TOKEN_SECRET);
     return payload;
 }
 
