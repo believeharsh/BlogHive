@@ -5,7 +5,7 @@ import path from "path";
 import cookieParser from "cookie-parser";
 import { checkForAuthCookie } from "./middlewares/authentication.js";
 import Blog from "./models/blog.js";
-import { asyncHandler } from "./services/asyncHandler.js";
+
 
 const app = express()
 
