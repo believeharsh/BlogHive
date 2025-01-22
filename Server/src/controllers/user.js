@@ -76,10 +76,43 @@ const logoutUser = asyncHandler( async (req, res) => {
     .json(
         new ApiResponse(200, {}, "user is logged out now")
     )
-}) ; 
+})
+
+const changeCurrentPassword = asyncHandler( async (req, res) => {
+    const {oldPassword, newPassword} = req.body ; 
+    if(!oldPassword && !newPassword){
+        throw new ApiError(400, "give existing and new password correctly")
+    }
+
+    const user = await User.findById(req.user._id) ; 
+    const isPasswordCorrect = await user.isPasswordCorrect(oldPassword) ; 
+
+    if(!isPasswordCorrect){
+        throw new ApiError(400, "wrong password")
+    }
+
+    user.password = newPassword
+    user.save({validateBeforeSave : false})
+
+    return res
+    .status(200)
+    .json(new ApiResponse(200, {}, "password changes succussfully"))
+})
+
+const getCurrentUser = asyncHandler(async (req, res) => {
+    return res
+    .status(200)
+    .json(
+        new ApiResponse(
+            200, 
+            req.user, 
+            "user fetched succussfully"
+    ))
+})
 
 export {
     loginUser,
     logoutUser,
-    registerUser
+    registerUser,
+    getCurrentUser
 }
