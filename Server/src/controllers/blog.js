@@ -6,6 +6,7 @@ import { asyncHandler } from "../services/asyncHandler.js";
 
 
 const getBlogById = asyncHandler(async (req, res) => {
+    // console.log(req.params)
     const blog = await Blog.findById(req.params.id).populate("createdBy")
     const comments = await Comments.find({ blogId: req.params.id }).populate("createdBy")
 
@@ -43,18 +44,22 @@ const handleAddNewComment = asyncHandler(async (req, res) => {
 
 const handleAddNewBlog = asyncHandler(async (req, res) => {
     const { title, body } = req.body;
+    console.log(req.file);
     if (!title && !body) {
         return new ApiError(
             400,
             "title and body are required fields"
         )
     }
+    if (!req.file) {
+        return res.status(400).json({ error: "Cover image is required" });
+    }
 
     const blog = await Blog.create({
         body,
         title,
         createdBy: req.user._id,
-        coverImageURL: `/uploads/${req.file.filename}`,
+        coverImageURL: `/uploads/${req.file.filepath}`,
     })
 
     return res
