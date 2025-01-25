@@ -11,26 +11,32 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Website Name */}
-          <div className="flex-shrink-0 text-2xl font-bold cursor-pointer">
+          <Link to="/">
+             <div className="flex-shrink-0 text-2xl font-bold cursor-pointer">
             BlogNetwork
           </div>
+          </Link>
+         
 
           {/* Center Buttons */}
           <div className="hidden md:flex space-x-8">
-            <button className="hover:bg-blue-700 px-4 py-2 rounded-lg transition-all">
+          <Link to="/profile">
+          <button className="hover:bg-blue-700 px-4 py-2 rounded-lg transition-all">
               Profile
             </button>
+          </Link>
+            
             <button className="hover:bg-blue-700 px-4 py-2 rounded-lg transition-all">
               Gallery
             </button>
             <button className="hover:bg-blue-700 px-4 py-2 rounded-lg transition-all">
               Explore
             </button>
-            {/* <Link to={"blog/Upload"}> */}
+            <Link to="/blog/Upload">
             <button className="bg-yellow-500 hover:bg-yellow-600 px-4 py-2 rounded-lg transition-all">
               Post Blog
             </button>
-            {/* </Link> */}
+            </Link>
            
           </div>
 

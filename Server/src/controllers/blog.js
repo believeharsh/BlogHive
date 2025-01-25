@@ -59,7 +59,7 @@ const handleAddNewBlog = asyncHandler(async (req, res) => {
         body,
         title,
         createdBy: req.user._id,
-        coverImageURL: `/uploads/${req.file.filepath}`,
+        coverImageURL: `/uploads/${req.file.filename}`,
     })
 
     return res

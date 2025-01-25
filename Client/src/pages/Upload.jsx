@@ -22,13 +22,13 @@ const Upload = () => {
     formData.append("coverImage", coverImage);
 
     try {
-      const response = await axios.post("/blog/", formData)
+      const response = await axios.post("/blog", formData)
       console.log(response) ; 
 
       // Reset fields
       setTitle("");
       setBody("");
-      setCoverImage(null);
+      setCoverImage("");
     } catch (error) {
       console.error("Error uploading blog:", error);
       alert("Failed to upload blog. Please try again.");
