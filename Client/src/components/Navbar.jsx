@@ -1,96 +1,74 @@
-/* eslint-disable no-unused-vars */
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-
+import { FiBell, FiChevronDown, FiSearch, FiUser, FiBarChart2, FiBook, FiLogOut } from "react-icons/fi";
+import { HiPencilAlt } from "react-icons/hi";
+import { Link } from "react-router-dom"
 
 const Navbar = () => {
-  const [isDropdownOpen, setDropdownOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   return (
-    <nav className="bg-blue-600 text-white shadow-md sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          {/* Website Name */}
-          <Link to="/">
-             <div className="flex-shrink-0 text-2xl font-bold cursor-pointer">
-            BlogNetwork
-          </div>
-          </Link>
+    <nav className="bg-[rgba(255,255,255,1)] text-black shadow-md p-4">
+      <div className="container mx-auto flex items-center justify-between">
+        {/* Left Section */}
+        <div className="flex items-center space-x-4">
+        <Link to="/">
+        <h1 className="text-2xl font-bold">BlogNetwork</h1>
+        </Link>
          
-
-          {/* Center Buttons */}
-          <div className="hidden md:flex space-x-8">
-          <Link to="/profile">
-          <button className="hover:bg-blue-700 px-4 py-2 rounded-lg transition-all">
-              Profile
-            </button>
-          </Link>
-            
-            <button className="hover:bg-blue-700 px-4 py-2 rounded-lg transition-all">
-              Gallery
-            </button>
-            <button className="hover:bg-blue-700 px-4 py-2 rounded-lg transition-all">
-              Explore
-            </button>
-            <Link to="/blog/Upload">
-            <button className="bg-yellow-500 hover:bg-yellow-600 px-4 py-2 rounded-lg transition-all">
-              Post Blog
-            </button>
-            </Link>
-           
-          </div>
-
-          {/* Right-Side Dropdown */}
           <div className="relative">
-            <button
-              onClick={() => setDropdownOpen(!isDropdownOpen)}
-              className="flex items-center space-x-2 bg-blue-700 hover:bg-blue-800 px-4 py-2 rounded-lg transition-all"
+            <input
+              type="text"
+              placeholder="Search..."
+              className="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 pl-10"
+            />
+            <FiSearch className="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-400" />
+          </div>
+        </div>
+
+        {/* Right Section */}
+        <div className="flex items-center space-x-4">
+        <Link to="/blog/upload">
+        <button className="flex items-center bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800">
+            <HiPencilAlt className="mr-2" /> Write
+          </button>
+        </Link>
+       
+          <FiBell className="text-2xl cursor-pointer" />
+          <div className="relative">
+            <div
+              className="flex items-center cursor-pointer"
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
             >
-              <span>Menu</span>
-              <svg
-                className="w-5 h-5"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 9l-7 7-7-7"
-                />
-              </svg>
-            </button>
+              <img
+                src="https://via.placeholder.com/40"
+                alt="User Profile"
+                className="w-10 h-10 rounded-full object-cover border border-gray-300"
+              />
+              <FiChevronDown className="ml-2" />
+            </div>
+
             {isDropdownOpen && (
-              <div className="absolute right-0 mt-2 w-40 bg-white text-gray-800 rounded-md shadow-lg py-2">
-                <button
-                  onClick={() => alert("Logged out!")}
-                  className="w-full text-left px-4 py-2 hover:bg-gray-200"
-                >
-                  Logout
-                </button>
+              <div className="absolute right-0 mt-2 bg-white shadow-lg rounded-lg w-48">
+                <ul className="py-2 text-gray-700">
+                <Link to="/user/profile">
+                <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center space-x-2">
+                    <FiUser /> <span>Profile</span>
+                  </li>
+                </Link>
+                 
+                  <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center space-x-2">
+                    <FiBarChart2 /> <span>Stats</span>
+                  </li>
+                  <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center space-x-2">
+                    <FiBook /> <span>Library</span>
+                  </li>
+                  <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center space-x-2">
+                    <FiLogOut /> <span>Logout</span>
+                  </li>
+                </ul>
               </div>
             )}
           </div>
-        </div>
-      </div>
-
-      {/* Mobile View */}
-      <div className="md:hidden">
-        <div className="flex justify-around py-2">
-          <button className="hover:bg-blue-700 px-4 py-2 rounded-lg transition-all">
-            Profile
-          </button>
-          <button className="hover:bg-blue-700 px-4 py-2 rounded-lg transition-all">
-            Gallery
-          </button>
-          <button className="hover:bg-blue-700 px-4 py-2 rounded-lg transition-all">
-            Explore
-          </button>
-          <button className="bg-yellow-500 hover:bg-yellow-600 px-4 py-2 rounded-lg transition-all">
-            Post Blog
-          </button>
         </div>
       </div>
     </nav>
@@ -98,3 +76,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+

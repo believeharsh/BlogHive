@@ -74,8 +74,29 @@ const handleAddNewBlog = asyncHandler(async (req, res) => {
             ))
 })
 
+const getAllBlogsByUserId = asyncHandler(async (req, res) => {
+    const userId = req.user._id.toString(); // Ensure the user ID is a string
+    console.log("User ID:", userId);
+
+    // Find all blogs created by the current user
+    const blogs = await Blog.find({ createdBy: userId });
+    console.log("Blogs:", blogs);
+
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            {
+                blogs: blogs,
+            },
+            "Fetched all blogs of current user successfully"
+        )
+    );
+});
+
+
 export {
     getBlogById,
     handleAddNewComment,
-    handleAddNewBlog
+    handleAddNewBlog,
+    getAllBlogsByUserId
 }

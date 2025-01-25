@@ -1,14 +1,15 @@
 import { Router } from "express";
 import { asyncHandler } from "../services/asyncHandler.js";
-import { handleAddNewComment, getBlogById, handleAddNewBlog } from "../controllers/blog.js";
+import { handleAddNewComment, getBlogById, handleAddNewBlog, getAllBlogsByUserId } from "../controllers/blog.js";
 import {upload} from "../middlewares/multer.middleware.js"
 import {verifyUserJwtToken} from "../middlewares/auth.middleware.js"
 
 const router = Router();
 router.use(verifyUserJwtToken)
 
-router.get("/:id", asyncHandler(getBlogById));
-router.post("/comment/:blogId", asyncHandler(handleAddNewComment));
-router.post("/", upload.single("coverImage"), asyncHandler(handleAddNewBlog));
+router.get("/:id", getBlogById);
+router.post("/comment/:blogId", handleAddNewComment);
+router.post("/", upload.single("coverImage"), handleAddNewBlog);
+router.get("/", getAllBlogsByUserId)
 
 export default router; 
