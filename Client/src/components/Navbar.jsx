@@ -1,5 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
+
 
 const Navbar = () => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
@@ -24,9 +26,12 @@ const Navbar = () => {
             <button className="hover:bg-blue-700 px-4 py-2 rounded-lg transition-all">
               Explore
             </button>
+            {/* <Link to={"blog/Upload"}> */}
             <button className="bg-yellow-500 hover:bg-yellow-600 px-4 py-2 rounded-lg transition-all">
               Post Blog
             </button>
+            {/* </Link> */}
+           
           </div>
 
           {/* Right-Side Dropdown */}
