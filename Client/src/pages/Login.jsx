@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 axios.defaults.withCredentials = true;
-axios.defaults.baseURL = "http://localhost:8000";
+axios.defaults.baseURL = "https://bloghive-server.vercel.app/";
 
 const LoginPage = () => {
     const nevigate = useNavigate() ; 

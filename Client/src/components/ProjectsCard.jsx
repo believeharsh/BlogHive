@@ -2,7 +2,7 @@ import React from "react";
 
 const ProjectCard = ({ title, body, coverImageURL, createdAt }) => {
   console.log(coverImageURL) ;
-  const CoverImageBaseUrl = "http://localhost:8000" ; 
+  const CoverImageBaseUrl = "https://bloghive-server.vercel.app/" ; 
   return (
     <div className="bg-white shadow-md rounded-lg overflow-hidden border border-gray-200">
       {/* Cover Image */}

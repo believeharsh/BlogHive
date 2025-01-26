@@ -3,7 +3,7 @@ import axios from "axios";
 import ProjectCard from "../components/ProjectsCard";
 
 
-axios.defaults.baseURL = "http://localhost:8000";
+axios.defaults.baseURL = "https://bloghive-server.vercel.app/";
 
 const Home = () => {
   const [blogs, setBlogs] = useState([]);

@@ -2,7 +2,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 
-axios.defaults.baseURL = "http://localhost:8000"
+axios.defaults.baseURL = "https://bloghive-server.vercel.app/"
 
 const ProfilePage = () => {
   const [userData, setUserData] = useState(null);

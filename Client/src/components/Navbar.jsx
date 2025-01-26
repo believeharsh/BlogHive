@@ -9,7 +9,7 @@ const Navbar = () => {
   const nevigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  axios.defaults.baseURL = "http://localhost:8000";
+  axios.defaults.baseURL = "https://bloghive-server.vercel.app/";
 
   const logoutUser = async () => {
     await axios.get("/user/logout")

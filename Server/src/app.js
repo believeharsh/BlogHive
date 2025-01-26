@@ -11,7 +11,7 @@ const app = express()
 
 app.use(cors(
     {
-        origin: ['http://localhost:5173'],
+        origin: ['https://bloghive.vercel.app', 'http://localhost:5173'],
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
         credentials: true
     }
@@ -21,31 +21,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.resolve("./public")));
-
-
-// app.get("/", async (req, res) => {
-//     try {
-//         if (!req.user) {
-//             // Handle unauthenticated user
-//             return res.render("home", {
-//                 user: null,
-//                 blogs: [], // Show no blogs for unauthenticated users
-//             });
-//         }
-
-//         const userId = req.user._id;
-//         const userBlogs = await Blog.find({ createdBy: userId });
-
-//         res.render("home", {
-//             user: req.user,
-//             blogs: userBlogs, // Only the user's blogs
-//         });
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).send("An error occurred while fetching blogs.");
-//     }
-// });
-
 
 app.use("/user", userRoute);
 app.use("/blog", blogRoute);
