@@ -22,8 +22,8 @@ const Upload = () => {
     formData.append("coverImage", coverImage);
 
     try {
-      const response = await axios.post("/blog", formData)
-      console.log(response) ; 
+      const response = await axios.post("/blog", formData);
+      console.log(response);
 
       // Reset fields
       setTitle("");
@@ -36,63 +36,57 @@ const Upload = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="w-full max-w-lg bg-white p-8 rounded-lg shadow-lg">
-        <h2 className="text-2xl font-bold text-center mb-6">Upload New Blog</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label
-              htmlFor="title"
-              className="block text-sm font-medium text-gray-700"
-            >
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-gray-200 via-white to-gray-200">
+      <div className="w-full max-w-3xl p-8 space-y-6">
+        <h2 className="text-3xl font-semibold text-center text-gray-900 mb-6">Upload New Blog</h2>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div>
+            <label htmlFor="title" className="block text-lg font-medium text-gray-700 mb-2">
               Blog Title
             </label>
             <input
               type="text"
               id="title"
-              className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-full p-4 text-lg text-gray-900 bg-transparent border-b-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               required
             />
           </div>
-          <div className="mb-4">
-            <label
-              htmlFor="body"
-              className="block text-sm font-medium text-gray-700"
-            >
+
+          <div>
+            <label htmlFor="body" className="block text-lg font-medium text-gray-700 mb-2">
               Blog Body
             </label>
             <textarea
               id="body"
-              rows="6"
-              className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+              rows="8"
+              className="w-full p-4 text-lg text-gray-900 bg-transparent border-b-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
               value={body}
               onChange={(e) => setBody(e.target.value)}
               required
             ></textarea>
           </div>
-          <div className="mb-4">
-            <label
-              htmlFor="coverImage"
-              className="block text-sm font-medium text-gray-700"
-            >
+
+          <div>
+            <label htmlFor="coverImage" className="block text-lg font-medium text-gray-700 mb-2">
               Cover Image
             </label>
             <input
               type="file"
               id="coverImage"
-              className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-full p-4 text-lg text-gray-900 bg-transparent border-b-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
               onChange={handleFileChange}
               accept="image/*"
               required
             />
           </div>
+
           <button
             type="submit"
-            className="w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full py-2 px-4 text-white font-medium rounded-md bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
           >
-            Upload Blog
+            Publish
           </button>
         </form>
       </div>
