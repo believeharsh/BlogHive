@@ -25,7 +25,7 @@ const Navbar = () => {
         {/* Left Section */}
         <div className="flex items-center space-x-4">
           <Link to="/">
-            <h1 className="text-2xl font-bold">BlogNetwork</h1>
+            <h1 className="text-2xl font-bold">BlogHive</h1>
           </Link>
 
           <div className="relative">
