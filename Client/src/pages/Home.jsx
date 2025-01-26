@@ -11,8 +11,11 @@ const Home = () => {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const res = await axios.get("/blog"); // Replace with your API endpoint
-        setBlogs(res.data.data.blogs); // Assuming blogs are returned in data.data.blogs
+
+        const res = await axios.get("/blog");
+        console.log(res) ; 
+        setBlogs(res.data.data.blogs); 
+        // console.log(blogs)
       } catch (error) {
         console.error("Error fetching blogs:", error);
       }

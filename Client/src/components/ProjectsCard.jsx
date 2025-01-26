@@ -1,11 +1,13 @@
 import React from "react";
 
 const ProjectCard = ({ title, body, coverImageURL, createdAt }) => {
+  console.log(coverImageURL) ;
+  const CoverImageBaseUrl = "http://localhost:8000" ; 
   return (
     <div className="bg-white shadow-md rounded-lg overflow-hidden border border-gray-200">
       {/* Cover Image */}
       <img
-        src={coverImageURL}
+        src={`${CoverImageBaseUrl}${coverImageURL}`}
         alt={title}
         className="w-full h-48 object-cover"
       />

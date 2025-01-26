@@ -1,10 +1,12 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 axios.defaults.baseURL = "http://localhost:8000";
 
 const Upload = () => {
+  const nevigate = useNavigate() ; 
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [coverImage, setCoverImage] = useState(null);
@@ -25,7 +27,7 @@ const Upload = () => {
       const response = await axios.post("/blog", formData);
       console.log(response);
 
-      // Reset fields
+      nevigate("/")
       setTitle("");
       setBody("");
       setCoverImage("");
