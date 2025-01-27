@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import axios from "axios";
 import { FiUser, FiLock } from "react-icons/fi";
