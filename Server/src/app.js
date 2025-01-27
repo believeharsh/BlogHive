@@ -4,13 +4,14 @@ import userRoute from "./routes/user.js";
 import blogRoute from "./routes/blog.js"
 import path from "path";
 import cookieParser from "cookie-parser";
+import "dotenv/config.js";
 
 
 const app = express()
 
 app.use(cors(
     {
-        origin: ['https://bloghive-six.vercel.app/', 'http://localhost:5173'],
+        origin: ['https://bloghive-zeta.vercel.app', 'http://localhost:5173'],
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
         credentials: true
     }
