@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-axios.defaults.baseURL = "import.meta.env.VITE_API_BASE_URL";
+axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL ; 
 
 const Upload = () => {
   const nevigate = useNavigate() ; 
