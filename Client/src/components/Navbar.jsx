@@ -9,7 +9,7 @@ const Navbar = () => {
   const nevigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
-  axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL
+  axios.defaults.baseURL = `${import.meta.env.VITE_API_BASE_URL}`
 
   const logoutUser = async () => {
     await axios.get("/user/logout")
@@ -76,7 +76,7 @@ const Navbar = () => {
                       <FiBarChart2 /> <span>Stats</span>
                     </li>
                   </Link>
-                
+
 
                   <Link to="/library">
                     <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center space-x-2">
