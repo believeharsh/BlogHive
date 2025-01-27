@@ -40,21 +40,19 @@ const Notification = () => {
         </h1>
         <div className="flex justify-center space-x-4 mb-6">
           <button
-            className={`py-2 px-4 rounded-lg text-sm font-medium ${
-              filter === "all"
+            className={`py-2 px-4 rounded-lg text-sm font-medium ${filter === "all"
                 ? "bg-blue-600 text-white"
                 : "bg-gray-200 text-gray-700"
-            }`}
+              }`}
             onClick={() => setFilter("all")}
           >
             All
           </button>
           <button
-            className={`py-2 px-4 rounded-lg text-sm font-medium ${
-              filter === "response"
+            className={`py-2 px-4 rounded-lg text-sm font-medium ${filter === "response"
                 ? "bg-blue-600 text-white"
                 : "bg-gray-200 text-gray-700"
-            }`}
+              }`}
             onClick={() => setFilter("response")}
           >
             Responses

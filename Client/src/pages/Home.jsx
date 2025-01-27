@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import ProjectCard from "../components/ProjectsCard";
 
-
-axios.defaults.baseURL = "https://bloghive-server.vercel.app/";
+axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL ; 
 
 const Home = () => {
   const [blogs, setBlogs] = useState([]);

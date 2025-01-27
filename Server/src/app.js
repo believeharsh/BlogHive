@@ -4,7 +4,6 @@ import userRoute from "./routes/user.js";
 import blogRoute from "./routes/blog.js"
 import path from "path";
 import cookieParser from "cookie-parser";
-// import Blog from "./models/blog.js";
 
 
 const app = express()

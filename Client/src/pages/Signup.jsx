@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-axios.defaults.baseURL = "https://bloghive-server.vercel.app/";
+axios.defaults.baseURL = "import.meta.env.VITE_API_BASE_URL";
 
 const SignUpPage = () => {
   const nevigate = useNavigate() ; 
