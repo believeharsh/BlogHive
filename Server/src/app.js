@@ -4,8 +4,6 @@ import userRoute from "./routes/user.js";
 import blogRoute from "./routes/blog.js"
 import path from "path";
 import cookieParser from "cookie-parser";
-import "dotenv/config.js";
-
 
 const app = express()
 

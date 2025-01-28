@@ -2,7 +2,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 
-  axios.defaults.baseURL = `${import.meta.env.VITE_API_BASE_URL}`
+  axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL
 
 const ProfilePage = () => {
   const [userData, setUserData] = useState(null);
