@@ -20,9 +20,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.resolve("./public")));
 
-app.get("/", (res) => {
-    res.json("Hello, form server") ; 
-})
+app.get("/", (req, res) => {
+    res.json("Hello, from server");
+});
 app.use("/user", userRoute);
 app.use("/blog", blogRoute);
 
