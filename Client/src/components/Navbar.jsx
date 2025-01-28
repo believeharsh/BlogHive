@@ -10,7 +10,8 @@ const Navbar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL
-
+  axios.defaults.withCredentials = true;
+  
   const logoutUser = async () => {
     await axios.get("/user/logout")
       .then((res) => {
