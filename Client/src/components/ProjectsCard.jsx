@@ -1,14 +1,11 @@
-import React from "react";
+import React from "react"
 
-const ProjectCard = ({ title, body, coverImageURL, createdAt }) => {
-  console.log(coverImageURL) ;
-  axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL
-  
+const ProjectCard = ({ title, body, coverImage, createdAt }) => {
   return (
     <div className="bg-white shadow-md rounded-lg overflow-hidden border border-gray-200">
       {/* Cover Image */}
       <img
-        src={`${CoverImageBaseUrl}${coverImageURL}`}
+        src={coverImage}
         alt={title}
         className="w-full h-48 object-cover"
       />

@@ -44,7 +44,8 @@ const handleAddNewComment = asyncHandler(async (req, res) => {
 const handleAddNewBlog = asyncHandler(async (req, res) => {
     const { title, body } = req.body;
     console.log(req.file);
-    if (!title && !body) {
+
+    if (!(title && body)) {
         return new ApiError(
             400,
             "title and body are required fields"
@@ -53,18 +54,18 @@ const handleAddNewBlog = asyncHandler(async (req, res) => {
     if (!req.file) {
         return res.status(400).json({ error: "Cover image is required" });
     }
-    
-    const originalFilePath = req.file.filename 
-    console.log(originalFilePath);
-    const sanitizedFilePath = originalFilePath.replace(/\s/g, "_")
-    console.log(sanitizedFilePath) ; 
+    const coverImage = req.file;
+    console.log(coverImage);
 
-    const blog = await Blog.create({
+    const newblog = await Blog.create({
         body,
         title,
         createdBy: req.user._id,
-        coverImageURL: `/uploads/${sanitizedFilePath}`,
-    })
+        coverImage: {
+            data: req.file.buffer,  // Store image as binary
+            contentType: req.file.mimetype
+        }
+    });
 
     return res
         .status(200)
@@ -72,23 +73,34 @@ const handleAddNewBlog = asyncHandler(async (req, res) => {
             new ApiResponse(
                 200,
                 {
-                    blogId: blog._id,
+                    blogId: newblog._id,
                 },
                 "new blog posted succussfully"
             ))
 })
 
 const getAllBlogsByUserId = asyncHandler(async (req, res) => {
-    const userId = req.user._id.toString(); // Ensure the user ID is a string
+    const userId = req.user._id.toString();
 
     // Finding all blogs created by the current user
     const blogs = await Blog.find({ createdBy: userId });
+    console.log(blogs)
+    
+    const formattedBlogs = blogs.map(blog => ({
+        _id: blog._id,
+        title: blog.title,
+        body: blog.body,
+        coverImage: `data:${blog.coverImage.contentType};base64,${blog.coverImage.data.toString('base64')}`,
+        createdAt: blog.createdAt,
+        updatedAt: blog.updatedAt,
+        createdBy: blog.createdBy
+    }));
 
     return res.status(200).json(
         new ApiResponse(
             200,
             {
-                blogs: blogs,
+                blogs: formattedBlogs,
             },
             "Fetched all blogs of current user successfully"
         )

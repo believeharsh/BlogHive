@@ -1,5 +1,4 @@
 import { Router } from "express";
-import { asyncHandler } from "../services/asyncHandler.js";
 import { handleAddNewComment, getBlogById, handleAddNewBlog, getAllBlogsByUserId } from "../controllers/blog.js";
 import {upload} from "../middlewares/multer.middleware.js"
 import {verifyUserJwtToken} from "../middlewares/auth.middleware.js"

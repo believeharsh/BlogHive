@@ -14,7 +14,7 @@ const Home = () => {
         const res = await axios.get("/blog");
         console.log(res) ; 
         setBlogs(res.data.data.blogs); 
-        // console.log(blogs)
+       
       } catch (error) {
         console.error("Error fetching blogs:", error);
       }
@@ -22,6 +22,7 @@ const Home = () => {
 
     fetchBlogs();
   }, []);
+
 
   return (
     <div className="min-h-screen bg-gray-100 py-8">
@@ -34,7 +35,7 @@ const Home = () => {
               key={blog._id}
               title={blog.title}
               body={blog.body}
-              coverImageURL={blog.coverImageURL}
+              coverImage={blog.coverImage}
               
               createdAt={blog.createdAt}
             />
