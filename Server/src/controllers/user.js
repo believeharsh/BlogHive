@@ -112,9 +112,23 @@ const getCurrentUser = asyncHandler(async (req, res) => {
     ))
 })
 
+const checkAuth = asyncHandler( async ( req, res) => {
+console.log(req.user)
+    return res
+    .status(200)
+    .json(
+        new ApiResponse(
+            200,
+            {},
+            "user is authenticated"
+        )
+    )
+})
+
 export {
     loginUser,
     logoutUser,
     registerUser,
-    getCurrentUser
+    getCurrentUser,
+    checkAuth
 }

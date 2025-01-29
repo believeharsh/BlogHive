@@ -5,6 +5,7 @@ import { Link } from "react-router-dom"
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
 
+
 const Navbar = () => {
   const nevigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -56,7 +57,7 @@ const Navbar = () => {
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
             >
               <img
-                src="https://via.placeholder.com/40"
+                src={"/images/default_Image.jpeg"}
                 alt="User Profile"
                 className="w-10 h-10 rounded-full object-cover border border-gray-300"
               />

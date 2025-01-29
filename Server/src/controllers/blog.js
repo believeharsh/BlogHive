@@ -6,22 +6,37 @@ import { asyncHandler } from "../services/asyncHandler.js";
 
 
 const getBlogById = asyncHandler(async (req, res) => {
-    const blog = await Blog.findById(req.params.id).populate("createdBy")
-    const comments = await Comments.find({ blogId: req.params.id }).populate("createdBy")
+    // Find the blog by its ID
+    const blog = await Blog.findById(req.params.id).populate("createdBy");
 
-    return res
-        .status(200)
-        .json(
-            new ApiResponse(
-                200,
-                {
-                    user: req.user,
-                    blog: blog,
-                    comments: comments,
-                },
-                "blog fetched succussfully by given Id"
-            ))
-})
+    if (!blog) {
+        return res.status(404).json({
+            message: "Blog not found"
+        });
+    }
+
+    // Format the blog response
+    const formattedBlog = {
+        _id: blog._id,
+        title: blog.title,
+        body: blog.body,
+        coverImage: `data:${blog.coverImage.contentType};base64,${blog.coverImage.data.toString('base64')}`,
+        createdAt: blog.createdAt,
+        updatedAt: blog.updatedAt,
+        createdBy: blog.createdBy
+    };
+
+    // Fetch comments related to the blog
+    const comments = await Comments.find({ blogId: req.params.id }).populate("createdBy");
+
+    return res.status(200).json({
+        user: req.user,
+        blog: formattedBlog,
+        comments: comments,
+        message: "Blog fetched successfully by given Id"
+    });
+});
+
 
 
 const handleAddNewComment = asyncHandler(async (req, res) => {

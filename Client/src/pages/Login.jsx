@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import axios from "axios";
 import { FiUser, FiLock } from "react-icons/fi";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../context/AuthContext';
+
 
 
 axios.defaults.withCredentials = true;
@@ -9,8 +11,9 @@ axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL
 
 const LoginPage = () => {
     const nevigate = useNavigate();
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [ email, setEmail ] = useState('');
+    const [ password, setPassword ] = useState('');
+    const { login } = useAuth() ; 
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -19,9 +22,10 @@ const LoginPage = () => {
             const res = await axios.post("/user/signin", { email, password });
             console.log("Full server response:", res);
             console.log("Response data:", res.data);
+            login()
             nevigate("/")
-            setEmail("");
-            setPassword("");
+            setEmail("")
+            setPassword("")
 
         } catch (err) {
             console.error("Login error:", err);

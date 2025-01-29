@@ -8,24 +8,38 @@ import { Routes, Route } from "react-router-dom";
 import Upload from "./pages/Upload";
 import Notification from "./pages/Notification";
 import Library from "./pages/Library";
+import ProtectedRoute from "./context/ProtectedRoute";
+import Footer from "./components/Footer"
+import BlogDetails from "./pages/BlogDetails";
+
+
 
 function App() {
   return (
     <>
-      <div className="">
 
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignUpPage />} />
-          <Route path="/notifications" element={<Notification />} />
-          <Route path="/library" element={<Library/>}/>
-          <Route path="/user/profile" element={<Profile />} />
-          <Route path="/blog/Upload" element={<Upload />} />
-        </Routes>
+      <Navbar />
+      <Routes>
+        {/* <ProtectedRoute path="/">
+            <Route path="/" element={<Home />} />
+          </ProtectedRoute> */}
+        <Route path="/" element={<ProtectedRoute><Home /></ProtectedRoute>} />
 
-      </div>
+
+
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignUpPage />} />
+        <Route path="/notifications" element={<Notification />} />
+        <Route path="/library" element={<Library />} />
+        <Route path="/user/profile" element={<Profile />} />
+        <Route path="/blog/Upload" element={<Upload />} />
+        <Route path="/blog/:id" element={<BlogDetails />} />
+      </Routes>
+      <Footer/>
+
+
+
+
     </>
   )
 }
