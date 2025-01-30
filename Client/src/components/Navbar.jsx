@@ -27,7 +27,7 @@ const Navbar = () => {
         {/* Left Section */}
         <div className="flex items-center space-x-4">
           <Link to="/">
-            <h1 className="text-2xl font-bold">BlogHive</h1>
+            <h1 className="text-4xl font-serif">BlogHive</h1>
           </Link>
 
           <div className="relative">
@@ -73,11 +73,11 @@ const Navbar = () => {
                     </li>
                   </Link>
 
-                  <Link to="/stats">
+                  {/* <Link to="/stats">
                     <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center space-x-2">
                       <FiBarChart2 /> <span>Stats</span>
                     </li>
-                  </Link>
+                  </Link> */}
 
 
                   <Link to="/library">

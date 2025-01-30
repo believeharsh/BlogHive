@@ -26,8 +26,8 @@ const SignUpPage = () => {
         setPassword(""); 
     })
     .catch((err) => {
-        if (err.response && err.response.status === 400) {
-          alert("User already exists. Please login.");
+        if (err.response && err.response.status === 409) {
+          alert("User already exists with this email. Please login.");
         } else {
           console.error("Signup error:", err);
           console.error("Error response:", err.response);

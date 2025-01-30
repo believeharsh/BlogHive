@@ -1,6 +1,8 @@
 import { useState } from "react";
 import React from "react";
-const ProfileHeader = ({ username }) => {
+import { BiDotsVerticalRounded } from "react-icons/bi";
+
+const ProfileHeader = ({ username, createdAt }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [copied, setCopied] = useState(false);
 
@@ -13,21 +15,38 @@ const ProfileHeader = ({ username }) => {
     setIsOpen(false);
   };
 
+
+  const formatDate = (isoString) => {
+    const date = new Date(isoString);
+    return date.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
+  };
+
   return (
-    <div className="flex items-center justify-between p-4 border-b border-gray-300 bg-white">
+    <div className="flex items-center justify-between p-4  bg-white">
       {/* Left Side - Username */}
-      <h2 className="text-xl font-semibold text-gray-800">{username}</h2>
+      <div className="flex">
+        <img src={`/images/default_Image.jpeg`} alt="" className="w-32 h-32" />
+        <div className="flex flex-col justify-center items-center">
+          <h1 className="text-3xl font-semibold text-gray-800">{username}</h1>
+          <p className="text-sm font-semibold text-gray-800">{`Since  ${formatDate(createdAt)}`}</p>
+        </div>
+
+
+      </div>
+
 
       {/* Right Side - Dropdown */}
       <div className="relative">
         {/* Three-dot Button */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="p-2 rounded-full hover:bg-gray-200"
+          className="p-2 rounded-full hover:bg-gray-200 text-xl"
         >
-          <span className="w-1 h-1 bg-gray-800 rounded-full block mb-1"></span>
-          <span className="w-1 h-1 bg-gray-800 rounded-full block mb-1"></span>
-          <span className="w-1 h-1 bg-gray-800 rounded-full block"></span>
+          <BiDotsVerticalRounded />
         </button>
 
         {/* Dropdown Menu */}

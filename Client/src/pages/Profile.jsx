@@ -59,17 +59,22 @@ const ProfilePage = () => {
     );
   }
 
+  if (loading) {
+    return <Spinner />
+  }
+
   return (
     <>
-      <div className="">
-        <ProfileHeader username={userData.fullName} />
-        <ProfileNav />
-        {
-          loading && (
-            <Spinner />
-          )
-        }
-        <div className="mx-3 my-1 max-w-3xl">
+
+      {/* Profile Header */}
+      <ProfileHeader username={userData.fullName} createdAt={userData.createdAt} />
+
+      {/* Profile Navigation */}
+      <ProfileNav />
+
+      {/* Blog List Container */}
+      <div className="flex flex-col items-center w-full px-4">
+        <div className="w-full max-w-3xl mt-4">
           {blogs.map((blog) => (
             <Link key={blog._id} to={`/blog/${blog._id}`}>
               <BlogCard {...blog} />
@@ -77,6 +82,7 @@ const ProfilePage = () => {
           ))}
         </div>
       </div>
+
     </>
 
   );

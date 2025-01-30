@@ -1,147 +1,68 @@
-// import React from "react";
-// const BlogCard = ({ title, body, coverImage, createdAt}) => {
-//     return (
-//       <div className="flex items-start justify-between border-b border-gray-300 py-4">
-//         {/* Left Content */}
-//         <div className="flex-1 pr-4">
-//           {/* Title */}
-//           <h3 className="text-lg font-bold text-gray-900">{title}</h3>
-  
-//           {/* Description */}
-//           <p className="text-sm text-gray-600 mt-2 line-clamp-2">{body}</p>
-  
-//           {/* Footer */}
-//           <div className="flex items-center text-sm text-gray-500 mt-4">
-//             <span>{createdAt}</span>
-//             <span className="mx-2">•</span>
-//             <span className="flex items-center gap-1">
-//               <svg
-//                 xmlns="http://www.w3.org/2000/svg"
-//                 fill="none"
-//                 viewBox="0 0 24 24"
-//                 strokeWidth="1.5"
-//                 stroke="currentColor"
-//                 className="w-4 h-4"
-//               >
-//                 <path
-//                   strokeLinecap="round"
-//                   strokeLinejoin="round"
-//                   d="M17.25 9.75L12 15.75l-5.25-6"
-//                 />
-//               </svg>
-//               {/* {commentsCount} */}
-//             </span>
-//           </div>
-//         </div>
-  
-//         {/* Right Content - Image */}
-//         <div className="flex-shrink-0 w-52 h-30">
-//           <img
-//             src={coverImage}
-//             alt="Blog"
-//             className="w-full h-full object-cover rounded-md"
-//           />
-//         </div>
-//       </div>
-//     );
-//   };
-  
-//   export default BlogCard;
-
-
-
-
-
-  import React from "react";
+import React, { useState } from "react";
+import { MdComment } from "react-icons/md";
+import { BsBookmark, BsBookmarkFill } from "react-icons/bs";
+import { BiDotsVerticalRounded } from "react-icons/bi";
 
 const BlogCard = ({ title, body, coverImage, createdAt }) => {
-  return (
-    <div className="border-b border-gray-300 py-4">
-      {/* First Div: Title and Body */}
-      <div className="flex items-start justify-between">
-        {/* Left Content - Title and Description */}
-        <div className="flex-1 pr-4">
-          <h3 className="text-lg font-bold text-gray-900">{title}</h3>
-          <p className="text-sm text-gray-600 mt-2 line-clamp-2">{body}</p>
-        </div>
-        
+  const [saved, setSaved] = useState(false);
 
-        {/* Right Content - Image */}
-        <div className="flex-shrink-0 w-52 h-30">
+  const formatDate = (isoString) => {
+    const date = new Date(isoString);
+    return date.toLocaleDateString("en-US", {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    });
+  };
+
+  return (
+    <div className="border-b border-gray-300 py-6">
+      <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
+
+        {/* Left Section: Text Content */}
+        <div className="flex-1 space-y-2">
+          {/* Title */}
+          <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
+
+          {/* Body Content with Fixed Height */}
+          <p className="text-sm text-gray-600 min-h-[48px] line-clamp-2">
+            {body}
+          </p>
+
+          {/* Footer: Date, Comment, Save, and Options */}
+          <div className="flex items-center justify-between text-sm text-gray-500 mt-4">
+
+            {/* Left: Date and Comment */}
+            <div className="flex items-center gap-4">
+              <span>{formatDate(createdAt)}</span>
+              <MdComment className="cursor-pointer hover:text-gray-800" />
+            </div>
+
+            {/* Right: Save & Three Dots */}
+            <div className="flex items-center gap-4">
+              <button onClick={() => setSaved(!saved)} className="text-gray-600 hover:text-gray-900">
+                {saved ? <BsBookmarkFill className="text-blue-500" /> : <BsBookmark />}
+              </button>
+              <button className="text-gray-600 hover:text-gray-900">
+                <BiDotsVerticalRounded />
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Section: Blog Image */}
+        <div className="w-44 h-28 md:w-52 md:h-32 flex-shrink-0">
           <img
             src={coverImage}
             alt="Blog"
             className="w-full h-full object-cover rounded-md"
           />
         </div>
-      </div>
 
-      {/* Second Div: Created Date, Comment Icon, Save Icon, and Dropdown */}
-      <div className="flex items-center justify-between mt-4 text-sm text-gray-500">
-        {/* Left Content - Date and Comment Icon */}
-        <div className="flex items-center">
-          <span>{createdAt}</span>
-          <span className="mx-2">•</span>
-          <span className="flex items-center gap-1">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="currentColor"
-              className="w-4 h-4"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M17.25 9.75L12 15.75l-5.25-6"
-              />
-            </svg>
-            {/* {commentsCount} */}
-          </span>
-        </div>
-
-        {/* Right Content - Save Icon and Dropdown */}
-        <div className="flex items-center gap-4">
-          {/* Save Icon */}
-          <button className="text-gray-600 hover:text-gray-900">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="currentColor"
-              className="w-5 h-5"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M5.25 3.75h13.5m-13.5 0L12 17.25 18.75 3.75"
-              />
-            </svg>
-          </button>
-
-          {/* Three Dot Dropdown */}
-          <button className="text-gray-600 hover:text-gray-900">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="currentColor"
-              className="w-5 h-5"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M6 9l6 6 6-6"
-              />
-            </svg>
-          </button>
-        </div>
       </div>
     </div>
   );
 };
 
 export default BlogCard;
+

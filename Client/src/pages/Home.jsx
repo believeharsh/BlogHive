@@ -34,24 +34,27 @@ const Home = () => {
           <Spinner />
         )
       }
+
       <div className="min-h-screen bg-gray-100 py-8">
-        <h1 className="text-2xl font-bold text-center mb-6">My Blogs</h1>
-        <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
-          {blogs.length > 0 && (
+        {/* Container for Blogs */}
+
+        <div className="container mx-auto w-full max-w-2xl px-4">
+          {blogs.length > 0 &&
             blogs.map((blog) => (
-
-              <ProjectCard
-                key={blog._id}
-                title={blog.title}
-                body={blog.body}
-                coverImage={blog.coverImage}
-
-                createdAt={blog.createdAt}
-              />
-            ))
-          )}
+              <div key={blog._id} className="mb-6">
+                <ProjectCard
+                  name={blog.fullName}
+                  title={blog.title}
+                  body={blog.body}
+                  coverImage={blog.coverImage}
+                  createdAt={blog.createdAt}
+                />
+              </div>
+            ))}
         </div>
       </div>
+
+
     </>
 
   );
