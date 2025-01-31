@@ -1,10 +1,20 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom"; 
+import { useParams } from "react-router-dom";
 import Spinner from "../components/Spinner";
+import { FaHeart, FaRegComment, FaBookmark, FaShareAlt, FaEllipsisH } from "react-icons/fa";
 
 axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
 axios.defaults.withCredentials = true;
+
+const formatDate = (isoString) => {
+    const date = new Date(isoString);
+    return date.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+    });
+};
 
 const BlogDetails = () => {
     const [blog, setBlogs] = useState([]);
@@ -42,10 +52,59 @@ const BlogDetails = () => {
                 !(loading) && (
                     <div className="max-w-3xl mx-auto px-4 py-6">
                         {/* Blog Title */}
-                        <h1 className="text-3xl font-bold text-gray-900 mb-4">{blog.title}</h1>
+                        <h1 className="text-4xl font-extrabold text-gray-900 mb-4">{blog.title}</h1>
+
+                        {/* User Profile Section */}
+                        <div className="flex items-center gap-4 mb-4">
+                            <img
+                                src={"/images/boy_avatar.jpeg"}
+                                // alt={blog.author}
+                                className="w-12 h-12 rounded-full object-cover"
+                            />
+                            <div>
+                                <p className="text-lg font-semibold text-gray-800">Harsh Dahiya</p>
+                                <p className="text-sm text-gray-500">{formatDate(blog.createdAt)}</p>
+                            </div>
+                        </div>
+
+                        {/* Interaction Buttons */}
+                        <div className="flex items-center justify-between py-4 ">
+                            {/* Left: Like & Comment */}
+                            <div className="flex items-center gap-6">
+                                {/* Like Button */}
+                                <button className="flex items-center gap-1 text-gray-600 hover:text-gray-900">
+                                    <FaHeart className="w-5 h-5" />
+                                    <span>Like</span>
+                                </button>
+
+                                {/* Comment Button */}
+                                <button className="flex items-center gap-1 text-gray-600 hover:text-gray-900">
+                                    <FaRegComment className="w-5 h-6" />
+                                    <span>Comment</span>
+                                </button>
+                            </div>
+
+                            {/* Right: Save, Share, More Options */}
+                            <div className="flex items-center gap-6">
+                                {/* Save Button */}
+                                <button className="text-gray-600 hover:text-gray-900">
+                                    <FaBookmark className="w-5 h-6" />
+                                </button>
+
+                                {/* Share Button */}
+                                <button className="text-gray-600 hover:text-gray-900">
+                                    <FaShareAlt className="w-5 h-6" />
+                                </button>
+
+                                {/* Three-Dot Dropdown */}
+                                <button className="text-gray-600 hover:text-gray-900">
+                                    <FaEllipsisH className="w-5 h-6" />
+                                </button>
+                            </div>
+                        </div>
 
                         {/* Cover Image */}
-                        <div className="mb-6">
+                        <div className="mb-6 mt-4">
                             <img
                                 src={blog.coverImage}
                                 alt="Blog cover"
@@ -53,54 +112,9 @@ const BlogDetails = () => {
                             />
                         </div>
 
-                        {/* Blog Body */}
+                        {/* Blog Content */}
                         <div className="prose prose-lg text-gray-700">
                             <p>{blog.body}</p>
-                        </div>
-
-                        {/* Blog Footer */}
-                        <div className="flex items-center justify-between mt-8 text-sm text-gray-500">
-                            {/* Left: Created Date */}
-                            <span>{blog.createdAt}</span>
-
-                            {/* Right: Save Button and Dropdown */}
-                            <div className="flex items-center gap-4">
-                                {/* Save Button */}
-                                <button className="text-gray-600 hover:text-gray-900">
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        strokeWidth="1.5"
-                                        stroke="currentColor"
-                                        className="w-5 h-5"
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            d="M5.25 3.75h13.5m-13.5 0L12 17.25 18.75 3.75"
-                                        />
-                                    </svg>
-                                </button>
-
-                                {/* Three Dot Dropdown */}
-                                <button className="text-gray-600 hover:text-gray-900">
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        strokeWidth="1.5"
-                                        stroke="currentColor"
-                                        className="w-5 h-5"
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            d="M6 9l6 6 6-6"
-                                        />
-                                    </svg>
-                                </button>
-                            </div>
                         </div>
                     </div>
                 )

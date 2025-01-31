@@ -8,23 +8,23 @@ const Notification = () => {
     {
       id: 1,
       type: "response",
-      userImage: "https://via.placeholder.com/40",
-      username: "John Doe",
-      content: "John responded to your comment.",
+      userImage: "/images/boy_avatar.jpeg",
+      username: "Rohit Rana",
+      content: "Rohit responded to your comment.",
     },
     {
       id: 2,
       type: "all",
-      userImage: "https://via.placeholder.com/40",
-      username: "Jane Smith",
-      content: "Jane liked your post.",
+      userImage: "/images/girl_avatar.jpg",
+      username: "Saifali Thakur",
+      content: "Saifali liked your post.",
     },
     {
       id: 3,
       type: "response",
-      userImage: "https://via.placeholder.com/40",
-      username: "Mark Wilson",
-      content: "Mark replied to your message.",
+      userImage: "/images/boy2_avatar.jpeg",
+      username: "kartik Roy",
+      content: "Kartik replied to your message.",
     },
   ];
 

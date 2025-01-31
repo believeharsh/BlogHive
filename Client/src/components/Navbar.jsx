@@ -9,7 +9,9 @@ import { useNavigate } from 'react-router-dom';
 const Navbar = () => {
   const nevigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  
 
+  const blogHiveUser = localStorage.getItem("BlogHiveUser");
   axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL
   axios.defaults.withCredentials = true;
   
@@ -67,19 +69,11 @@ const Navbar = () => {
             {isDropdownOpen && (
               <div className="absolute right-0 mt-2 bg-white shadow-lg rounded-lg w-48">
                 <ul className="py-2 text-gray-700">
-                  <Link to="/user/profile">
+                  <Link to={`/${blogHiveUser}`}>
                     <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center space-x-2">
                       <FiUser /> <span>Profile</span>
                     </li>
                   </Link>
-
-                  {/* <Link to="/stats">
-                    <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center space-x-2">
-                      <FiBarChart2 /> <span>Stats</span>
-                    </li>
-                  </Link> */}
-
-
                   <Link to="/library">
                     <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center space-x-2">
                       <FiBook /> <span>Library</span>

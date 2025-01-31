@@ -10,25 +10,29 @@ import Library from "./pages/Library";
 import ProtectedRoute from "./context/ProtectedRoute";
 import BlogDetails from "./pages/BlogDetails";
 import Layout from "./components/Layout";
+import { UserProfileProvider } from "./context/userContext";
 
 
 
 function App() {
   return (
     <>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<ProtectedRoute><Home /></ProtectedRoute>} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignUpPage />} />
-          <Route path="/notifications" element={<Notification />} />
-          <Route path="/library" element={<Library />} />
-          <Route path="/user/profile" element={<Profile />} />
-          <Route path="/blog/Upload" element={<Upload />} />
-          <Route path="/blog/:id" element={<BlogDetails />} />
-        </Route>
+      <UserProfileProvider>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<ProtectedRoute><Home /></ProtectedRoute>} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/signup" element={<SignUpPage />} />
+            <Route path="/notifications" element={<Notification />} />
+            <Route path="/library" element={<Library />} />
+            <Route path="/:username" element={<Profile />} />
+            <Route path="/blog/Upload" element={<Upload />} />
+            <Route path="/blog/:id" element={<BlogDetails />} />
+          </Route>
 
-      </Routes>
+        </Routes>
+      </UserProfileProvider>
+
 
     </>
   )

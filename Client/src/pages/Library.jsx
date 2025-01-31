@@ -7,13 +7,13 @@ const Library = () => {
     yourList: [
       {
         id: 1,
-        image: "https://via.placeholder.com/150",
-        creator: "Alice Johnson",
+        image: "/images/LibraryCover_Image.jpg",
+        creator: "",
         createdAt: "Jan 20, 2025",
       },
       {
         id: 2,
-        image: "https://via.placeholder.com/150",
+        image: "/images/LibraryCover_Images(2).jpg",
         creator: "Bob Smith",
         createdAt: "Jan 18, 2025",
       },
@@ -21,7 +21,7 @@ const Library = () => {
     savedList: [
       {
         id: 3,
-        image: "https://via.placeholder.com/150",
+        image: "/images/LibraryCover_Images(3).jpg",
         creator: "Charlie Davis",
         createdAt: "Jan 15, 2025",
       },
@@ -29,7 +29,7 @@ const Library = () => {
     highlights: [
       {
         id: 4,
-        image: "https://via.placeholder.com/150",
+        image: "/images/LibraryCover_Image.jpg",
         creator: "Diana Lewis",
         createdAt: "Jan 10, 2025",
       },
@@ -37,7 +37,7 @@ const Library = () => {
     readingHistory: [
       {
         id: 5,
-        image: "https://via.placeholder.com/150",
+        image: "/images/LibraryCover_Images(2).jpg",
         creator: "Evan Walker",
         createdAt: "Jan 5, 2025",
       },

@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import ProjectCard from "../components/ProjectsCard";
 import Spinner from "../components/Spinner"
+import { Link } from "react-router-dom";
+
 axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL
 
 const Home = () => {
@@ -42,13 +44,16 @@ const Home = () => {
           {blogs.length > 0 &&
             blogs.map((blog) => (
               <div key={blog._id} className="mb-6">
-                <ProjectCard
-                  name={blog.fullName}
-                  title={blog.title}
-                  body={blog.body}
-                  coverImage={blog.coverImage}
-                  createdAt={blog.createdAt}
-                />
+                <Link to={`/blog/${blog._id}`}>
+                  <ProjectCard
+                    name={blog.fullName}
+                    title={blog.title}
+                    body={blog.body}
+                    coverImage={blog.coverImage}
+                    createdAt={blog.createdAt}
+                  />
+                </Link>
+
               </div>
             ))}
         </div>
