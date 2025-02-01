@@ -28,8 +28,6 @@ const getBlogById = asyncHandler(async (req, res) => {
     });
 });
 
-
-
 const handleAddNewComment = asyncHandler(async (req, res) => {
     await Comments.create({
         content: req.body.content,
@@ -101,10 +99,31 @@ const getAllBlogsByUserId = asyncHandler(async (req, res) => {
     );
 });
 
+const handleDeleteBlogById = asyncHandler( async (req, res) => {
+    // console.log(req.params) ; 
+    const { blogId } = req.params 
+
+    const tobeDeletedBlog = await Blog.findByIdAndDelete(blogId) ; 
+    if(!tobeDeletedBlog){
+     throw new ApiError(400, "blog didn't found") ;    
+    }
+
+    return res
+    .status(200)
+    .json(
+        new ApiResponse(
+            200, 
+            {},
+            "blog deleted succussfully"
+        )
+    )
+})
+
 
 export {
     getBlogById,
     handleAddNewComment,
     handleAddNewBlog,
-    getAllBlogsByUserId
+    getAllBlogsByUserId,
+    handleDeleteBlogById
 }
