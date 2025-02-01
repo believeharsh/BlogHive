@@ -58,7 +58,7 @@ const handleAddNewComment = asyncHandler(async (req, res) => {
 
 const handleAddNewBlog = asyncHandler(async (req, res) => {
     const { title, body } = req.body;
-    console.log(req.file);
+    // console.log(req.file);
 
     if (!(title && body)) {
         return new ApiError(
@@ -70,7 +70,7 @@ const handleAddNewBlog = asyncHandler(async (req, res) => {
         return res.status(400).json({ error: "Cover image is required" });
     }
     const coverImage = req.file;
-    console.log(coverImage);
+    // console.log(coverImage);
 
     const newblog = await Blog.create({
         body,
@@ -99,7 +99,7 @@ const getAllBlogsByUserId = asyncHandler(async (req, res) => {
 
     // Finding all blogs created by the current user
     const blogs = await Blog.find({ createdBy: userId });
-    console.log(blogs)
+    // console.log(blogs)
     
     const formattedBlogs = blogs.map(blog => ({
         _id: blog._id,

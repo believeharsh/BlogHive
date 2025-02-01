@@ -5,6 +5,13 @@ import {
 } from "../services/authentication.js";
 
 const userSchema = new Schema({
+    username: {
+        type: String,
+        unique: true,
+        lowercase: true,
+        trim: true,
+        index: true
+    },
     fullName: {
         type: String,
         required: true,
@@ -29,7 +36,9 @@ const userSchema = new Schema({
     },
     profileImageURL: {
         type: String,
-        default: "/Images/defaultImage.png",
+        default: "/public/Images/defaultImage.png"
+
+
     }
 }, { timestamps: true });
 
@@ -46,6 +55,7 @@ userSchema.pre("save", function (next) {
 
     next();
 })
+
 userSchema.static(
     "matchPassAndGenToken",
     async function (email, password) {
@@ -66,5 +76,6 @@ userSchema.static(
         return token;
     }
 );
+
 const User = model('user', userSchema);
 export default User; 
