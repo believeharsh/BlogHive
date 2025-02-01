@@ -3,7 +3,9 @@ import Comments from "../models/comments.js";
 import { ApiResponse } from "../services/apiResponse.js";
 import { ApiError } from "../services/apiError.js";
 import { asyncHandler } from "../services/asyncHandler.js";
+import path from "path";
 
+import { uploadOnCloudinary } from "../services/cloudinary.js"
 
 const getBlogById = asyncHandler(async (req, res) => {
     // Find the blog by its ID
@@ -15,23 +17,12 @@ const getBlogById = asyncHandler(async (req, res) => {
         });
     }
 
-    // Format the blog response
-    const formattedBlog = {
-        _id: blog._id,
-        title: blog.title,
-        body: blog.body,
-        coverImage: `data:${blog.coverImage.contentType};base64,${blog.coverImage.data.toString('base64')}`,
-        createdAt: blog.createdAt,
-        updatedAt: blog.updatedAt,
-        createdBy: blog.createdBy
-    };
-
     // Fetch comments related to the blog
     const comments = await Comments.find({ blogId: req.params.id }).populate("createdBy");
 
     return res.status(200).json({
         user: req.user,
-        blog: formattedBlog,
+        blog: blog,
         comments: comments,
         message: "Blog fetched successfully by given Id"
     });
@@ -66,20 +57,19 @@ const handleAddNewBlog = asyncHandler(async (req, res) => {
             "title and body are required fields"
         )
     }
-    if (!req.file) {
-        return res.status(400).json({ error: "Cover image is required" });
+    let coverImageURL;
+    if (req.file) {
+        const coverImageLocalPath = path.resolve(req.file.path);
+        const coverImage = await uploadOnCloudinary(coverImageLocalPath);
+        console.log(coverImage)
+        if (coverImage) coverImageURL = coverImage.secure_url;
     }
-    const coverImage = req.file;
-    // console.log(coverImage);
 
     const newblog = await Blog.create({
-        body,
-        title,
+        body : body,
+        title : title,
         createdBy: req.user._id,
-        coverImage: {
-            data: req.file.buffer,  // Store image as binary
-            contentType: req.file.mimetype
-        }
+        coverImage: coverImageURL
     });
 
     return res
@@ -99,23 +89,12 @@ const getAllBlogsByUserId = asyncHandler(async (req, res) => {
 
     // Finding all blogs created by the current user
     const blogs = await Blog.find({ createdBy: userId });
-    // console.log(blogs)
-    
-    const formattedBlogs = blogs.map(blog => ({
-        _id: blog._id,
-        title: blog.title,
-        body: blog.body,
-        coverImage: `data:${blog.coverImage.contentType};base64,${blog.coverImage.data.toString('base64')}`,
-        createdAt: blog.createdAt,
-        updatedAt: blog.updatedAt,
-        createdBy: blog.createdBy
-    }));
 
     return res.status(200).json(
         new ApiResponse(
             200,
             {
-                blogs: formattedBlogs,
+                blogs: blogs,
             },
             "Fetched all blogs of current user successfully"
         )

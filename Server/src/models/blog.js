@@ -10,8 +10,9 @@ const blogSchema = new Schema({
         required: true,
     },
     coverImage: {
-        data: Buffer,        // Binary data
-        contentType: String  // MIME type
+        type: String,   
+        // default: "/public/Images/defaultImage.png"
+        
     },
     createdBy: {
         type: Schema.Types.ObjectId,
