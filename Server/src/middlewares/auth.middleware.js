@@ -1,4 +1,4 @@
-import { validateToken } from "../services/authentication.js";
+import { validateToken } from "../services/userTokens.js";
 import { asyncHandler } from "../services/asyncHandler.js";
 import User from "../models/user.js";
 import { ApiError } from "../services/apiError.js";
@@ -7,7 +7,7 @@ import { ApiResponse } from "../services/apiResponse.js";
 const verifyUserJwtToken = asyncHandler(async (req, res, next) => {
 
     try {
-        const userToken = req.cookies?.token
+        const userToken = req.cookies?.accessToken
         // console.log(userToken)
 
         if (!userToken) {

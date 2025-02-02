@@ -19,6 +19,8 @@ const Navbar = () => {
     await axios.get("/user/logout")
       .then((res) => {
         console.log("server response", res);
+        localStorage.removeItem("BlogHiveUser");
+
         nevigate("/login");
       })
   }

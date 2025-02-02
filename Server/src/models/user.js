@@ -1,8 +1,7 @@
 import { Schema, model } from "mongoose";
 import { createHmac, randomBytes } from "node:crypto";
-import {
-    createTokenForUser,
-} from "../services/authentication.js";
+import { createAccessToken, createRefreshToken } from "../services/userTokens.js";
+
 
 const userSchema = new Schema({
     username: {
@@ -34,6 +33,9 @@ const userSchema = new Schema({
         enum: ['USER', 'ADAMIN'],
         default: 'USER',
     },
+    refreshToken: {
+        type: String
+    },
     profileImageURL: {
         type: String,
         default: "/public/Images/defaultImage.png"
@@ -57,7 +59,7 @@ userSchema.pre("save", function (next) {
 })
 
 userSchema.static(
-    "matchPassAndGenToken",
+    "matchPassAndGenTokens",
     async function (email, password) {
         const user = await this.findOne({ email });
         if (!user) throw new Error("User not found!");
@@ -70,10 +72,15 @@ userSchema.static(
             .digest("hex");
 
         if (hashedPassword !== userProvidedHash)
-            throw new Error("Incorrect Password");
+            throw new Error("Incorrect Password")
 
-        const token = createTokenForUser(user);
-        return token;
+        const accessToken = createAccessToken(user)
+        const refreshToken = createRefreshToken(user._id)
+
+        user.refreshToken = refreshToken
+        await User.updateOne({ _id: user._id }, { refreshToken });
+
+        return { accessToken, refreshToken}
     }
 );
 

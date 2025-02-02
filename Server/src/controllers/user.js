@@ -8,7 +8,9 @@ import { generateUsername } from "../services/generateUsername.js"
 
 
 const loginUser = asyncHandler(async (req, res) => {
+
     const { email, password } = req.body
+
     if (!email && !password) {
         throw new ApiError(400, "email or password is required")
     }
@@ -17,7 +19,8 @@ const loginUser = asyncHandler(async (req, res) => {
     if (!user) {
         throw new ApiError(400, "user does not exists")
     }
-    const token = await User.matchPassAndGenToken(email, password);
+
+    const { accessToken, refreshToken } = await User.matchPassAndGenTokens(email, password);
 
     const options = {
         httpOnly: true,
@@ -26,12 +29,13 @@ const loginUser = asyncHandler(async (req, res) => {
     }
 
     return res.status(200)
-        .cookie("token", token, options)
+        .cookie("accessToken", accessToken, options)
+        .cookie("refreshToken", refreshToken, options)
         .json(
             new ApiResponse(
                 200,
                 {
-                    user: token,
+                    user: accessToken, refreshToken
                 },
                 "user logged in succussfully"
             )
@@ -41,7 +45,6 @@ const loginUser = asyncHandler(async (req, res) => {
 
 const registerUser = asyncHandler(async (req, res) => {
     const { fullName, email, password } = req.body
-    // console.log(req.file);
 
     if ([fullName, email, password].some((field) => field?.trim() === "")) {
         throw new ApiError(400, "all fields are required")
@@ -57,7 +60,7 @@ const registerUser = asyncHandler(async (req, res) => {
         throw new ApiError(409, "error occured while generating the username for the user")
     }
 
-    let avatarUrl 
+    let avatarUrl
     if (req.file) {
         const avatarLocalPath = path.resolve(req.file.path);
         const avatar = await uploadOnCloudinary(avatarLocalPath);
@@ -141,6 +144,10 @@ const checkAuth = asyncHandler(async (req, res) => {
                 "user is authenticated"
             )
         )
+})
+
+const refreshAccessToken = asyncHandler(async (req, res) => {
+
 })
 
 export {
