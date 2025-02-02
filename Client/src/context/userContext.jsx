@@ -25,11 +25,11 @@ export const UserProfileProvider = ({ children }) => {
                 const getUserData = await axios.get("/user/profile")
                 const profiledata = getUserData.data.data;
 
-                const email = profiledata.email ; // saving username in the localstorage 
+                const email = profiledata.email ; 
                 const username = '@' + `${email.split("@")[0]}`;
                 console.log(username)
 
-                localStorage.setItem("BlogHiveUser", username);
+                localStorage.setItem("BlogHiveUser", username); // saving username in the localstorage 
                 setUserProfileData(profiledata);
 
             } catch (error) {
@@ -59,6 +59,7 @@ export const UserProfileProvider = ({ children }) => {
         fetchUserData();
         fetchBlogsCreatedByUser();
     }, []);
+    
 
     return (
         <UserProfileContext.Provider value={{ loading, blogs, userProfileData }}>

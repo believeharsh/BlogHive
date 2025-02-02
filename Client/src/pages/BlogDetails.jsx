@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Spinner from "../components/Spinner";
 import { FaHeart, FaRegComment, FaBookmark, FaShareAlt, FaEllipsisH } from "react-icons/fa";
+import { useUserProfileData } from "../context/userContext";
 
 axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
 axios.defaults.withCredentials = true;
@@ -19,8 +20,16 @@ const formatDate = (isoString) => {
 const BlogDetails = () => {
     const [blog, setBlogs] = useState([]);
     const [loading, setLoading] = useState(false);
+    const [isUserIsAuthor, setisUserIsAuthor] = useState(false) ; 
     const { id } = useParams();
-    console.log(id);
+
+    const { userProfileData } = useUserProfileData() ; 
+
+
+    if(id === userProfileData?._id){
+        console.log("hurre both are same")
+    }
+
 
     useEffect(() => {
         const fetchBlogById = async () => {
@@ -32,6 +41,7 @@ const BlogDetails = () => {
                 }
                 console.log(res);
                 setBlogs(res.data.blog);
+                setisUserIsAuthor(res.data.isAuthor)
                 setLoading(false);
             }
             catch (error) {
@@ -40,6 +50,8 @@ const BlogDetails = () => {
         }
         fetchBlogById()
     }, []);
+
+  
     return (
 
         <>
@@ -99,6 +111,11 @@ const BlogDetails = () => {
                                 {/* Three-Dot Dropdown */}
                                 <button className="text-gray-600 hover:text-gray-900">
                                     <FaEllipsisH className="w-5 h-6" />
+                                    {
+                                        isUserIsAuthor && (
+                                            <p className=" text-gray-600">delete</p>
+                                        )
+                                    }
                                 </button>
                             </div>
                         </div>

@@ -20,10 +20,13 @@ const getBlogById = asyncHandler(async (req, res) => {
     // Fetch comments related to the blog
     const comments = await Comments.find({ blogId: req.params.id }).populate("createdBy");
 
+    const isAuthor = blog.createdBy._id.toString() === req.user._id.toString();
+
     return res.status(200).json({
         user: req.user,
         blog: blog,
         comments: comments,
+        isAuthor : isAuthor,
         message: "Blog fetched successfully by given Id"
     });
 });
