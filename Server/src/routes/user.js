@@ -4,7 +4,8 @@ import {
     logoutUser, 
     registerUser, 
     getCurrentUser,
-    checkAuth
+    checkAuth,
+    refreshAccessToken
 } from "../controllers/user.js";
 import { verifyUserJwtToken } from "../middlewares/auth.middleware.js";
 import { upload } from "../middlewares/multer.middleware.js";
@@ -17,6 +18,7 @@ router.get('/logout', verifyUserJwtToken, logoutUser);
 router.post("/signup", upload.single("avatar"), registerUser);
 router.get("/profile", verifyUserJwtToken,  getCurrentUser)
 router.get("/checkAuth", verifyUserJwtToken, checkAuth )
+router.post("/refresh-token", refreshAccessToken)
 
 
 export default router; 
