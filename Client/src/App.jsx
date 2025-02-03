@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import LoginPage from "./pages/Login";
 import SignUpPage from "./pages/Signup";
 import Home from "./pages/Home";
@@ -14,7 +14,10 @@ import { UserProfileProvider } from "./context/userContext";
 
 
 
+
 function App() {
+
+
   return (
     <>
       <UserProfileProvider>

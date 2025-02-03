@@ -4,8 +4,8 @@ import { ApiResponse } from "../services/apiResponse.js";
 import { ApiError } from "../services/apiError.js";
 import { asyncHandler } from "../services/asyncHandler.js";
 import path from "path";
-
 import { uploadOnCloudinary } from "../services/cloudinary.js"
+import mongoose from "mongoose";
 
 const getBlogById = asyncHandler(async (req, res) => {
     // Find the blog by its ID
@@ -26,7 +26,7 @@ const getBlogById = asyncHandler(async (req, res) => {
         user: req.user,
         blog: blog,
         comments: comments,
-        isAuthor : isAuthor,
+        isAuthor: isAuthor,
         message: "Blog fetched successfully by given Id"
     });
 });
@@ -67,8 +67,8 @@ const handleAddNewBlog = asyncHandler(async (req, res) => {
     }
 
     const newblog = await Blog.create({
-        body : body,
-        title : title,
+        body: body,
+        title: title,
         createdBy: req.user._id,
         coverImage: coverImageURL
     });
@@ -102,24 +102,34 @@ const getAllBlogsByUserId = asyncHandler(async (req, res) => {
     );
 });
 
-const handleDeleteBlogById = asyncHandler( async (req, res) => {
+const handleDeleteBlogById = asyncHandler(async (req, res) => {
     // console.log(req.params) ; 
-    const { blogId } = req.params 
+    const { blogId } = req.params
 
-    const tobeDeletedBlog = await Blog.findByIdAndDelete(blogId) ; 
-    if(!tobeDeletedBlog){
-     throw new ApiError(400, "blog didn't found") ;    
+    if (!mongoose.Types.ObjectId.isValid(blogId)) {
+        throw new ApiError(400, "Invalid blog ID");
     }
 
+    const tobeDeletedBlog = await Blog.findById(blogId);
+    if (!tobeDeletedBlog) {
+        throw new ApiError(404, "Blog not found");
+    }
+
+    if (tobeDeletedBlog.createdBy._id.toString() !== req.user._id.toString()) {
+        throw new ApiError(403, "Unauthorized to delete this blog");
+    }
+
+    await tobeDeletedBlog.deleteOne()
+
     return res
-    .status(200)
-    .json(
-        new ApiResponse(
-            200, 
-            {},
-            "blog deleted succussfully"
+        .status(200)
+        .json(
+            new ApiResponse(
+                200,
+                {},
+                "blog deleted succussfully"
+            )
         )
-    )
 })
 
 

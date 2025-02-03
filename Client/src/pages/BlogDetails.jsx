@@ -17,19 +17,30 @@ const formatDate = (isoString) => {
     });
 };
 
-const BlogDetails = () => {
-    const [blog, setBlogs] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [isUserIsAuthor, setisUserIsAuthor] = useState(false) ; 
-    const { id } = useParams();
+const handleDeleteBlog = async (blogid) => {
 
-    const { userProfileData } = useUserProfileData() ; 
+    try {
+        const confirmDelete = window.confirm("Are you sure you want to delete this blog?");
+        if (!confirmDelete) return;
 
+        await axios.delete(`/blog/${blogid}`);
+        alert("Blog deleted successfully!");
+        window.location.href = "/"; // Redirect after deletion
+    } catch (error) {
 
-    if(id === userProfileData?._id){
-        console.log("hurre both are same")
+        console.error("Error deleting blog:", error.response?.data?.message || error.message);
+        alert("Failed to delete blog.");
     }
 
+
+}
+
+const BlogDetails = () => {
+    const [blog, setBlogs] = useState([]);
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [isUserIsAuthor, setisUserIsAuthor] = useState(false);
+    const { id } = useParams();
 
     useEffect(() => {
         const fetchBlogById = async () => {
@@ -51,7 +62,7 @@ const BlogDetails = () => {
         fetchBlogById()
     }, []);
 
-  
+
     return (
 
         <>
@@ -109,14 +120,41 @@ const BlogDetails = () => {
                                 </button>
 
                                 {/* Three-Dot Dropdown */}
-                                <button className="text-gray-600 hover:text-gray-900">
-                                    <FaEllipsisH className="w-5 h-6" />
-                                    {
-                                        isUserIsAuthor && (
-                                            <p className=" text-gray-600">delete</p>
-                                        )
-                                    }
-                                </button>
+                                <div className="relative">
+                                    {/* Three-Dot Button */}
+                                    <button
+                                        className="text-gray-600 hover:text-gray-900"
+                                        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                                    >
+                                        <FaEllipsisH className="w-5 h-6" />
+                                    </button>
+
+                                    {/* Dropdown Menu */}
+                                    {isDropdownOpen && (
+                                        <div className="absolute right-0 mt-2 w-40 bg-white border border-gray-200 shadow-lg rounded-md overflow-hidden">
+                                            {isUserIsAuthor && (
+                                                <button
+                                                    className="block w-full px-4 py-2 text-left text-red-600 hover:bg-red-100"
+                                                    onClick={() => handleDeleteBlog(id)}
+                                                >
+                                                    Delete
+                                                </button>
+                                            )}
+                                            <button
+                                                className="block w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100"
+                                                onClick={() => console.log("Report Story")}
+                                            >
+                                                Report Story
+                                            </button>
+                                            <button
+                                                className="block w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100"
+                                                onClick={() => console.log("Follow Author")}
+                                            >
+                                                Follow Author
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
                         </div>
 
