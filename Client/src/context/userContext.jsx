@@ -14,6 +14,8 @@ export const useUserProfileData = () => useContext(UserProfileContext);
 
 export const UserProfileProvider = ({ children }) => {
 
+    // const { isAuthenticated } = useAuth() ; 
+    // console.log(isAuthenticated) ; 
     const [loading, setLoading] = useState(false);
     const [userProfileData, setUserProfileData] = useState(null);
     const [blogs, setBlogs] = useState([]);

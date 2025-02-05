@@ -16,8 +16,6 @@ const generateUsername = (email) => {
 };
 const emailone = generateUsername("harshdahiya@gmail.com")
 const emailtwo = generateUsername("harshdahiya@yahoo.com")
-console.log(emailone)
-console.log(emailtwo)
 
 export {
     generateUsername 
