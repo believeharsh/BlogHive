@@ -1,6 +1,5 @@
 import { Router } from "express";
 import {
-    handleAddNewComment,
     getBlogById,
     handleAddNewBlog,
     getAllBlogsByUserId,
@@ -13,7 +12,6 @@ const router = Router();
 router.use(verifyUserJwtToken)
 
 router.get("/:id", getBlogById);
-router.post("/comment/:blogId", handleAddNewComment);
 router.post("/", upload.single("coverImage"), handleAddNewBlog);
 router.get("/", getAllBlogsByUserId)
 router.delete("/:blogId", handleDeleteBlogById)

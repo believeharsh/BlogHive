@@ -8,7 +8,7 @@ import { uploadOnCloudinary } from "../services/cloudinary.js"
 import mongoose from "mongoose";
 
 const getBlogById = asyncHandler(async (req, res) => {
-    // Find the blog by its ID
+    // fetching related blog here
     const blog = await Blog.findById(req.params.id).populate("createdBy");
 
     if (!blog) {
@@ -18,7 +18,7 @@ const getBlogById = asyncHandler(async (req, res) => {
     }
 
     // Fetch comments related to the blog
-    const comments = await Comments.find({ blogId: req.params.id }).populate("createdBy");
+    const comments = await Comments.find({ blogId: req.params.id }).populate("createdBy", "fullName username profileImageURL");
 
     const isAuthor = blog.createdBy._id.toString() === req.user._id.toString();
 
@@ -30,23 +30,6 @@ const getBlogById = asyncHandler(async (req, res) => {
         message: "Blog fetched successfully by given Id"
     });
 });
-
-const handleAddNewComment = asyncHandler(async (req, res) => {
-    await Comments.create({
-        content: req.body.content,
-        blogId: req.params.blogId,
-        createdBy: req.user._id,
-    })
-
-    return res
-        .status(200)
-        .json(
-            new ApiResponse(
-                200,
-                {},
-                "comment posted succussfully"
-            ))
-})
 
 const handleAddNewBlog = asyncHandler(async (req, res) => {
     const { title, body } = req.body;
@@ -135,7 +118,6 @@ const handleDeleteBlogById = asyncHandler(async (req, res) => {
 
 export {
     getBlogById,
-    handleAddNewComment,
     handleAddNewBlog,
     getAllBlogsByUserId,
     handleDeleteBlogById

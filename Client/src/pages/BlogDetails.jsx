@@ -4,6 +4,8 @@ import { useParams } from "react-router-dom";
 import Spinner from "../components/Spinner";
 import { FaHeart, FaRegComment, FaBookmark, FaShareAlt, FaEllipsisH } from "react-icons/fa";
 import { useUserProfileData } from "../context/userContext";
+import AddNewComment from "../components/AddNewComment";
+import CommentCard from "../components/CommentCard";
 
 axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
 axios.defaults.withCredentials = true;
@@ -18,7 +20,6 @@ const formatDate = (isoString) => {
 };
 
 const handleDeleteBlog = async (blogid) => {
-
     try {
         const confirmDelete = window.confirm("Are you sure you want to delete this blog?");
         if (!confirmDelete) return;
@@ -31,12 +32,13 @@ const handleDeleteBlog = async (blogid) => {
         console.error("Error deleting blog:", error.response?.data?.message || error.message);
         alert("Failed to delete blog.");
     }
-
-
 }
+
+
 
 const BlogDetails = () => {
     const [blog, setBlogs] = useState([]);
+    const [comments, setComments] = useState([]) ; 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const [isUserIsAuthor, setisUserIsAuthor] = useState(false);
@@ -50,8 +52,10 @@ const BlogDetails = () => {
                 if (!res) {
                     console.log("blog not found By id");
                 }
-                console.log(res);
+                // console.log(res);
                 setBlogs(res.data.blog);
+                setComments(res.data.comments)
+                
                 setisUserIsAuthor(res.data.isAuthor)
                 setLoading(false);
             }
@@ -61,6 +65,12 @@ const BlogDetails = () => {
         }
         fetchBlogById()
     }, []);
+
+
+
+    const addNewCommentToState = (newComment) => {
+        setComments((prevComments) => [newComment, ...prevComments]);
+    };
 
 
     return (
@@ -168,9 +178,26 @@ const BlogDetails = () => {
                         </div>
 
                         {/* Blog Content */}
-                        <div className="prose prose-lg text-gray-700">
+                        <div className="prose prose-lg text-gray-700 py-2">
                             <p>{blog.body}</p>
                         </div>
+
+                        <AddNewComment  blogId={id}  addNewCommentToState={addNewCommentToState}/>
+
+                        {
+                            <div className="bg-white shadow-md rounded-lg p-4">
+                                <h2 className="text-xl font-semibold mb-4">Comments</h2>
+                                {comments.length > 0 ? (
+                                    comments.map((comment) => (
+                                        <CommentCard key={comment._id} comment={comment} />
+                                    ))
+                                ) : (
+                                    <p className="text-gray-500">No comments yet.</p>
+                                )}
+                            </div>
+                        }
+
+
                     </div>
                 )
             }

@@ -1,4 +1,4 @@
-import {Schema, model} from "mongoose" ; 
+import {Schema, model} from "mongoose" 
 
 const commentsSchema = new Schema({
     content  : {
@@ -14,7 +14,7 @@ const commentsSchema = new Schema({
         type : Schema.Types.ObjectId,
         ref : "user",
     }
-}, {timestamps : true}) ; 
+}, {timestamps : true})
 
-const Comments = model("comment", commentsSchema) ; 
-export default Comments ; 
+const Comments = model("comment", commentsSchema)
+export default Comments  

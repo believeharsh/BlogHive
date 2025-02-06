@@ -1,4 +1,4 @@
-import { Router } from "express";
+import { Router } from "express"
 import {
     loginUser, 
     logoutUser, 
@@ -6,19 +6,19 @@ import {
     getCurrentUser,
     checkAuth,
     refreshAccessToken
-} from "../controllers/user.js";
-import { verifyUserJwtToken } from "../middlewares/auth.middleware.js";
-import { upload } from "../middlewares/multer.middleware.js";
+} from "../controllers/user.js"
+import { verifyUserJwtToken } from "../middlewares/auth.middleware.js"
+import { upload } from "../middlewares/multer.middleware.js"
 
 
-const router = Router();
+const userRoute = Router();
 
-router.post("/signin", loginUser);
-router.get('/logout', verifyUserJwtToken, logoutUser);
-router.post("/signup", upload.single("avatar"), registerUser);
-router.get("/profile", verifyUserJwtToken,  getCurrentUser)
-router.get("/checkAuth", verifyUserJwtToken, checkAuth )
-router.post("/refresh-token", refreshAccessToken)
+userRoute.post("/signin", loginUser)
+userRoute.get('/logout', verifyUserJwtToken, logoutUser)
+userRoute.post("/signup", upload.single("avatar"), registerUser)
+userRoute.get("/profile", verifyUserJwtToken,  getCurrentUser)
+userRoute.get("/checkAuth", verifyUserJwtToken, checkAuth )
+userRoute.post("/refresh-token", refreshAccessToken)
 
 
-export default router; 
+export default userRoute
