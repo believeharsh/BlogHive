@@ -30,7 +30,8 @@ const ProfilePage = () => {
     <>
 
       {/* Profile Header */}
-      <ProfileHeader username={userProfileData.fullName} createdAt={userProfileData.createdAt} />
+      {/* <ProfileHeader username={userProfileData.fullName} createdAt={userProfileData.createdAt} /> */}
+      <ProfileHeader userProfileData={userProfileData} />
 
       {/* Profile Navigation */}
       <ProfileNav />

@@ -2,7 +2,8 @@ import { useState } from "react";
 import React from "react";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 
-const ProfileHeader = ({ username, createdAt }) => {
+const ProfileHeader = ({ userProfileData }) => {
+  const { username, fullName, profileImageURL, createdAt} = userProfileData ; 
   const [isOpen, setIsOpen] = useState(false);
   const [copied, setCopied] = useState(false);
 
@@ -28,10 +29,10 @@ const ProfileHeader = ({ username, createdAt }) => {
   return (
     <div className="flex items-center justify-between p-4  bg-white">
       {/* Left Side - Username */}
-      <div className="flex">
-        <img src={`/images/default_Image.jpeg`} alt="" className="w-32 h-32" />
+      <div className="flex gap-2">
+        <img src={profileImageURL} alt="" className="w-32 h-32 rounded-full" />
         <div className="flex flex-col justify-center items-center">
-          <h1 className="text-3xl font-semibold text-gray-800">{username}</h1>
+          <h1 className="text-3xl font-semibold text-gray-800">{fullName}</h1>
           <p className="text-sm font-semibold text-gray-800">{`Since  ${formatDate(createdAt)}`}</p>
         </div>
 
