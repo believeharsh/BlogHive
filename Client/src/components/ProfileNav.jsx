@@ -6,7 +6,7 @@ const ProfileNav = () => {
   return (
     <div className="border-b border-gray-300 bg-white">
       <nav className="flex justify-start space-x-6 p-4">
-        {["Blogs", "List", "About"].map((tab) => (
+        {["Blogs", "SavedBlogs", "List", "About"].map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
