@@ -21,12 +21,12 @@ const SharePage = ({ blogUrl, onClose }) => {
 
     return (
         <div className="fixed inset-0 flex items-center justify-center z-50">
-            {/* Light-themed overlay */}
+
             <div className="absolute inset-0 bg-white/50 backdrop-blur-lg"></div>
 
-            {/* Share Modal */}
+
             <div className="relative bg-white shadow-xl rounded-2xl p-6 w-[400px] border border-gray-200">
-                {/* Close Button */}
+
                 <button 
                     className="absolute top-3 right-3 text-gray-500 hover:text-gray-700 transition" 
                     onClick={onClose}
@@ -34,7 +34,6 @@ const SharePage = ({ blogUrl, onClose }) => {
                     <FiX className="w-6 h-6" />
                 </button>
 
-                {/* Header */}
                 <h2 className="text-2xl font-semibold text-gray-900 text-center mb-4" style={{ fontFamily: "Inter, sans-serif" }}>
                     Share this Blog
                 </h2>
