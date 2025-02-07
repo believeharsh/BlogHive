@@ -6,6 +6,7 @@ import { FaHeart, FaRegComment, FaBookmark, FaShareAlt, FaEllipsisH } from "reac
 import { useUserProfileData } from "../context/userContext";
 import AddNewComment from "../components/AddNewComment";
 import CommentCard from "../components/CommentCard";
+import SharePage from "../components/ShareBlog";
 
 axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
 axios.defaults.withCredentials = true;
@@ -39,6 +40,7 @@ const handleDeleteBlog = async (blogid) => {
 const BlogDetails = () => {
     const [blog, setBlogs] = useState([]);
     const [comments, setComments] = useState([]) ; 
+    const [isShareOpen, setIsShareOpen] = useState(false) ; 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const [isUserIsAuthor, setisUserIsAuthor] = useState(false);
@@ -125,7 +127,9 @@ const BlogDetails = () => {
                                 </button>
 
                                 {/* Share Button */}
-                                <button className="text-gray-600 hover:text-gray-900">
+                                <button className="text-gray-600 hover:text-gray-900"
+                                    onClick={() => setIsShareOpen(true)}
+                                >
                                     <FaShareAlt className="w-5 h-6" />
                                 </button>
 
@@ -196,6 +200,9 @@ const BlogDetails = () => {
                                 )}
                             </div>
                         }
+
+                        {isShareOpen && <SharePage blogUrl={`https://bloghive-lac.vercel.app/blog/${id}`} onClose={() => setIsShareOpen(false)} />}
+        
 
 
                     </div>
