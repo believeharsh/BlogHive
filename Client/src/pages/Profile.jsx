@@ -1,17 +1,21 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ProfileHeader from "../components/ProfileHeader";
 import ProfileNav from "../components/ProfileNav";
 import BlogCard from "../components/BlogCard";
 import Spinner from "../components/Spinner";
 import { Link } from "react-router-dom";
 import { useUserProfileData } from "../context/userContext";
-
+import { useBlogs } from "../context/BlogContext";
 
 
 const ProfilePage = () => {
 
-    const { userProfileData, loading, blogs } = useUserProfileData() ; 
-  
+  const [activeTab, setActiveTab] = useState("Blogs"); // Manage active tab state
+  const { userProfileData, loading, blogs } = useUserProfileData();
+  const {savedBlogsByUser, userId} = useBlogs() ; 
+
+
+  console.log(savedBlogsByUser)
 
 
   if (!userProfileData) {
@@ -23,32 +27,44 @@ const ProfilePage = () => {
   }
 
   if (loading) {
-    return <Spinner />
+    return <Spinner />;
   }
+
+  // Function to render blogs or saved blogs based on the active tab
+  const renderContent = () => {
+    if (activeTab === "Blogs") {
+      return blogs.map((blog) => (
+        <Link key={blog._id} to={`/blog/${blog._id}`}>
+          <BlogCard {...blog} />
+        </Link>
+      ));
+    }
+
+    if (activeTab === "SavedBlogs") {
+      return savedBlogsByUser.map((savedBlog) => (
+        <Link key={savedBlog._id} to={`/blog/${savedBlog.savedBlogId._id}`}>
+          <BlogCard {...savedBlog.savedBlogId} />
+        </Link>
+      ));
+    }
+
+    return <div>No content for this tab</div>;
+  };
 
   return (
     <>
 
-      {/* Profile Header */}
-      {/* <ProfileHeader username={userProfileData.fullName} createdAt={userProfileData.createdAt} /> */}
       <ProfileHeader userProfileData={userProfileData} />
 
-      {/* Profile Navigation */}
-      <ProfileNav />
+      <ProfileNav activeTab={activeTab} setActiveTab={setActiveTab} />
 
-      {/* Blog List Container */}
+      {/* Content based on active tab */}
       <div className="flex flex-col items-center w-full px-4">
         <div className="w-full max-w-3xl mt-4">
-          {blogs.map((blog) => (
-            <Link key={blog._id} to={`/blog/${blog._id}`}>
-              <BlogCard {...blog} />
-            </Link>
-          ))}
+          {renderContent()} {/* Dynamically rendering the content*/}
         </div>
       </div>
-
     </>
-
   );
 };
 

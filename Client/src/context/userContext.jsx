@@ -14,11 +14,10 @@ export const useUserProfileData = () => useContext(UserProfileContext);
 
 export const UserProfileProvider = ({ children }) => {
 
-    // const { isAuthenticated } = useAuth() ; 
-    // console.log(isAuthenticated) ; 
     const [loading, setLoading] = useState(false);
-    const [userProfileData, setUserProfileData] = useState(null);
+    const [userProfileData, setUserProfileData] = useState([]);
     const [blogs, setBlogs] = useState([]);
+
 
     // Fetch user data from the server
     useEffect(() => {
@@ -61,7 +60,7 @@ export const UserProfileProvider = ({ children }) => {
         fetchUserData();
         fetchBlogsCreatedByUser();
     }, []);
-    
+
 
     return (
         <UserProfileContext.Provider value={{ loading, blogs, userProfileData }}>

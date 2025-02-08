@@ -1,4 +1,5 @@
 import Blog from "../models/blog.js";
+import SavedBlogs from "../models/savedBlogs.js";
 import Comments from "../models/comments.js";
 import { ApiResponse } from "../services/apiResponse.js";
 import { ApiError } from "../services/apiError.js";
@@ -9,7 +10,7 @@ import mongoose from "mongoose";
 
 const getBlogById = asyncHandler(async (req, res) => {
     // fetching related blog here
-    const blog = await Blog.findById(req.params.id).populate("createdBy");
+    const blog = await Blog.findById(req.params.id).populate("createdBy", "profileImageURL fullName email username");
 
     if (!blog) {
         return res.status(404).json({
@@ -115,10 +116,80 @@ const handleDeleteBlogById = asyncHandler(async (req, res) => {
         )
 })
 
+const saveBlogInTheUserProfile = asyncHandler(async (req, res) => {
+    const { blogId } = req.params
+    const { userId } = req.body
+
+    if (!blogId || !userId) {
+        throw new ApiError(400, "blog and user Id are required")
+    }
+
+    const blog = await Blog.findById(blogId);
+    if (!blog) {
+        throw new ApiError(400, "no blog found with give blog id")
+    }
+
+    let newSavedBlog = await SavedBlogs.create({
+        savedBy: userId,
+        savedBlogId: blogId
+    })
+    
+    newSavedBlog = await newSavedBlog.populate(
+        "savedBlogId",
+        "title body coverImage createdBy createdAt"
+    );
+
+    return res
+        .status(200)
+        .json(
+            new ApiResponse(
+                200,
+                newSavedBlog,
+                "blog saved succussfully now"
+
+            )
+        )
+
+})
+
+const getAllSavedBlogsByUserId = asyncHandler(async (req, res) => {
+
+    const {userId} = req.params
+    userId.toString() ; 
+
+    if(!userId){
+        throw new ApiError(400, "userId is required")
+    }
+
+    if (!mongoose.isValidObjectId(userId)) {
+        throw new ApiError(400, "Invalid userId format");
+    }
+
+    const allSavedBlogs = await SavedBlogs.find({ savedBy: userId })
+    .populate('savedBlogId', 'title body coverImage createdBy createdAt')
+    console.log(allSavedBlogs) ;
+
+    if(!allSavedBlogs){
+        throw new ApiError(409, "no blogs saved as of now ") 
+    }
+
+    return res
+        .status(200)
+        .json(
+            new ApiResponse(
+                200, 
+                allSavedBlogs,
+                "all Saved blogs fetched succussfully"
+            )
+        )
+})
+
 
 export {
     getBlogById,
     handleAddNewBlog,
     getAllBlogsByUserId,
-    handleDeleteBlogById
+    handleDeleteBlogById,
+    saveBlogInTheUserProfile,
+    getAllSavedBlogsByUserId
 }

@@ -3,10 +3,11 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Spinner from "../components/Spinner";
 import { FaHeart, FaRegComment, FaBookmark, FaShareAlt, FaEllipsisH } from "react-icons/fa";
-import { useUserProfileData } from "../context/userContext";
 import AddNewComment from "../components/AddNewComment";
 import CommentCard from "../components/CommentCard";
 import SharePage from "../components/ShareBlog";
+import { useBlogs } from "../context/BlogContext";
+
 
 axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
 axios.defaults.withCredentials = true;
@@ -38,9 +39,10 @@ const handleDeleteBlog = async (blogid) => {
 
 
 const BlogDetails = () => {
-    const [blog, setBlogs] = useState([]);
-    const [comments, setComments] = useState([]) ; 
-    const [isShareOpen, setIsShareOpen] = useState(false) ; 
+    const [blog, setBlogs] = useState(null);
+    const { savedBlogsByUser, userId, setSavedBlogsByUser } = useBlogs();
+    const [comments, setComments] = useState([]);
+    const [isShareOpen, setIsShareOpen] = useState(false);
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const [isUserIsAuthor, setisUserIsAuthor] = useState(false);
@@ -57,7 +59,7 @@ const BlogDetails = () => {
                 // console.log(res);
                 setBlogs(res.data.blog);
                 setComments(res.data.comments)
-                
+
                 setisUserIsAuthor(res.data.isAuthor)
                 setLoading(false);
             }
@@ -68,15 +70,47 @@ const BlogDetails = () => {
         fetchBlogById()
     }, []);
 
-
-
     const addNewCommentToState = (newComment) => {
         setComments((prevComments) => [newComment, ...prevComments]);
     };
 
+    const handleSaveBlog = async (blogId, userId) => {
+        try {
+            if (!blogId || !userId) {
+                console.log("Blog ID and User ID are required");
+                return;
+            }
+
+            const response = await axios.post(
+                `/blog/saveBlog/${blogId}`,
+                { userId },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                }
+            );
+
+            if (!response.data || !response.data.data) {
+                console.log("Blog is not saved due to an error!");
+                return;
+            }
+
+            const newSavedBlog = response.data.data; // Extract the actual saved blog object
+
+            console.log(newSavedBlog);
+
+            // ✅ Update state here for giving the real time changes
+            setSavedBlogsByUser((prevBlogs) => [...prevBlogs, newSavedBlog]);
+
+            console.log(savedBlogsByUser);
+        } catch (error) {
+            console.error("Error occurred while saving the blog:", error.response?.data || error.message);
+        }
+    };
+
 
     return (
-
         <>
             {
                 loading && (
@@ -87,18 +121,18 @@ const BlogDetails = () => {
                 !(loading) && (
                     <div className="max-w-3xl mx-auto px-4 py-6">
                         {/* Blog Title */}
-                        <h1 className="text-4xl font-extrabold text-gray-900 mb-4">{blog.title}</h1>
+                        <h1 className="text-4xl font-extrabold text-gray-900 mb-4">{blog?.title}</h1>
 
                         {/* User Profile Section */}
                         <div className="flex items-center gap-4 mb-4">
                             <img
-                                src={"/images/boy_avatar.jpeg"}
-                                // alt={blog.author}
+                                src={blog?.createdBy?.profileImageURL}
+                                alt={blog?.createdBy?.username}
                                 className="w-12 h-12 rounded-full object-cover"
                             />
                             <div>
-                                <p className="text-lg font-semibold text-gray-800">Harsh Dahiya</p>
-                                <p className="text-sm text-gray-500">{formatDate(blog.createdAt)}</p>
+                                <p className="text-lg font-semibold text-gray-800">{blog?.createdBy?.fullName}</p>
+                                <p className="text-sm text-gray-500">{formatDate(blog?.createdAt)}</p>
                             </div>
                         </div>
 
@@ -122,7 +156,9 @@ const BlogDetails = () => {
                             {/* Right: Save, Share, More Options */}
                             <div className="flex items-center gap-6">
                                 {/* Save Button */}
-                                <button className="text-gray-600 hover:text-gray-900">
+                                <button className="text-gray-600 hover:text-gray-900"
+                                    onClick={() => handleSaveBlog(id, userId)}
+                                >
                                     <FaBookmark className="w-5 h-6" />
                                 </button>
 
@@ -175,7 +211,7 @@ const BlogDetails = () => {
                         {/* Cover Image */}
                         <div className="mb-6 mt-4">
                             <img
-                                src={blog.coverImage}
+                                src={blog?.coverImage}
                                 alt="Blog cover"
                                 className="w-full h-80 object-cover rounded-md"
                             />
@@ -183,10 +219,10 @@ const BlogDetails = () => {
 
                         {/* Blog Content */}
                         <div className="prose prose-lg text-gray-700 py-2">
-                            <p>{blog.body}</p>
+                            <p>{blog?.body}</p>
                         </div>
 
-                        <AddNewComment  blogId={id}  addNewCommentToState={addNewCommentToState}/>
+                        <AddNewComment blogId={id} addNewCommentToState={addNewCommentToState} />
 
                         {
                             <div className="bg-white shadow-md rounded-lg p-4">
@@ -202,7 +238,7 @@ const BlogDetails = () => {
                         }
 
                         {isShareOpen && <SharePage blogUrl={`https://bloghive-lac.vercel.app/blog/${id}`} onClose={() => setIsShareOpen(false)} />}
-        
+
 
 
                     </div>

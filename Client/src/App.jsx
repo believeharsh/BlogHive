@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import LoginPage from "./pages/Login";
 import SignUpPage from "./pages/Signup";
 import Home from "./pages/Home";
@@ -11,6 +11,7 @@ import ProtectedRoute from "./context/ProtectedRoute";
 import BlogDetails from "./pages/BlogDetails";
 import Layout from "./components/Layout";
 import { UserProfileProvider } from "./context/userContext";
+import { BlogsProvider } from "./context/BlogContext";
 
 
 
@@ -21,19 +22,21 @@ function App() {
   return (
     <>
       <UserProfileProvider>
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<ProtectedRoute><Home /></ProtectedRoute>} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/signup" element={<SignUpPage />} />
-            <Route path="/notifications" element={<Notification />} />
-            <Route path="/library" element={<Library />} />
-            <Route path="/:username" element={<Profile />} />
-            <Route path="/blog/Upload" element={<Upload />} />
-            <Route path="/blog/:id" element={<BlogDetails />} />
-          </Route>
+        <BlogsProvider>
+          <Routes>
+            <Route path="/" element={<Layout />}>
+              <Route index element={<ProtectedRoute><Home /></ProtectedRoute>} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/signup" element={<SignUpPage />} />
+              <Route path="/notifications" element={<Notification />} />
+              <Route path="/library" element={<Library />} />
+              <Route path="/:username" element={<Profile />} />
+              <Route path="/blog/Upload" element={<Upload />} />
+              <Route path="/blog/:id" element={<BlogDetails />} />
+            </Route>
 
-        </Routes>
+          </Routes>
+        </BlogsProvider>
       </UserProfileProvider>
 
 
