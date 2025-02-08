@@ -7,6 +7,8 @@ import AddNewComment from "../components/AddNewComment";
 import CommentCard from "../components/CommentCard";
 import SharePage from "../components/ShareBlog";
 import { useBlogs } from "../context/BlogContext";
+import { useNavigate } from "react-router-dom";
+
 
 
 axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
@@ -20,22 +22,6 @@ const formatDate = (isoString) => {
         year: "numeric",
     });
 };
-
-const handleDeleteBlog = async (blogid) => {
-    try {
-        const confirmDelete = window.confirm("Are you sure you want to delete this blog?");
-        if (!confirmDelete) return;
-
-        await axios.delete(`/blog/${blogid}`);
-        alert("Blog deleted successfully!");
-        window.location.href = "/"; // Redirect after deletion
-    } catch (error) {
-
-        console.error("Error deleting blog:", error.response?.data?.message || error.message);
-        alert("Failed to delete blog.");
-    }
-}
-
 
 
 const BlogDetails = () => {
@@ -68,7 +54,22 @@ const BlogDetails = () => {
             }
         }
         fetchBlogById()
-    }, []);
+    }, [id]);
+
+    const handleDeleteBlog = async (blogid) => {
+        try {
+            const confirmDelete = window.confirm("Are you sure you want to delete this blog?");
+            if (!confirmDelete) return;
+    
+            await axios.delete(`/blog/${blogid}`);
+            alert("Blog deleted successfully!");
+            window.location.href = "/"; // Redirect after deletion
+        } catch (error) {
+    
+            console.error("Error deleting blog:", error.response?.data?.message || error.message);
+            alert("Failed to delete blog.");
+        }
+    }
 
     const addNewCommentToState = (newComment) => {
         setComments((prevComments) => [newComment, ...prevComments]);

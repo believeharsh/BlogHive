@@ -14,31 +14,27 @@ import { UserProfileProvider } from "./context/userContext";
 import { BlogsProvider } from "./context/BlogContext";
 
 
-
-
 function App() {
-
 
   return (
     <>
       <UserProfileProvider>
         <BlogsProvider>
           <Routes>
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/signup" element={<SignUpPage />} />
             <Route path="/" element={<Layout />}>
               <Route index element={<ProtectedRoute><Home /></ProtectedRoute>} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/signup" element={<SignUpPage />} />
-              <Route path="/notifications" element={<Notification />} />
-              <Route path="/library" element={<Library />} />
-              <Route path="/:username" element={<Profile />} />
-              <Route path="/blog/Upload" element={<Upload />} />
-              <Route path="/blog/:id" element={<BlogDetails />} />
+              <Route path="/notifications" element={<ProtectedRoute><Notification /></ProtectedRoute>} />
+              <Route path="/library" element={<ProtectedRoute><Library /></ProtectedRoute>} />
+              <Route path="/:username" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+              <Route path="/blog/Upload" element={<ProtectedRoute><Upload /></ProtectedRoute>} />
+              <Route path="/blog/:id" element={<ProtectedRoute><BlogDetails /></ProtectedRoute>} />
             </Route>
 
           </Routes>
         </BlogsProvider>
       </UserProfileProvider>
-
 
     </>
   )

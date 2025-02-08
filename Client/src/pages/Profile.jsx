@@ -12,7 +12,7 @@ const ProfilePage = () => {
 
   const [activeTab, setActiveTab] = useState("Blogs"); // Manage active tab state
   const { userProfileData, loading, blogs } = useUserProfileData();
-  const {savedBlogsByUser, userId} = useBlogs() ; 
+  const { savedBlogsByUser, userId } = useBlogs();
 
 
   console.log(savedBlogsByUser)
@@ -59,11 +59,14 @@ const ProfilePage = () => {
       <ProfileNav activeTab={activeTab} setActiveTab={setActiveTab} />
 
       {/* Content based on active tab */}
-      <div className="flex flex-col items-center w-full px-4">
-        <div className="w-full max-w-3xl mt-4">
-          {renderContent()} {/* Dynamically rendering the content*/}
+      <div className="bg-[rgba(255,255,255,1)] ">
+        <div className="container mx-auto flex flex-col items-center w-full px-4">
+          <div className="w-full max-w-3xl mt-4">
+            {renderContent()} {/* Dynamically rendering the content*/}
+          </div>
         </div>
       </div>
+
     </>
   );
 };

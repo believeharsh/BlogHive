@@ -4,12 +4,13 @@ import { HiPencilAlt } from "react-icons/hi";
 import { Link } from "react-router-dom"
 import axios from "axios";
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from "../context/AuthContext";
 
 
 const Navbar = () => {
   const nevigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  
+  const {logout} = useAuth() ; 
 
   const blogHiveUser = localStorage.getItem("BlogHiveUser");
   axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL
@@ -19,6 +20,7 @@ const Navbar = () => {
     await axios.get("/user/logout")
       .then((res) => {
         console.log("server response", res);
+        logout() ; 
         localStorage.removeItem("BlogHiveUser");
 
         nevigate("/login");

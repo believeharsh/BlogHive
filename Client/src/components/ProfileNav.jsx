@@ -1,7 +1,8 @@
 import React from "react";
 const ProfileNav = ({ activeTab, setActiveTab }) => {
   return (
-    <div className="border-b border-gray-300 bg-white">
+    <div className="bg-[rgba(255,255,255,1)]">
+    <div className="container mx-auto border-b border-gray-300 bg-white">
       <nav className="flex justify-start space-x-6 p-4">
         {["Blogs", "SavedBlogs", "List", "About"].map((tab) => (
           <button
@@ -16,6 +17,8 @@ const ProfileNav = ({ activeTab, setActiveTab }) => {
         ))}
       </nav>
     </div>
+    </div>
+
   );
 };
 
