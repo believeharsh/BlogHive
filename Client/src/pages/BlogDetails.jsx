@@ -2,27 +2,17 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Spinner from "../components/Spinner";
-import { FaHeart, FaRegComment, FaBookmark, FaShareAlt, FaEllipsisH } from "react-icons/fa";
+import { FaRegHeart, FaRegComment, FaRegBookmark, FaRegShareSquare, FaBookmark } from "react-icons/fa";
+import { HiOutlineDotsHorizontal } from "react-icons/hi";
 import AddNewComment from "../components/AddNewComment";
 import CommentCard from "../components/CommentCard";
 import SharePage from "../components/ShareBlog";
 import { useBlogs } from "../context/BlogContext";
 import { useNavigate } from "react-router-dom";
-
-
+import formatDate from "../utils/FormateData";
 
 axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
 axios.defaults.withCredentials = true;
-
-const formatDate = (isoString) => {
-    const date = new Date(isoString);
-    return date.toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-    });
-};
-
 
 const BlogDetails = () => {
     const [blog, setBlogs] = useState(null);
@@ -33,6 +23,12 @@ const BlogDetails = () => {
     const [loading, setLoading] = useState(false);
     const [isUserIsAuthor, setisUserIsAuthor] = useState(false);
     const { id } = useParams();
+    const [isSaved, setIsSaved] = useState(false);
+
+    useEffect(() => {
+        // managing state to see that blog is already saved or not??
+        setIsSaved(savedBlogsByUser.some(blog => blog.savedBlogId._id === id));
+    }, [savedBlogsByUser, id]);
 
     useEffect(() => {
         const fetchBlogById = async () => {
@@ -60,12 +56,12 @@ const BlogDetails = () => {
         try {
             const confirmDelete = window.confirm("Are you sure you want to delete this blog?");
             if (!confirmDelete) return;
-    
+
             await axios.delete(`/blog/${blogid}`);
             alert("Blog deleted successfully!");
             window.location.href = "/"; // Redirect after deletion
         } catch (error) {
-    
+
             console.error("Error deleting blog:", error.response?.data?.message || error.message);
             alert("Failed to delete blog.");
         }
@@ -75,10 +71,16 @@ const BlogDetails = () => {
         setComments((prevComments) => [newComment, ...prevComments]);
     };
 
+
     const handleSaveBlog = async (blogId, userId) => {
         try {
             if (!blogId || !userId) {
                 console.log("Blog ID and User ID are required");
+                return;
+            }
+
+            if (isSaved) {
+                console.log("Blog is already saved!");
                 return;
             }
 
@@ -97,11 +99,11 @@ const BlogDetails = () => {
                 return;
             }
 
-            const newSavedBlog = response.data.data; // Extract the actual saved blog object
+            const newSavedBlog = response.data.data;
 
             console.log(newSavedBlog);
 
-            // ✅ Update state here for giving the real time changes
+            // ✅ Update state only if the blog is not already saved
             setSavedBlogsByUser((prevBlogs) => [...prevBlogs, newSavedBlog]);
 
             console.log(savedBlogsByUser);
@@ -109,6 +111,7 @@ const BlogDetails = () => {
             console.error("Error occurred while saving the blog:", error.response?.data || error.message);
         }
     };
+
 
 
     return (
@@ -138,46 +141,50 @@ const BlogDetails = () => {
                         </div>
 
                         {/* Interaction Buttons */}
-                        <div className="flex items-center justify-between py-4 ">
+
+                        <div className="flex items-center justify-between py-4">
                             {/* Left: Like & Comment */}
                             <div className="flex items-center gap-6">
                                 {/* Like Button */}
-                                <button className="flex items-center gap-1 text-gray-600 hover:text-gray-900">
-                                    <FaHeart className="w-5 h-5" />
+                                <button className="flex items-center gap-1 text-gray-500 hover:text-gray-800 transition">
+                                    <FaRegHeart className="w-5 h-5" />
                                     <span>Like</span>
                                 </button>
 
                                 {/* Comment Button */}
-                                <button className="flex items-center gap-1 text-gray-600 hover:text-gray-900">
-                                    <FaRegComment className="w-5 h-6" />
+                                <button className="flex items-center gap-1 text-gray-500 hover:text-gray-800 transition">
+                                    <FaRegComment className="w-5 h-5" />
                                     <span>Comment</span>
                                 </button>
                             </div>
 
                             {/* Right: Save, Share, More Options */}
                             <div className="flex items-center gap-6">
-                                {/* Save Button */}
-                                <button className="text-gray-600 hover:text-gray-900"
+                              
+                                <button className="text-gray-500 hover:text-gray-800 transition"
                                     onClick={() => handleSaveBlog(id, userId)}
                                 >
-                                    <FaBookmark className="w-5 h-6" />
+                                    {isSaved ? (
+                                        <FaBookmark className="w-5 h-5 text-gray-900" />
+                                    ) : (
+                                        <FaRegBookmark className="w-5 h-5" />
+                                    )}
                                 </button>
 
-                                {/* Share Button */}
-                                <button className="text-gray-600 hover:text-gray-900"
+                              
+                                <button className="text-gray-500 hover:text-gray-800 transition"
                                     onClick={() => setIsShareOpen(true)}
                                 >
-                                    <FaShareAlt className="w-5 h-6" />
+                                    <FaRegShareSquare className="w-5 h-5" />
                                 </button>
 
-                                {/* Three-Dot Dropdown */}
+                          
                                 <div className="relative">
-                                    {/* Three-Dot Button */}
                                     <button
-                                        className="text-gray-600 hover:text-gray-900"
+                                        className="text-gray-500 hover:text-gray-800 transition"
                                         onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                                     >
-                                        <FaEllipsisH className="w-5 h-6" />
+                                        <HiOutlineDotsHorizontal className="w-5 h-5" />
                                     </button>
 
                                     {/* Dropdown Menu */}
@@ -227,7 +234,10 @@ const BlogDetails = () => {
 
                         {
                             <div className="bg-white shadow-md rounded-lg p-4">
-                                <h2 className="text-xl font-semibold mb-4">Comments</h2>
+                                <h2 className="text-xl font-semibold mb-4">Comments 
+                                <span className="text-xl text-gray-600"> {`( ${comments.length} )`}</span>
+                                </h2>
+                                
                                 {comments.length > 0 ? (
                                     comments.map((comment) => (
                                         <CommentCard key={comment._id} comment={comment} />

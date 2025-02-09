@@ -4,7 +4,7 @@ const ProfileNav = ({ activeTab, setActiveTab }) => {
     <div className="bg-[rgba(255,255,255,1)]">
     <div className="container mx-auto border-b border-gray-300 bg-white">
       <nav className="flex justify-start space-x-6 p-4">
-        {["Blogs", "SavedBlogs", "List", "About"].map((tab) => (
+        {["Your Blogs", "SavedBlogs", "About"].map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)} 

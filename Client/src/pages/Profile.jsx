@@ -32,7 +32,7 @@ const ProfilePage = () => {
 
   // Function to render blogs or saved blogs based on the active tab
   const renderContent = () => {
-    if (activeTab === "Blogs") {
+    if (activeTab === "Your Blogs") {
       return blogs.map((blog) => (
         <Link key={blog._id} to={`/blog/${blog._id}`}>
           <BlogCard {...blog} />
