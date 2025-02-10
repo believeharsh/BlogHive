@@ -10,6 +10,7 @@ import SharePage from "../components/ShareBlog";
 import { useBlogs } from "../context/BlogContext";
 import { useNavigate } from "react-router-dom";
 import formatDate from "../utils/FormateData";
+import BlogBody from "../components/BlogBody";
 
 axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
 axios.defaults.withCredentials = true;
@@ -24,6 +25,7 @@ const BlogDetails = () => {
     const [isUserIsAuthor, setisUserIsAuthor] = useState(false);
     const { id } = useParams();
     const [isSaved, setIsSaved] = useState(false);
+    const Nevigate = useNavigate() ; 
 
     useEffect(() => {
         // managing state to see that blog is already saved or not??
@@ -58,8 +60,9 @@ const BlogDetails = () => {
             if (!confirmDelete) return;
 
             await axios.delete(`/blog/${blogid}`);
+            Nevigate("/")
             alert("Blog deleted successfully!");
-            window.location.href = "/"; // Redirect after deletion
+            
         } catch (error) {
 
             console.error("Error deleting blog:", error.response?.data?.message || error.message);
@@ -227,7 +230,7 @@ const BlogDetails = () => {
 
                         {/* Blog Content */}
                         <div className="prose prose-lg text-gray-700 py-2">
-                            <p>{blog?.body}</p>
+                        <BlogBody content={blog?.body}/>                  
                         </div>
 
                         <AddNewComment blogId={id} addNewCommentToState={addNewCommentToState} />

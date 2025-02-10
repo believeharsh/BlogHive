@@ -10,7 +10,7 @@ import { useBlogs } from "../context/BlogContext";
 
 const ProfilePage = () => {
 
-  const [activeTab, setActiveTab] = useState("Blogs"); // Manage active tab state
+  const [activeTab, setActiveTab] = useState("Your Blogs"); // Manage active tab state
   const { userProfileData, loading, blogs } = useUserProfileData();
   const { savedBlogsByUser, userId } = useBlogs();
 
