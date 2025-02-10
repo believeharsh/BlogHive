@@ -3,7 +3,7 @@ import { MdComment } from "react-icons/md";
 import { BsBookmark, BsBookmarkFill } from "react-icons/bs";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 
-const BlogCard = ({ title, body, coverImage, createdAt }) => {
+const BlogCard = ({ authorName, title, body, coverImage, createdAt, profileImageURL }) => {
   const [saved, setSaved] = useState(false);
 
   const formatDate = (isoString) => {
@@ -16,46 +16,53 @@ const BlogCard = ({ title, body, coverImage, createdAt }) => {
   };
 
   return (
-    <div className="border-b border-gray-300 py-6">
-      <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
-
+    <div className="border-b border-gray-300 py-4">
+      <div className="flex flex-col md:flex-row items-start gap-4">
+        
         {/* Left Section: Text Content */}
         <div className="flex-1 space-y-2">
-          {/* Title */}
-          <h3 className="text-lg font-semibold text-gray-900">{title}</h3>
+          {/* Author Section (Now smaller & inline) */}
+          <div className="flex items-center gap-2">
+            <img
+              src={profileImageURL}
+              alt={authorName}
+              className="w-7 h-7 rounded-full border border-gray-300 object-cover"
+            />
+            <span className="text-xs text-gray-700 font-medium">{authorName} • {formatDate(createdAt)}</span>
+          </div>
 
-          {/* Body Content with Fixed Height */}
-          <p className="text-sm text-gray-600 min-h-[48px] line-clamp-2">
+          {/* Title */}
+          <h3 className="text-lg font-semibold text-gray-900 leading-tight">
+            {title}
+          </h3>
+
+          {/* Body (Shortened for compactness) */}
+          <p className="text-sm text-gray-600 line-clamp-1">
             {body}
           </p>
 
-          {/* Footer: Date, Comment, Save, and Options */}
-          <div className="flex items-center justify-between text-sm text-gray-500 mt-4">
-
-            {/* Left: Date and Comment */}
+          {/* Footer: Comment, Save & Options */}
+          <div className="flex items-center justify-between text-sm text-gray-500">
+            <MdComment className="text-lg cursor-pointer hover:text-gray-900 transition-all duration-300" />
+            {/* <BsLike/> */}
+            
             <div className="flex items-center gap-4">
-              <span>{formatDate(createdAt)}</span>
-              <MdComment className="cursor-pointer hover:text-gray-800" />
-            </div>
-
-            {/* Right: Save & Three Dots */}
-            <div className="flex items-center gap-4">
-              <button onClick={() => setSaved(!saved)} className="text-gray-600 hover:text-gray-900">
-                {saved ? <BsBookmarkFill className="text-blue-500" /> : <BsBookmark />}
+              <button onClick={() => setSaved(!saved)} className="hover:text-gray-900 transition-all duration-300">
+                {saved ? <BsBookmarkFill className="text-blue-500 text-lg" /> : <BsBookmark className="text-lg" />}
               </button>
-              <button className="text-gray-600 hover:text-gray-900">
-                <BiDotsVerticalRounded />
+              <button className="hover:text-gray-900 transition-all duration-300">
+                <BiDotsVerticalRounded className="text-xl" />
               </button>
             </div>
           </div>
         </div>
 
-        {/* Right Section: Blog Image */}
-        <div className="w-44 h-28 md:w-52 md:h-32 flex-shrink-0">
+        {/* Right Section: Blog Image (Slightly Smaller) */}
+        <div className="w-40 h-28 flex-shrink-0 overflow-hidden rounded-lg shadow-sm">
           <img
             src={coverImage}
             alt="Blog"
-            className="w-full h-full object-cover rounded-md"
+            className="w-full h-full object-cover hover:scale-105 transition-all duration-300"
           />
         </div>
 
@@ -65,4 +72,6 @@ const BlogCard = ({ title, body, coverImage, createdAt }) => {
 };
 
 export default BlogCard;
+
+
 

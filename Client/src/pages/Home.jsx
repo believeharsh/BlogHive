@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import ProjectCard from "../components/ProjectsCard";
+import BlogCard from "../components/BlogCard"
 import Spinner from "../components/Spinner"
 import { Link } from "react-router-dom";
 
@@ -45,8 +45,10 @@ const Home = () => {
             blogs.map((blog) => (
               <div key={blog._id} className="mb-6">
                 <Link to={`/blog/${blog._id}`}>
-                  <ProjectCard
-                    name={blog.fullName}
+                  <BlogCard
+                    authorName={blog.createdBy.fullName}
+                    profileImageURL={blog.createdBy.profileImageURL}
+                    username={blog.createdBy.username}
                     title={blog.title}
                     body={blog.body}
                     coverImage={blog.coverImage}

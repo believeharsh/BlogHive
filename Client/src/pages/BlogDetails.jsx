@@ -1,16 +1,16 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import Spinner from "../components/Spinner";
-import { FaRegHeart, FaRegComment, FaRegBookmark, FaRegShareSquare, FaBookmark } from "react-icons/fa";
-import { HiOutlineDotsHorizontal } from "react-icons/hi";
 import AddNewComment from "../components/AddNewComment";
 import CommentCard from "../components/CommentCard";
 import SharePage from "../components/ShareBlog";
 import { useBlogs } from "../context/BlogContext";
-import { useNavigate } from "react-router-dom";
 import formatDate from "../utils/FormateData";
 import BlogBody from "../components/BlogBody";
+import BlogInteractions from "../components/BlogInteractions";
+import BlogAuthorInfo from "../components/BlogAuthorInfo";
+
 
 axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
 axios.defaults.withCredentials = true;
@@ -20,15 +20,14 @@ const BlogDetails = () => {
     const { savedBlogsByUser, userId, setSavedBlogsByUser } = useBlogs();
     const [comments, setComments] = useState([]);
     const [isShareOpen, setIsShareOpen] = useState(false);
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [loading, setLoading] = useState(false);
     const [isUserIsAuthor, setisUserIsAuthor] = useState(false);
     const { id } = useParams();
     const [isSaved, setIsSaved] = useState(false);
-    const Nevigate = useNavigate() ; 
+    const navigate = useNavigate();
 
     useEffect(() => {
-        // managing state to see that blog is already saved or not??
+        // Checking if the blog is already saved or not?
         setIsSaved(savedBlogsByUser.some(blog => blog.savedBlogId._id === id));
     }, [savedBlogsByUser, id]);
 
@@ -36,22 +35,19 @@ const BlogDetails = () => {
         const fetchBlogById = async () => {
             setLoading(true);
             try {
-                const res = await axios.get(`/blog/${id}`)
+                const res = await axios.get(`/blog/${id}`);
                 if (!res) {
-                    console.log("blog not found By id");
+                    console.log("Blog not found by ID");
                 }
-                // console.log(res);
                 setBlogs(res.data.blog);
-                setComments(res.data.comments)
-
-                setisUserIsAuthor(res.data.isAuthor)
+                setComments(res.data.comments);
+                setisUserIsAuthor(res.data.isAuthor);
                 setLoading(false);
+            } catch (error) {
+                console.error(error || "Blog not found by ID");
             }
-            catch (error) {
-                console.error(error || "blog not found by Id");
-            }
-        }
-        fetchBlogById()
+        };
+        fetchBlogById();
     }, [id]);
 
     const handleDeleteBlog = async (blogid) => {
@@ -60,20 +56,17 @@ const BlogDetails = () => {
             if (!confirmDelete) return;
 
             await axios.delete(`/blog/${blogid}`);
-            Nevigate("/")
+            navigate("/");
             alert("Blog deleted successfully!");
-            
         } catch (error) {
-
             console.error("Error deleting blog:", error.response?.data?.message || error.message);
             alert("Failed to delete blog.");
         }
-    }
+    };
 
     const addNewCommentToState = (newComment) => {
         setComments((prevComments) => [newComment, ...prevComments]);
     };
-
 
     const handleSaveBlog = async (blogId, userId) => {
         try {
@@ -90,11 +83,7 @@ const BlogDetails = () => {
             const response = await axios.post(
                 `/blog/saveBlog/${blogId}`,
                 { userId },
-                {
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                }
+                { headers: { "Content-Type": "application/json" } }
             );
 
             if (!response.data || !response.data.data) {
@@ -104,165 +93,99 @@ const BlogDetails = () => {
 
             const newSavedBlog = response.data.data;
 
-            console.log(newSavedBlog);
-
-            // ✅ Update state only if the blog is not already saved
             setSavedBlogsByUser((prevBlogs) => [...prevBlogs, newSavedBlog]);
-
-            console.log(savedBlogsByUser);
         } catch (error) {
             console.error("Error occurred while saving the blog:", error.response?.data || error.message);
         }
     };
 
-
-
     return (
         <>
-            {
-                loading && (
-                    <Spinner />
-                )
-            }
-            {
-                !(loading) && (
-                    <div className="max-w-3xl mx-auto px-4 py-6">
-                        {/* Blog Title */}
-                        <h1 className="text-4xl font-extrabold text-gray-900 mb-4">{blog?.title}</h1>
+            {loading && <Spinner />}
+            {!loading && (
+                <div className="max-w-3xl mx-auto px-4 py-6">
+                    {/* Blog Title */}
+                    <h1 className="text-4xl font-extrabold text-gray-900 mb-4">{blog?.title}</h1>
 
-                        {/* User Profile Section */}
-                        <div className="flex items-center gap-4 mb-4">
-                            <img
-                                src={blog?.createdBy?.profileImageURL}
-                                alt={blog?.createdBy?.username}
-                                className="w-12 h-12 rounded-full object-cover"
-                            />
-                            <div>
-                                <p className="text-lg font-semibold text-gray-800">{blog?.createdBy?.fullName}</p>
-                                <p className="text-sm text-gray-500">{formatDate(blog?.createdAt)}</p>
-                            </div>
+                    {/* User Profile Section */}
+                    <div className="flex items-center gap-4 mb-4">
+                        <img
+                            src={blog?.createdBy?.profileImageURL}
+                            alt={blog?.createdBy?.username}
+                            className="w-12 h-12 rounded-full object-cover"
+                        />
+                        <div>
+                            <p className="text-lg font-semibold text-gray-800">{blog?.createdBy?.fullName}</p>
+                            <p className="text-sm text-gray-500">{formatDate(blog?.createdAt)}</p>
                         </div>
-
-                        {/* Interaction Buttons */}
-
-                        <div className="flex items-center justify-between py-4">
-                            {/* Left: Like & Comment */}
-                            <div className="flex items-center gap-6">
-                                {/* Like Button */}
-                                <button className="flex items-center gap-1 text-gray-500 hover:text-gray-800 transition">
-                                    <FaRegHeart className="w-5 h-5" />
-                                    <span>Like</span>
-                                </button>
-
-                                {/* Comment Button */}
-                                <button className="flex items-center gap-1 text-gray-500 hover:text-gray-800 transition">
-                                    <FaRegComment className="w-5 h-5" />
-                                    <span>Comment</span>
-                                </button>
-                            </div>
-
-                            {/* Right: Save, Share, More Options */}
-                            <div className="flex items-center gap-6">
-                              
-                                <button className="text-gray-500 hover:text-gray-800 transition"
-                                    onClick={() => handleSaveBlog(id, userId)}
-                                >
-                                    {isSaved ? (
-                                        <FaBookmark className="w-5 h-5 text-gray-900" />
-                                    ) : (
-                                        <FaRegBookmark className="w-5 h-5" />
-                                    )}
-                                </button>
-
-                              
-                                <button className="text-gray-500 hover:text-gray-800 transition"
-                                    onClick={() => setIsShareOpen(true)}
-                                >
-                                    <FaRegShareSquare className="w-5 h-5" />
-                                </button>
-
-                          
-                                <div className="relative">
-                                    <button
-                                        className="text-gray-500 hover:text-gray-800 transition"
-                                        onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                                    >
-                                        <HiOutlineDotsHorizontal className="w-5 h-5" />
-                                    </button>
-
-                                    {/* Dropdown Menu */}
-                                    {isDropdownOpen && (
-                                        <div className="absolute right-0 mt-2 w-40 bg-white border border-gray-200 shadow-lg rounded-md overflow-hidden">
-                                            {isUserIsAuthor && (
-                                                <button
-                                                    className="block w-full px-4 py-2 text-left text-red-600 hover:bg-red-100"
-                                                    onClick={() => handleDeleteBlog(id)}
-                                                >
-                                                    Delete
-                                                </button>
-                                            )}
-                                            <button
-                                                className="block w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100"
-                                                onClick={() => console.log("Report Story")}
-                                            >
-                                                Report Story
-                                            </button>
-                                            <button
-                                                className="block w-full px-4 py-2 text-left text-gray-700 hover:bg-gray-100"
-                                                onClick={() => console.log("Follow Author")}
-                                            >
-                                                Follow Author
-                                            </button>
-                                        </div>
-                                    )}
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Cover Image */}
-                        <div className="mb-6 mt-4">
-                            <img
-                                src={blog?.coverImage}
-                                alt="Blog cover"
-                                className="w-full h-80 object-cover rounded-md"
-                            />
-                        </div>
-
-                        {/* Blog Content */}
-                        <div className="prose prose-lg text-gray-700 py-2">
-                        <BlogBody content={blog?.body}/>                  
-                        </div>
-
-                        <AddNewComment blogId={id} addNewCommentToState={addNewCommentToState} />
-
-                        {
-                            <div className="bg-white shadow-md rounded-lg p-4">
-                                <h2 className="text-xl font-semibold mb-4">Comments 
-                                <span className="text-xl text-gray-600"> {`( ${comments.length} )`}</span>
-                                </h2>
-                                
-                                {comments.length > 0 ? (
-                                    comments.map((comment) => (
-                                        <CommentCard key={comment._id} comment={comment} />
-                                    ))
-                                ) : (
-                                    <p className="text-gray-500">No comments yet.</p>
-                                )}
-                            </div>
-                        }
-
-                        {isShareOpen && <SharePage blogUrl={`https://bloghive-lac.vercel.app/blog/${id}`} onClose={() => setIsShareOpen(false)} />}
-
-
-
                     </div>
-                )
-            }
+
+                    {/* Interaction Buttons ✅ Using the new component */}
+                    <BlogInteractions
+                        blogId={id}
+                        userId={userId}
+                        isSaved={isSaved}
+                        setIsSaved={setIsSaved}
+                        setIsShareOpen={setIsShareOpen}
+                        isUserIsAuthor={isUserIsAuthor}
+                        handleSaveBlog={handleSaveBlog}
+                        handleDeleteBlog={handleDeleteBlog}
+                    />
+
+                    {/* Cover Image */}
+                    <div className="mb-6 mt-4">
+                        <img
+                            src={blog?.coverImage}
+                            alt="Blog cover"
+                            className="w-full h-80 object-cover rounded-md"
+                        />
+                    </div>
+
+                    {/* Blog Content */}
+                    <div className="prose prose-lg text-gray-700 py-2">
+                        <BlogBody content={blog?.body} />
+                    </div>
+
+                    {/* Comment Section */}
+                    <AddNewComment blogId={id} addNewCommentToState={addNewCommentToState} />
+                    <div className="bg-white shadow-md rounded-lg p-4">
+                        <h2 className="text-xl font-semibold mb-4">
+                            Comments <span className="text-xl text-gray-600">({comments.length})</span>
+                        </h2>
+                        {comments.length > 0 ? (
+                            comments.map((comment) => <CommentCard key={comment._id} comment={comment} />)
+                        ) : (
+                            <p className="text-gray-500">No comments yet.</p>
+                        )}
+                    </div>
+
+                    <BlogInteractions
+                        blogId={id}
+                        userId={userId}
+                        isSaved={isSaved}
+                        setIsSaved={setIsSaved}
+                        setIsShareOpen={setIsShareOpen}
+                        isUserIsAuthor={isUserIsAuthor}
+                        handleSaveBlog={handleSaveBlog}
+                        handleDeleteBlog={handleDeleteBlog}
+                    />
+
+                    <div className="py-2">
+                        <BlogAuthorInfo
+                            profileImageURL={blog?.createdBy?.profileImageURL}
+                            fullName={blog?.createdBy?.fullName}
+                            about={"Aspiring Software Engineer"}
+                            createdAt={blog?.createdAt}
+                        />
+                    </div>
 
 
+                    {isShareOpen && <SharePage blogUrl={`https://bloghive-lac.vercel.app/blog/${id}`} onClose={() => setIsShareOpen(false)} />}
+                </div>
+            )}
         </>
-
     );
 };
 
 export default BlogDetails;
+
