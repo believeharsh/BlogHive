@@ -73,7 +73,7 @@ const getAllBlogsByUserId = asyncHandler(async (req, res) => {
     const userId = req.user._id.toString();
 
     // Finding all blogs created by the current user
-    const blogs = await Blog.find({ createdBy: userId });
+    const blogs = await Blog.find({ createdBy: userId }).populate("createdBy", "fullName profileImageURL username")
 
     return res.status(200).json(
         new ApiResponse(
