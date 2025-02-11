@@ -166,8 +166,11 @@ const getAllSavedBlogsByUserId = asyncHandler(async (req, res) => {
     }
 
     const allSavedBlogs = await SavedBlogs.find({ savedBy: userId })
-    .populate('savedBlogId', 'title body coverImage createdBy createdAt')
-    console.log(allSavedBlogs) ;
+    .populate({
+        path: "savedBlogId",
+        select: "title body coverImage createdBy createdAt",
+        populate: { path: "createdBy", select: "name email profileImageURL fullName username" },
+      });
 
     if(!allSavedBlogs){
         throw new ApiError(409, "no blogs saved as of now ") 

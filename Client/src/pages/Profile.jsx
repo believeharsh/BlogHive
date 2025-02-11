@@ -10,12 +10,9 @@ import { useBlogs } from "../context/BlogContext";
 
 const ProfilePage = () => {
 
-  const [activeTab, setActiveTab] = useState("Your Blogs"); // Manage active tab state
+  const [activeTab, setActiveTab] = useState("Your Blogs");
   const { userProfileData, loading, blogs } = useUserProfileData();
   const { savedBlogsByUser, userId } = useBlogs();
-
-
-  console.log(savedBlogsByUser)
 
 
   if (!userProfileData) {
@@ -35,7 +32,15 @@ const ProfilePage = () => {
     if (activeTab === "Your Blogs") {
       return blogs.map((blog) => (
         <Link key={blog._id} to={`/blog/${blog._id}`}>
-          <BlogCard {...blog} />
+          <BlogCard
+            authorName={blog.createdBy?.fullName || "Unknown Author"}
+            profileImageURL={blog.createdBy?.profileImageURL || "/images/boy_avatar.jpeg"}
+            username={blog.createdBy?.username || "anonymous"}
+            title={blog.title || "Untitled Blog"}
+            body={blog.body || "No content available"}
+            coverImage={blog.coverImage || "/images/LibraryCover_Image.jpg"}
+            createdAt={blog.createdAt || new Date().toISOString()}
+          />
         </Link>
       ));
     }
@@ -43,12 +48,22 @@ const ProfilePage = () => {
     if (activeTab === "SavedBlogs") {
       return savedBlogsByUser.map((savedBlog) => (
         <Link key={savedBlog._id} to={`/blog/${savedBlog.savedBlogId._id}`}>
-          <BlogCard {...savedBlog.savedBlogId} />
+          <BlogCard
+            authorName={savedBlog.savedBlogId?.createdBy?.fullName || "Unknown Author"}
+            profileImageURL={savedBlog.savedBlogId?.createdBy?.profileImageURL || "/images/boy_avatar.jpeg"}
+            username={savedBlog.savedBlogId?.createdBy?.username || "anonymous"}
+            title={savedBlog.savedBlogId?.title || "Untitled Blog"}
+            body={savedBlog.savedBlogId?.body || "No content available"}
+            coverImage={savedBlog.savedBlogId?.coverImage || "/images/LibraryCover_Image.jpg"}
+            createdAt={savedBlog.savedBlogId?.createdAt || new Date().toISOString()}
+          />
         </Link>
       ));
     }
 
-    return <div>No content for this tab</div>;
+    return <div className="border-b border-gray-300 py-4">
+      No content for this tab
+    </div>;
   };
 
   return (
