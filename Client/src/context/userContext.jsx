@@ -63,7 +63,7 @@ export const UserProfileProvider = ({ children }) => {
 
 
     return (
-        <UserProfileContext.Provider value={{ loading, blogs, userProfileData }}>
+        <UserProfileContext.Provider value={{ loading, blogs, userProfileData, setBlogs, setUserProfileData }}>
             {children}
         </UserProfileContext.Provider>
     );

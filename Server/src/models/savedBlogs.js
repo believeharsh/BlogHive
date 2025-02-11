@@ -7,11 +7,13 @@ const savedBlogSchema = new Schema(
       ref: "user", 
       required: true,
     },
+
     savedBlogId: {
       type: Schema.Types.ObjectId,
       ref: "blog",
       required: true,
     },
+    
   },
   { timestamps: true }
 );

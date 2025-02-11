@@ -133,7 +133,7 @@ const saveBlogInTheUserProfile = asyncHandler(async (req, res) => {
         savedBy: userId,
         savedBlogId: blogId
     })
-    
+
     newSavedBlog = await newSavedBlog.populate(
         "savedBlogId",
         "title body coverImage createdBy createdAt"
@@ -154,10 +154,10 @@ const saveBlogInTheUserProfile = asyncHandler(async (req, res) => {
 
 const getAllSavedBlogsByUserId = asyncHandler(async (req, res) => {
 
-    const {userId} = req.params
-    userId.toString() ; 
+    const { userId } = req.params
+    userId.toString();
 
-    if(!userId){
+    if (!userId) {
         throw new ApiError(400, "userId is required")
     }
 
@@ -166,21 +166,21 @@ const getAllSavedBlogsByUserId = asyncHandler(async (req, res) => {
     }
 
     const allSavedBlogs = await SavedBlogs.find({ savedBy: userId })
-    .populate({
-        path: "savedBlogId",
-        select: "title body coverImage createdBy createdAt",
-        populate: { path: "createdBy", select: "name email profileImageURL fullName username" },
-      });
+        .populate({
+            path: "savedBlogId",
+            select: "title body coverImage createdBy createdAt",
+            populate: { path: "createdBy", select: "name email profileImageURL fullName username" },
+        });
 
-    if(!allSavedBlogs){
-        throw new ApiError(409, "no blogs saved as of now ") 
+    if (!allSavedBlogs) {
+        throw new ApiError(409, "no blogs saved as of now ")
     }
 
     return res
         .status(200)
         .json(
             new ApiResponse(
-                200, 
+                200,
                 allSavedBlogs,
                 "all Saved blogs fetched succussfully"
             )

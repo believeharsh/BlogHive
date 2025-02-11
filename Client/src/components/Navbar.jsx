@@ -1,34 +1,43 @@
 import React, { useState } from "react";
-import { FiBell, FiChevronDown, FiSearch, FiUser, FiBarChart2, FiBook, FiLogOut } from "react-icons/fi";
+import { FiBell, FiChevronDown, FiSearch, FiUser, FiBook, FiLogOut } from "react-icons/fi";
 import { HiPencilAlt } from "react-icons/hi";
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useNavigate } from 'react-router-dom';
 import { useAuth } from "../context/AuthContext";
-
+import { useUserProfileData } from "../context/userContext";
+import Spinner from "./Spinner";
 
 const Navbar = () => {
-  const nevigate = useNavigate();
+  const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const {logout} = useAuth() ; 
-
+  const [loading, setLoading] = useState(false); // Loader state
+  const { logout } = useAuth();
+  const { setBlogs, setUserProfileData } = useUserProfileData();
   const blogHiveUser = localStorage.getItem("BlogHiveUser");
-  axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL
-  axios.defaults.withCredentials = true;
-  
-  const logoutUser = async () => {
-    await axios.get("/user/logout")
-      .then((res) => {
-        console.log("server response", res);
-        logout() ; 
-        localStorage.removeItem("BlogHiveUser");
 
-        nevigate("/login");
-      })
-  }
+  axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
+  axios.defaults.withCredentials = true;
+
+  const logoutUser = async () => {
+    setLoading(true);
+    try {
+      await axios.get("/user/logout");
+      logout();
+      setBlogs([]);
+      setUserProfileData([]);
+      localStorage.removeItem("BlogHiveUser");
+      setTimeout(() => {
+        setLoading(false);
+        navigate("/login");
+      }, 5000);
+    } catch (error) {
+      console.error("Logout failed:", error.response?.data || error.message);
+      setLoading(false);
+    }
+  };
 
   return (
-    <nav className="bg-[rgba(255,255,255,1)] text-black shadow-md p-4">
+    <nav className="bg-white text-black shadow-md p-4 relative">
       <div className="container mx-auto flex items-center justify-between">
         {/* Left Section */}
         <div className="flex items-center space-x-4">
@@ -53,7 +62,7 @@ const Navbar = () => {
               <HiPencilAlt className="mr-2" /> Write
             </button>
           </Link>
-          <Link to="notifications">
+          <Link to="/notifications">
             <FiBell className="text-2xl cursor-pointer" />
           </Link>
 
@@ -63,7 +72,7 @@ const Navbar = () => {
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
             >
               <img
-                src={"/images/default_Image.jpeg"}
+                src="/images/default_Image.jpeg"
                 alt="User Profile"
                 className="w-10 h-10 rounded-full object-cover border border-gray-300"
               />
@@ -84,22 +93,27 @@ const Navbar = () => {
                     </li>
                   </Link>
 
-
-                  <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center space-x-2"
+                  <li
+                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center space-x-2"
                     onClick={logoutUser}
                   >
                     <FiLogOut /> <span>Logout</span>
                   </li>
-
                 </ul>
               </div>
             )}
           </div>
         </div>
       </div>
+
+      {/* Loader Overlay */}
+      {loading && (
+        <Spinner/>
+      )}
     </nav>
   );
 };
 
 export default Navbar;
+
 

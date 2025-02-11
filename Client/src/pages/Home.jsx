@@ -3,31 +3,14 @@ import axios from "axios";
 import BlogCard from "../components/BlogCard"
 import Spinner from "../components/Spinner"
 import { Link } from "react-router-dom";
+import { useUserProfileData } from "../context/userContext";
+
 
 axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL
 
 const Home = () => {
   const [loading, setLoading] = useState(false);
-  const [blogs, setBlogs] = useState([]);
-
-  useEffect(() => {
-    const fetchBlogs = async () => {
-      setLoading(true)
-      try {
-
-        const res = await axios.get("/blog");
-        console.log(res);
-        setBlogs(res.data.data.blogs);
-        setLoading(false);
-
-      } catch (error) {
-        console.error("Error fetching blogs:", error);
-      }
-    };
-
-    fetchBlogs();
-  }, []);
-
+  const {blogs} = useUserProfileData() ; 
 
   return (
     <>

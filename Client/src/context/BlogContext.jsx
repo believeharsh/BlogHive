@@ -36,6 +36,8 @@ export const BlogsProvider = ({ children }) => {
       }
     }, [userId]);
 
+    console.log(savedBlogsByUser)
+
     return (
         <blogContext.Provider value={{ loading, savedBlogsByUser, userId, setSavedBlogsByUser }}>
             {children}

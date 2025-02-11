@@ -11,14 +11,24 @@ const userSchema = new Schema({
         trim: true,
         index: true
     },
+
     fullName: {
         type: String,
         required: true,
     },
+
+    about: {
+        type : String,
+    },
+
     email: {
         type: String,
+        unique: true,
         required: true,
+        trim: true,
+        lowercase: true,
     },
+
     salt: {
         type: String,
 
@@ -28,20 +38,23 @@ const userSchema = new Schema({
         type: String,
         required: true,
     },
+
     role: {
         type: String,
-        enum: ['USER', 'ADAMIN'],
+        enum: ['USER', 'ADMIN'],
         default: 'USER',
     },
+
     refreshToken: {
         type: String
     },
+
     profileImageURL: {
         type: String,
-        default: "/public/Images/defaultImage.png"
-
-
+        default: "/public/Images/defaultImage.png",
+        trim: true,
     }
+
 }, { timestamps: true });
 
 userSchema.pre("save", function (next) {
@@ -80,7 +93,7 @@ userSchema.static(
         user.refreshToken = refreshToken
         await User.updateOne({ _id: user._id }, { refreshToken });
 
-        return { accessToken, refreshToken}
+        return { accessToken, refreshToken }
     }
 );
 
