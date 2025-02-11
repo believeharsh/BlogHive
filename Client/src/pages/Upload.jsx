@@ -3,6 +3,8 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { FiUploadCloud } from "react-icons/fi";
 import { ImSpinner8 } from "react-icons/im";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css"; // import Quill styles
 
 axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
 axios.defaults.withCredentials = true;
@@ -25,7 +27,7 @@ const Upload = () => {
 
     const formData = new FormData();
     formData.append("title", title);
-    formData.append("body", body);
+    formData.append("body", body); // body now contains HTML from Quill
     formData.append("coverImage", coverImage);
 
     try {
@@ -157,19 +159,17 @@ const Upload = () => {
             </div>
           </div>
 
-          {/* Blog Content */}
+          {/* Blog Content - React Quill Editor */}
           <div>
             <label htmlFor="body" className="block text-lg font-semibold text-gray-700 mb-2">
               Your Story
             </label>
-            <textarea
-              id="body"
-              rows="8"
-              className="w-full px-4 py-3 text-lg text-gray-900 bg-white rounded-md shadow-md border border-gray-300 outline-none transition focus:ring-2 focus:ring-green-500"
+            <ReactQuill
               value={body}
-              onChange={(e) => setBody(e.target.value)}
+              onChange={setBody}
+              className="w-full h-64 text-lg bg-white rounded-md shadow-md border border-gray-300"
               required
-            ></textarea>
+            />
           </div>
         </form>
       )}
@@ -188,8 +188,3 @@ const Upload = () => {
 };
 
 export default Upload;
-
-
-
-
-
