@@ -46,13 +46,13 @@ const Home = () => {
               <div key={blog._id} className="mb-6">
                 <Link to={`/blog/${blog._id}`}>
                   <BlogCard
-                    authorName={blog.createdBy.fullName}
-                    profileImageURL={blog.createdBy.profileImageURL}
-                    username={blog.createdBy.username}
-                    title={blog.title}
-                    body={blog.body}
-                    coverImage={blog.coverImage}
-                    createdAt={blog.createdAt}
+                    authorName={blog.createdBy?.fullName || "Unknown Author"}
+                    profileImageURL={blog.createdBy?.profileImageURL || "/images/boy_avatar.jpeg"}
+                    username={blog.createdBy?.username || "anonymous"}
+                    title={blog.title || "Untitled Blog"}
+                    body={blog.body || "No content available"}
+                    coverImage={blog.coverImage || "/images/LibraryCover_Image.jpg"}
+                    createdAt={blog.createdAt || new Date().toISOString()}
                   />
                 </Link>
 
