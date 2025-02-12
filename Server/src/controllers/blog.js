@@ -34,28 +34,30 @@ const getBlogById = asyncHandler(async (req, res) => {
 
 const handleAddNewBlog = asyncHandler(async (req, res) => {
     const { title, body } = req.body;
-    // console.log(req.file);
 
     if (!(title && body)) {
-        return new ApiError(
+        throw new ApiError(
             400,
             "title and body are required fields"
         )
     }
-    let coverImageURL;
+    let coverImageURL
+
     if (req.file) {
-        const coverImageLocalPath = path.resolve(req.file.path);
-        const coverImage = await uploadOnCloudinary(coverImageLocalPath);
+        const coverImageLocalPath = path.resolve(req.file.path)
+        const coverImage = await uploadOnCloudinary(coverImageLocalPath)
         console.log(coverImage)
-        if (coverImage) coverImageURL = coverImage.secure_url;
+        if (coverImage) coverImageURL = coverImage.secure_url
     }
 
-    const newblog = await Blog.create({
+    let newblog = await Blog.create({
         body: body,
         title: title,
         createdBy: req.user._id,
         coverImage: coverImageURL
-    });
+    })
+
+    newblog = await newblog.populate("createdBy", "profileImageURL fullName email username")
 
     return res
         .status(200)
@@ -63,7 +65,7 @@ const handleAddNewBlog = asyncHandler(async (req, res) => {
             new ApiResponse(
                 200,
                 {
-                    blogId: newblog._id,
+                    newBlog: newblog,
                 },
                 "new blog posted succussfully"
             ))
@@ -134,10 +136,11 @@ const saveBlogInTheUserProfile = asyncHandler(async (req, res) => {
         savedBlogId: blogId
     })
 
-    newSavedBlog = await newSavedBlog.populate(
-        "savedBlogId",
-        "title body coverImage createdBy createdAt"
-    );
+    newSavedBlog = await newSavedBlog.populate({
+        path: "savedBlogId",
+        select: "title body coverImage createdBy createdAt",
+        populate: { path: "createdBy", select: "name email profileImageURL fullName username" },
+    });
 
     return res
         .status(200)

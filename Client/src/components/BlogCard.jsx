@@ -44,7 +44,6 @@ const BlogCard = ({ authorName, title, body, coverImage, createdAt, profileImage
           {/* Footer: Comment, Save & Options */}
           <div className="flex items-center justify-between text-sm text-gray-500">
             <MdComment className="text-lg cursor-pointer hover:text-gray-900 transition-all duration-300" />
-            {/* <BsLike/> */}
             
             <div className="flex items-center gap-4">
               <button onClick={() => setSaved(!saved)} className="hover:text-gray-900 transition-all duration-300">

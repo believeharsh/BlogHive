@@ -4,7 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { FiUploadCloud } from "react-icons/fi";
 import { ImSpinner8 } from "react-icons/im";
 import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css"; // import Quill styles
+import "react-quill/dist/quill.snow.css"
+import { useUserProfileData } from "../context/userContext";
 
 axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
 axios.defaults.withCredentials = true;
@@ -14,8 +15,8 @@ const Upload = () => {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [coverImage, setCoverImage] = useState(null);
-  const [showGuide, setShowGuide] = useState(false);
   const [isPublishing, setIsPublishing] = useState(false);
+  const { setBlogs } = useUserProfileData();
 
   const handleFileChange = (e) => {
     setCoverImage(e.target.files[0]);
@@ -27,15 +28,23 @@ const Upload = () => {
 
     const formData = new FormData();
     formData.append("title", title);
-    formData.append("body", body); // body now contains HTML from Quill
+    formData.append("body", body); 
     formData.append("coverImage", coverImage);
 
     try {
-      await axios.post("/blog", formData);
+      const res = await axios.post("/blog", formData);
       navigate("/");
       setTitle("");
       setBody("");
       setCoverImage(null);
+
+      if (!res) {
+        console.log("any error has occured while uploading new blog")
+      }
+
+      const newToBeSavedBlog = res.data.data.newBlog
+      setBlogs((prevBlogs) => [...prevBlogs, newToBeSavedBlog]);
+
     } catch (error) {
       console.error("Error uploading blog:", error);
       alert("Failed to upload blog. Please try again.");
@@ -46,9 +55,8 @@ const Upload = () => {
 
   return (
     <div
-      className={`relative min-h-screen flex flex-col items-center bg-gray-50 py-12 px-4 transition ${
-        isPublishing ? "pointer-events-none" : ""
-      }`}
+      className={`relative min-h-screen flex flex-col items-center bg-gray-50 py-12 px-4 transition ${isPublishing ? "pointer-events-none" : ""
+        }`}
     >
       {/* Header */}
       <div className="w-full max-w-3xl flex justify-between items-center mb-6">
@@ -60,65 +68,15 @@ const Upload = () => {
         <button
           onClick={handleSubmit}
           disabled={isPublishing}
-          className={`px-6 py-2 text-white font-medium rounded-full bg-green-600 hover:bg-green-700 transition duration-300 flex items-center gap-2 ${
-            isPublishing ? "opacity-50 cursor-not-allowed" : ""
-          }`}
+          className={`px-6 py-2 text-white font-medium rounded-full bg-green-600 hover:bg-green-700 transition duration-300 flex items-center gap-2 ${isPublishing ? "opacity-50 cursor-not-allowed" : ""
+            }`}
         >
           {isPublishing ? <ImSpinner8 className="animate-spin text-xl" /> : <FiUploadCloud />}
           Publish
         </button>
       </div>
 
-      {/* Show Markdown Guide Button */}
-      <button
-        onClick={() => setShowGuide(!showGuide)}
-        className="mb-4 px-6 py-3 text-gray-700 bg-gradient-to-r from-green-400 to-blue-500 rounded-lg hover:bg-gradient-to-l transition-all"
-      >
-        {showGuide ? "Hide Markdown Guide" : "📖 Show Markdown Guide"}
-      </button>
-
-      {/* Markdown Guide (Toggle) */}
-      {showGuide && (
-        <div className="bg-white p-6 mb-4 rounded-lg shadow-lg text-sm max-w-2xl mx-auto">
-          <p className="font-bold text-xl mb-4 text-gray-800">📌 Markdown Guide: How to Write a Blog</p>
-          <p className="mb-4 text-gray-600">
-            Markdown allows you to easily format your blog content. Here's how to write your blog with basic Markdown syntax:
-          </p>
-          <ul className="list-disc pl-6 space-y-3 text-gray-700">
-            <li>
-              <strong># Heading 1</strong>: Used for main titles. Example:
-              <pre className="bg-gray-100 p-2 mt-1 text-sm"># My Blog Title</pre>
-            </li>
-            <li>
-              <strong>## Heading 2</strong>: Subheadings for sections. Example:
-              <pre className="bg-gray-100 p-2 mt-1 text-sm">## Introduction</pre>
-            </li>
-            <li>
-              <strong>- List item</strong>: For bullet points. Example:
-              <pre className="bg-gray-100 p-2 mt-1 text-sm">- First point</pre>
-            </li>
-            <li>
-              <strong>**Bold Text**</strong>: To emphasize text. Example:
-              <pre className="bg-gray-100 p-2 mt-1 text-sm">**Important Note**</pre>
-            </li>
-            <li>
-              <strong>*Italic Text*</strong>: To style text in italics. Example:
-              <pre className="bg-gray-100 p-2 mt-1 text-sm">*This is italic*</pre>
-            </li>
-            <li>
-              <strong>[Link](https://example.com)</strong>: For adding hyperlinks. Example:
-              <pre className="bg-gray-100 p-2 mt-1 text-sm">[Click Here](https://example.com)</pre>
-            </li>
-            <li>
-              <strong>```js (Code Block)```</strong>: To display code blocks. Example:
-              <pre className="bg-gray-100 p-2 mt-1 text-sm">```js\nconsole.log('Hello, World!')\n```</pre>
-            </li>
-          </ul>
-        </div>
-      )}
-
-      {/* Form Fields (Visible only when the Markdown Guide is hidden) */}
-      {!showGuide && (
+      {!isPublishing && (
         <form className="w-full max-w-3xl space-y-6">
           {/* Blog Title */}
           <div>
