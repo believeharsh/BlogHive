@@ -3,6 +3,7 @@ import axios from "axios";
 import { FiUser, FiLock } from "react-icons/fi";
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext';
+import { useUserProfileData } from '../context/userContext';
 
 
 axios.defaults.withCredentials = true;
@@ -13,6 +14,7 @@ const LoginPage = () => {
     const [ email, setEmail ] = useState('');
     const [ password, setPassword ] = useState('');
     const { login } = useAuth() ; 
+    const {refreshUserData} = useUserProfileData() ; 
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -22,6 +24,7 @@ const LoginPage = () => {
             console.log("Full server response:", res);
             console.log("Response data:", res.data);
             login()
+            await refreshUserData()
             nevigate("/")
             setEmail("")
             setPassword("")
