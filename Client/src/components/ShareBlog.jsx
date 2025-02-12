@@ -27,8 +27,8 @@ const SharePage = ({ blogUrl, onClose }) => {
 
             <div className="relative bg-white shadow-xl rounded-2xl p-6 w-[400px] border border-gray-200">
 
-                <button 
-                    className="absolute top-3 right-3 text-gray-500 hover:text-gray-700 transition" 
+                <button
+                    className="absolute top-3 right-3 text-gray-500 hover:text-gray-700 transition"
                     onClick={onClose}
                 >
                     <FiX className="w-6 h-6" />
@@ -40,14 +40,14 @@ const SharePage = ({ blogUrl, onClose }) => {
 
                 {/* Copy Link Section */}
                 <div className="flex items-center border border-gray-300 bg-gray-100 p-3 rounded-lg mb-4">
-                    <input 
-                        type="text" 
-                        value={blogUrl} 
-                        readOnly 
+                    <input
+                        type="text"
+                        value={blogUrl}
+                        readOnly
                         className="flex-grow bg-transparent text-gray-800 font-medium outline-none px-2"
                     />
-                    <button 
-                        onClick={handleCopy} 
+                    <button
+                        onClick={handleCopy}
                         className="ml-2 p-2 bg-gray-200 rounded-lg hover:bg-gray-300 transition"
                     >
                         <FiCopy className="text-gray-600 w-5 h-5" />
@@ -58,11 +58,11 @@ const SharePage = ({ blogUrl, onClose }) => {
                 {/* Social Media Sharing */}
                 <div className="grid grid-cols-2 gap-3">
                     {shareOptions.map(({ name, icon, url }) => (
-                        <a 
-                            key={name} 
-                            href={url} 
-                            target="_blank" 
-                            rel="noopener noreferrer" 
+                        <a
+                            key={name}
+                            href={url}
+                            target="_blank"
+                            rel="noopener noreferrer"
                             className="flex items-center gap-3 px-4 py-2 border border-gray-200 rounded-xl bg-gray-50 hover:bg-gray-100 transition"
                         >
                             <span className="text-xl">{icon}</span>

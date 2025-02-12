@@ -52,12 +52,8 @@ const BlogDetails = () => {
 
     const handleDeleteBlog = async (blogid) => {
         try {
-            const confirmDelete = window.confirm("Are you sure you want to delete this blog?");
-            if (!confirmDelete) return;
-
             await axios.delete(`/blog/${blogid}`);
             navigate("/");
-            alert("Blog deleted successfully!");
         } catch (error) {
             console.error("Error deleting blog:", error.response?.data?.message || error.message);
             alert("Failed to delete blog.");

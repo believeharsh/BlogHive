@@ -1,9 +1,17 @@
 import React, { useState } from "react";
 import { FaRegHeart, FaRegComment, FaRegBookmark, FaRegShareSquare, FaBookmark } from "react-icons/fa";
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
+import ConfirmDelete from "./ConfirmDelete"; // Import the ConfirmDelete component
 
 const BlogInteractions = ({ blogId, userId, isSaved, setIsSaved, setIsShareOpen, isUserIsAuthor, handleSaveBlog, handleDeleteBlog }) => {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] = useState(false); 
+
+    // Handle the delete confirmation action
+    const handleDeleteConfirmation = () => {
+        handleDeleteBlog(blogId);
+        setIsDeleteConfirmationOpen(false);
+    };
 
     return (
         <div className="flex items-center justify-between py-4">
@@ -31,11 +39,24 @@ const BlogInteractions = ({ blogId, userId, isSaved, setIsSaved, setIsShareOpen,
                     <HiOutlineDotsHorizontal className="w-5 h-5" />
                 </button>
                 {isDropdownOpen && isUserIsAuthor && (
-                    <button className="text-red-600" onClick={() => handleDeleteBlog(blogId)}>Delete</button>
+                    <button className="text-red-600" onClick={() => setIsDeleteConfirmationOpen(true)}>
+                        Delete
+                    </button>
                 )}
             </div>
+
+            {/* Conditional Rendering of the ConfirmDelete Component */}
+            {isDeleteConfirmationOpen && (
+                <ConfirmDelete
+                    message="Are you sure you want to delete this blog?"
+                    onCancel={() => setIsDeleteConfirmationOpen(false)}
+                    onConfirm={handleDeleteConfirmation}
+                />
+            )}
         </div>
     );
 };
 
 export default BlogInteractions;
+
+
