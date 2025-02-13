@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import ProfileHeader from "../components/ProfileHeader";
 import ProfileNav from "../components/ProfileNav";
 import BlogCard from "../components/BlogCard";
@@ -11,7 +11,7 @@ const ProfilePage = () => {
   const [activeTab, setActiveTab] = useState("Your Blogs");
   const { userProfileData, loading, blogs = [] } = useUserProfileData();
   const { savedBlogsByUser = [], userId } = useBlogs();
-  console.log(savedBlogsByUser)
+
 
   if (!userProfileData) {
     return (

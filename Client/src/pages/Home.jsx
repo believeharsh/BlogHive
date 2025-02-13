@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import BlogCard from "../components/BlogCard";
 import Spinner from "../components/Spinner";
 import { Link } from "react-router-dom";
-
-axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
+import axiosInstance from "../utils/axiosInstance";
 
 const Home = () => {
   const [loading, setLoading] = useState(false);
@@ -17,7 +15,7 @@ const Home = () => {
     const fetchBlogs = async () => {
       setLoading(true);
       try {
-        const { data } = await axios.post(`/blog/getAllBlogs?page=${page}&limit=${limit}`);
+        const { data } = await axiosInstance.post(`/blog/getAllBlogs?page=${page}&limit=${limit}`);
         
         // Prevent duplicate blogs
         const newBlogs = data.blogs.filter(

@@ -1,10 +1,8 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { FaPaperPlane } from "react-icons/fa";
 import { FiLoader } from "react-icons/fi"; 
+import axiosInstance from "../utils/axiosInstance";
 
-axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
-axios.defaults.withCredentials = true;
 
 const AddNewComment = ({ blogId, addNewCommentToState }) => {
     const [loading, setLoading] = useState(false);
@@ -15,7 +13,7 @@ const AddNewComment = ({ blogId, addNewCommentToState }) => {
 
         setLoading(true);
         try {
-            const response = await axios.post(`/comment/${blogId}`, {
+            const response = await axiosInstance.post(`/comment/${blogId}`, {
                 content: comment,
             });
 
@@ -30,7 +28,7 @@ const AddNewComment = ({ blogId, addNewCommentToState }) => {
 
     return (
         <div className="flex items-center gap-3 bg-white border border-gray-300 shadow-sm rounded-full p-2 px-4 transition focus-within:shadow-md m-1">
-            {/* Input Field */}
+
             <input
                 type="text"
                 className="flex-1 bg-transparent text-gray-800 placeholder-gray-400 focus:outline-none"
@@ -40,7 +38,7 @@ const AddNewComment = ({ blogId, addNewCommentToState }) => {
                 disabled={loading}
             />
 
-            {/* Post Button */}
+
             <button
                 onClick={postNewComment}
                 disabled={loading}

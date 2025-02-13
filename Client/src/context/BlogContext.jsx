@@ -1,17 +1,11 @@
 import React from "react";
 import { useState, useEffect, createContext, useContext } from "react";
-import axios from "axios";
 import { useUserProfileData } from "./userContext";
-
-
-axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
-axios.defaults.withCredentials = true;
-
+import axiosInstance from "../utils/axiosInstance";
 
 const blogContext = createContext();
 
 export const useBlogs = () => useContext(blogContext);
-
 
 export const BlogsProvider = ({ children }) => {
 
@@ -23,7 +17,7 @@ export const BlogsProvider = ({ children }) => {
     useEffect(() => {
       const fetchSavedBlogs = async () => {
         try {
-          const response = await axios.get(`/blog/saved-blogs/${userId}`);
+          const response = await axiosInstance.get(`/blog/saved-blogs/${userId}`);
           setSavedBlogsByUser(response.data.data)
           
         } catch (error) {

@@ -1,6 +1,5 @@
 import React from "react";
 import { Outlet, useNavigation } from "react-router-dom";
-import Spinner from "./Spinner";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 

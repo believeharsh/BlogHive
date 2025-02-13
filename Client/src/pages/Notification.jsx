@@ -40,22 +40,20 @@ const Notification = () => {
         <h1 className="text-3xl font-extrabold text-gray-900 mb-8 text-center">
           Notifications
         </h1>
-        
+
         {/* Filter Buttons */}
         <div className="flex justify-center space-x-6 mb-8">
           <button
-            className={`flex items-center space-x-2 py-3 px-6 rounded-lg text-sm font-medium ${
-              filter === "all" ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-700"
-            } hover:bg-blue-500 hover:text-white transition-all duration-300`}
+            className={`flex items-center space-x-2 py-3 px-6 rounded-lg text-sm font-medium ${filter === "all" ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-700"
+              } hover:bg-blue-500 hover:text-white transition-all duration-300`}
             onClick={() => setFilter("all")}
           >
             <FaBell />
             <span>All</span>
           </button>
           <button
-            className={`flex items-center space-x-2 py-3 px-6 rounded-lg text-sm font-medium ${
-              filter === "response" ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-700"
-            } hover:bg-blue-500 hover:text-white transition-all duration-300`}
+            className={`flex items-center space-x-2 py-3 px-6 rounded-lg text-sm font-medium ${filter === "response" ? "bg-blue-600 text-white" : "bg-gray-200 text-gray-700"
+              } hover:bg-blue-500 hover:text-white transition-all duration-300`}
             onClick={() => setFilter("response")}
           >
             <FaCommentAlt />

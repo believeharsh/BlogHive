@@ -1,9 +1,6 @@
-
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-
-axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
+import axiosInstance from '../utils/axiosInstance';
 
 const SignUpPage = ({ setShowSignUp, setShowLogin }) => {
   const navigate = useNavigate();
@@ -28,7 +25,7 @@ const SignUpPage = ({ setShowSignUp, setShowLogin }) => {
       formData.append('avatar', avatar);
     }
 
-    axios
+    axiosInstance
       .post("/user/signup", formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       })
@@ -67,6 +64,7 @@ const SignUpPage = ({ setShowSignUp, setShowLogin }) => {
         <h2 className="text-4xl font-semibold text-center text-gray-900 mb-6">
           Sign Up for BlogNetwork
         </h2>
+
         <form onSubmit={handleSignUp}>
           {/* Full Name & Email - Two Column Layout */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -83,6 +81,7 @@ const SignUpPage = ({ setShowSignUp, setShowLogin }) => {
                 required
               />
             </div>
+
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                 Email
@@ -96,6 +95,7 @@ const SignUpPage = ({ setShowSignUp, setShowLogin }) => {
                 required
               />
             </div>
+
           </div>
 
           {/* Avatar & Password - Two Column Layout */}
@@ -113,6 +113,7 @@ const SignUpPage = ({ setShowSignUp, setShowLogin }) => {
                 required
               />
             </div>
+
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700">
                 Password
@@ -126,6 +127,7 @@ const SignUpPage = ({ setShowSignUp, setShowLogin }) => {
                 required
               />
             </div>
+
           </div>
 
           {/* Sign Up Button */}
@@ -136,6 +138,7 @@ const SignUpPage = ({ setShowSignUp, setShowLogin }) => {
             Sign Up
           </button>
         </form>
+
         <div className="flex justify-center items-center">
           <button className="mt-6 text-center text-sm text-gray-500">
             Already have an account?{" "}

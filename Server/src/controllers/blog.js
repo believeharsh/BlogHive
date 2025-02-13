@@ -46,7 +46,7 @@ const handleAddNewBlog = asyncHandler(async (req, res) => {
     if (req.file) {
         const coverImageLocalPath = path.resolve(req.file.path)
         const coverImage = await uploadOnCloudinary(coverImageLocalPath)
-        console.log(coverImage)
+        // console.log(coverImage)
         if (coverImage) coverImageURL = coverImage.secure_url
     }
 

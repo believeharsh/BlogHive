@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route, useLocation, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import Home from "./pages/Home";
 import Profile from "./pages/Profile";
 import Upload from "./pages/Upload";
@@ -14,7 +14,6 @@ import { useAuth } from "./context/AuthContext";
 import LandingPage from "./pages/Landing";
 
 function App() {
-  const location = useLocation();
   const { isAuthenticated } = useAuth();
 
   return (
@@ -38,7 +37,7 @@ function App() {
           <Route path="/blog/Upload" element={<ProtectedRoute><Upload /></ProtectedRoute>} />
 
           {/* Redirect any unknown route to Home or Landing Page */}
-          <Route path="*" element={<Navigate to={isAuthenticated ? "/" : "/login"} />} />
+          <Route path="*" element={<Navigate to={isAuthenticated ? "/" : "/"} />} />
         </Routes>
       </BlogsProvider>
     </UserProfileProvider>

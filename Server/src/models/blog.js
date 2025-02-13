@@ -5,19 +5,21 @@ const blogSchema = new Schema({
         type: String,
         required: true,
     },
+
     body: {
         type: String,
         required: true,
     },
+
     coverImage: {
         type: String,   
-        // default: "/public/Images/defaultImage.png"
-        
     },
+
     createdBy: {
         type: Schema.Types.ObjectId,
         ref: 'user',
     },
+    
 }, { timestamps: true });
 
 const blog = model('blog', blogSchema);

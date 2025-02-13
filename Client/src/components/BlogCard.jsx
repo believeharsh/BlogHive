@@ -2,18 +2,10 @@ import React, { useState } from "react";
 import { MdComment } from "react-icons/md";
 import { BsBookmark, BsBookmarkFill } from "react-icons/bs";
 import { BiDotsVerticalRounded } from "react-icons/bi";
+import formatDate from "../utils/FormateData";
 
 const BlogCard = ({ authorName, title, body, coverImage, createdAt, profileImageURL }) => {
   const [saved, setSaved] = useState(false);
-
-  const formatDate = (isoString) => {
-    const date = new Date(isoString);
-    return date.toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-    });
-  };
 
   return (
     <div className="border-b border-gray-300 py-4">
@@ -21,7 +13,6 @@ const BlogCard = ({ authorName, title, body, coverImage, createdAt, profileImage
         
         {/* Left Section: Text Content */}
         <div className="flex-1 space-y-2">
-          {/* Author Section (Now smaller & inline) */}
           <div className="flex items-center gap-2">
             <img
               src={profileImageURL}

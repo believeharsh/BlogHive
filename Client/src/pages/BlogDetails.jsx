@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Spinner from "../components/Spinner";
@@ -10,10 +9,8 @@ import formatDate from "../utils/FormateData";
 import BlogBody from "../components/BlogBody";
 import BlogInteractions from "../components/BlogInteractions";
 import BlogAuthorInfo from "../components/BlogAuthorInfo";
+import axiosInstance from "../utils/axiosInstance";
 
-
-axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
-axios.defaults.withCredentials = true;
 
 const BlogDetails = () => {
     const [blog, setBlogs] = useState(null);
@@ -35,7 +32,7 @@ const BlogDetails = () => {
         const fetchBlogById = async () => {
             setLoading(true);
             try {
-                const res = await axios.get(`/blog/${id}`);
+                const res = await axiosInstance.get(`/blog/${id}`);
                 if (!res) {
                     console.log("Blog not found by ID");
                 }
@@ -52,7 +49,7 @@ const BlogDetails = () => {
 
     const handleDeleteBlog = async (blogid) => {
         try {
-            await axios.delete(`/blog/${blogid}`);
+            await axiosInstance.delete(`/blog/${blogid}`);
             navigate("/");
         } catch (error) {
             console.error("Error deleting blog:", error.response?.data?.message || error.message);
@@ -76,7 +73,7 @@ const BlogDetails = () => {
                 return;
             }
 
-            const response = await axios.post(
+            const response = await axiosInstance.post(
                 `/blog/saveBlog/${blogId}`,
                 { userId },
                 { headers: { "Content-Type": "application/json" } }

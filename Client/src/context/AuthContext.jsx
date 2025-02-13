@@ -1,9 +1,6 @@
-import axios from "axios";
 import React from "react";
 import { useState, useEffect, createContext, useContext } from "react";
-
-axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
-axios.defaults.withCredentials = true;
+import axiosInstance from "../utils/axiosInstance";
 
 
 const AuthContext = createContext();
@@ -17,7 +14,7 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         const checkAuth = async () => {
             try {
-                const res = await axios.get("/user/checkAuth");
+                const res = await axiosInstance.get("/user/checkAuth");
                 if (res.status === 200) {
                     setIsAuthenticated(true);
                 } else {

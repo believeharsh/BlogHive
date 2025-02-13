@@ -1,14 +1,6 @@
 import React from "react";
 import { FaThumbsUp, FaThumbsDown } from "react-icons/fa";
-
-const formatDate = (isoString) => {
-    const date = new Date(isoString);
-    return date.toLocaleDateString("en-US", {
-        month: "short",
-        day: "numeric",
-        year: "numeric",
-    });
-};
+import formatDate from "../utils/FormateData";
 
 const CommentCard = ({ comment }) => {
     return (

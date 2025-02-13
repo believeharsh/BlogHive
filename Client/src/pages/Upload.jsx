@@ -1,6 +1,4 @@
-
 import React, { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { FiUploadCloud } from "react-icons/fi";
 import { ImSpinner8 } from "react-icons/im";
@@ -8,9 +6,7 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { useUserProfileData } from "../context/userContext";
 import { Link } from "react-router-dom";
-
-axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
-axios.defaults.withCredentials = true;
+import axiosInstance from "../utils/axiosInstance";
 
 const Upload = () => {
   const navigate = useNavigate();
@@ -36,11 +32,15 @@ const Upload = () => {
     formData.append("coverImage", coverImage);
 
     try {
-      const res = await axios.post("/blog", formData);
+      const res = await axiosInstance.post("/blog",
+        formData,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
       navigate("/");
       setTitle("");
       setBody("");
       setCoverImage(null);
+      console.log(res)
 
       if (!res) {
         console.log("Any error has occurred while uploading new blog");
@@ -48,6 +48,7 @@ const Upload = () => {
 
       const newToBeSavedBlog = res.data.data.newBlog;
       setBlogs((prevBlogs) => [...prevBlogs, newToBeSavedBlog]);
+
     } catch (error) {
       console.error("Error uploading blog:", error);
       alert("Failed to upload blog. Please try again.");

@@ -2,27 +2,26 @@ import React, { useState } from "react";
 import { FiBell, FiChevronDown, FiChevronUp, FiSearch, FiUser, FiBook, FiLogOut } from "react-icons/fi";
 import { HiPencilAlt } from "react-icons/hi";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { useUserProfileData } from "../context/userContext";
 import Spinner from "./Spinner";
+import axiosInstance from "../utils/axiosInstance";
+
 
 const Navbar = () => {
   const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [loading, setLoading] = useState(false); // Loader state
+  const [loading, setLoading] = useState(false); 
   const { logout } = useAuth();
   const { setBlogs, setUserProfileData } = useUserProfileData();
   const blogHiveUser = localStorage.getItem("BlogHiveUser");
   const { userProfileData } = useUserProfileData();
 
-  axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
-  axios.defaults.withCredentials = true;
 
   const logoutUser = async () => {
     setLoading(true);
     try {
-      await axios.get("/user/logout");
+      await axiosInstance.get("/user/logout");
       logout();
       setBlogs([]);
       setUserProfileData([]);

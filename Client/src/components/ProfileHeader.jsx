@@ -1,6 +1,7 @@
 import { useState } from "react";
 import React from "react";
 import { BiDotsVerticalRounded } from "react-icons/bi";
+import formatDate from "../utils/FormateData";
 
 const ProfileHeader = ({ userProfileData }) => {
   const { username, fullName, profileImageURL, createdAt } = userProfileData;
@@ -16,16 +17,6 @@ const ProfileHeader = ({ userProfileData }) => {
     setIsOpen(false);
   };
 
-
-  const formatDate = (isoString) => {
-    const date = new Date(isoString);
-    return date.toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-      year: "numeric",
-    });
-  };
-
   return (
     <div className="bg-[rgba(255,255,255,1)] p-4">
       <div className="container mx-auto flex items-center justify-between p-4  bg-white">
@@ -34,7 +25,7 @@ const ProfileHeader = ({ userProfileData }) => {
           <img src={profileImageURL} alt="" className="w-32 h-32 rounded-full" />
           <div className="flex flex-col justify-center items-center">
             <h1 className="text-3xl font-semibold text-gray-800">{fullName}</h1>
-            <p className="text-sm font-semibold text-gray-800">{`Since  ${formatDate(createdAt)}`}</p>
+            <p className="text-sm font-semibold text-gray-800">{`Since ${formatDate(createdAt)}`}</p>
           </div>
 
 

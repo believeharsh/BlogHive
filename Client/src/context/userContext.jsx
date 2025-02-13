@@ -1,11 +1,6 @@
 import React from "react";
 import { useState, useEffect, createContext, useContext } from "react";
-import axios from "axios";
-
-
-axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
-axios.defaults.withCredentials = true;
-
+import axiosInstance from "../utils/axiosInstance";
 
 const UserProfileContext = createContext();
 
@@ -20,7 +15,7 @@ export const UserProfileProvider = ({ children }) => {
 
     const fetchUserData = async () => {
         try {
-            const getUserData = await axios.get("/user/profile")
+            const getUserData = await axiosInstance.get("/user/profile")
             const profiledata = getUserData.data.data;
 
             const email = profiledata.email;
@@ -40,7 +35,7 @@ export const UserProfileProvider = ({ children }) => {
         setLoading(true)
         try {
 
-            const res = await axios.get("/blog")
+            const res = await axiosInstance.get("/blog")
             console.log(res);
             if (!res) {
                 console.log("no blogs fetched from the api");

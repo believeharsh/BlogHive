@@ -1,16 +1,14 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import LoginPage from "./Login";
 import SignUpPage from "./Signup";
 
 export default function LandingPage() {
-  const navigate = useNavigate();
   const [showLogin, setShowLogin] = useState(false);
   const [showSignUp, setShowSignUp] = useState(false);
 
   return (
     <div className="w-full h-screen flex flex-col">
-      {/* Navbar */}
+
       <nav className="w-full flex justify-between items-center px-6 py-4 bg-white shadow-md">
         <div className="flex items-center space-x-2">
           <img src="/assets/bloghive-text-logo.png" alt="Logo" className="w-50 h-15" />
@@ -33,14 +31,13 @@ export default function LandingPage() {
 
       {/* Hero Section */}
       <div className={`relative flex-1 flex items-center justify-center bg-gray-900 text-white ${showLogin || showSignUp ? 'blur-sm' : ''}`}>
-        {/* Background Image */}
+
         <img
           src="/assets/hero-bg.jpg"
           alt="Writing and Books"
           className="absolute inset-0 w-full h-full object-cover opacity-40"
         />
 
-        {/* Content */}
         <div className="relative text-center px-6 md:px-12">
           <h2 className="text-4xl md:text-6xl font-extrabold mb-4">
             Human Stories & Ideas
@@ -57,7 +54,6 @@ export default function LandingPage() {
         </div>
       </div>
 
-      {/* Show Login and Sign Up Modals */}
       {showLogin && (
         <div className="fixed inset-0 flex items-center justify-center z-50">
           <LoginPage setShowLogin={setShowLogin} setShowSignUp={setShowSignUp} />
