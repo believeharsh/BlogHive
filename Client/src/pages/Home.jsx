@@ -1,28 +1,51 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import BlogCard from "../components/BlogCard"
-import Spinner from "../components/Spinner"
+import BlogCard from "../components/BlogCard";
+import Spinner from "../components/Spinner";
 import { Link } from "react-router-dom";
-import { useUserProfileData } from "../context/userContext";
 
-
-axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL
+axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
 
 const Home = () => {
   const [loading, setLoading] = useState(false);
-  const {blogs} = useUserProfileData() ; 
+  const [blogs, setBlogs] = useState([]);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const limit = 5;
+
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      setLoading(true);
+      try {
+        const { data } = await axios.post(`/blog/getAllBlogs?page=${page}&limit=${limit}`);
+        
+        // Prevent duplicate blogs
+        const newBlogs = data.blogs.filter(
+          (newBlog) => !blogs.some((existingBlog) => existingBlog._id === newBlog._id)
+        );
+
+        setBlogs((prev) => [...prev, ...newBlogs]);
+        setHasMore(data.hasMore);
+      } catch (error) {
+        console.error("Error fetching blogs:", error);
+      }
+      setLoading(false);
+    };
+
+    fetchBlogs();
+  }, [page]); // Fetches blogs whenever `page` changes
+
+  // Load More Handler
+  const handleLoadMore = () => {
+    setPage((prev) => prev + 1);
+  };
 
   return (
     <>
-      {
-        loading && (
-          <Spinner />
-        )
-      }
+      {loading && <Spinner />}
 
       <div className="min-h-screen py-8">
         {/* Container for Blogs */}
-
         <div className="container mx-auto w-full max-w-2xl px-4">
           {blogs.length > 0 &&
             blogs.map((blog) => (
@@ -38,15 +61,23 @@ const Home = () => {
                     createdAt={blog.createdAt || new Date().toISOString()}
                   />
                 </Link>
-
               </div>
             ))}
+          
+          {hasMore && (
+            <div className="flex justify-center mt-6"> {/* Centering the button */}
+              <button
+                onClick={handleLoadMore}
+                className="px-6 py-2 text-green-500  rounded-md hover:bg-gray-300 transition disabled:opacity-50"
+                disabled={loading} // Disable while loading
+              >
+                {loading ? "Loading..." : "Load More"}
+              </button>
+            </div>
+          )}
         </div>
       </div>
-
-
     </>
-
   );
 };
 

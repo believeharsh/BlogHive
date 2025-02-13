@@ -32,12 +32,12 @@ const BlogCard = ({ authorName, title, body, coverImage, createdAt, profileImage
           </div>
 
           {/* Title */}
-          <h3 className="text-lg font-semibold text-gray-900 leading-tight">
+          <h3 className="text-lg font-bold text-gray-900 leading-tight line-clamp-1">
             {title}
           </h3>
 
           {/* Body (Shortened for compactness) */}
-          <p className="text-sm text-gray-600 line-clamp-1">
+          <p className="text-xm text-gray-600 line-clamp-1">
             {body}
           </p>
 
@@ -71,6 +71,9 @@ const BlogCard = ({ authorName, title, body, coverImage, createdAt, profileImage
 };
 
 export default BlogCard;
+
+
+
 
 
 

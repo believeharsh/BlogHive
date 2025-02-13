@@ -190,6 +190,29 @@ const getAllSavedBlogsByUserId = asyncHandler(async (req, res) => {
         )
 })
 
+const getAllBlogs = asyncHandler(async (req, res) => {
+    try {
+        let { page = 1, limit = 10 } = req.query; // Default page 1, limit 5 blogs per request
+        page = parseInt(page);
+        limit = parseInt(limit);
+
+        const blogs = await Blog.find()
+            .sort({ createdAt: -1 }) // Sorting by latest
+            .skip((page - 1) * limit) // Skipping previous pages
+            .limit(limit)
+            .populate("createdBy", "username fullName email profileImageURL")
+
+        const totalBlogs = await Blog.countDocuments(); // Get total blogs count
+
+        res.json({
+            blogs,
+            hasMore: page * limit < totalBlogs,
+        });
+    } catch (error) {
+        res.status(500).json({ message: "Something went wrong" });
+    }
+})
+
 
 export {
     getBlogById,
@@ -197,5 +220,6 @@ export {
     getAllBlogsByUserId,
     handleDeleteBlogById,
     saveBlogInTheUserProfile,
-    getAllSavedBlogsByUserId
+    getAllSavedBlogsByUserId,
+    getAllBlogs
 }
