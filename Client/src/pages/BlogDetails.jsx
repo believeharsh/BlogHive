@@ -88,7 +88,6 @@ const BlogDetails = () => {
             }
 
             const newSavedBlog = response.data.data;
-            console.log(newSave)
 
             setSavedBlogsByUser((prevBlogs) => [...prevBlogs, newSavedBlog]);
         } catch (error) {

@@ -131,6 +131,18 @@ const saveBlogInTheUserProfile = asyncHandler(async (req, res) => {
         throw new ApiError(400, "no blog found with give blog id")
     }
 
+    // Checking if the blog has already been saved by the user
+    const existingSavedBlog = await SavedBlogs.findOne({
+        savedBy: userId,
+        savedBlogId: blogId,
+    });
+
+    if (existingSavedBlog) {
+        return res.status(400).json(
+            new ApiResponse(400, null, "Blog is already saved by this user")
+        );
+    }
+
     let newSavedBlog = await SavedBlogs.create({
         savedBy: userId,
         savedBlogId: blogId
