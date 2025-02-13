@@ -1,15 +1,21 @@
+
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
 
-const SignUpPage = () => {
+const SignUpPage = ({ setShowSignUp, setShowLogin }) => {
   const navigate = useNavigate();
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [avatar, setAvatar] = useState(null);
+
+  const redirctToLogin = () => {
+    setShowSignUp(false)
+    setShowLogin(true)
+  }
 
   const handleSignUp = (e) => {
     e.preventDefault();
@@ -34,6 +40,7 @@ const SignUpPage = () => {
         setEmail("");
         setPassword("");
         setAvatar(null);
+        setShowSignUp(false);
       })
       .catch((err) => {
         if (err.response && err.response.status === 409) {
@@ -47,14 +54,22 @@ const SignUpPage = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-gray-200 via-white to-gray-200">
-      <div className="w-full max-w-lg bg-white p-8 rounded-2xl shadow-lg">
-        <h2 className="text-3xl font-semibold text-center text-gray-900 mb-6">
+    <div className=" flex items-center justify-center bg-gradient-to-r from-gray-200 via-white to-gray-200">
+      <div className="w-full max-w-lg p-10 rounded-2xl shadow-lg relative">
+        {/* Close Button */}
+        <button
+          onClick={() => setShowSignUp(false)}
+          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+        >
+          &times;
+        </button>
+
+        <h2 className="text-4xl font-semibold text-center text-gray-900 mb-6">
           Sign Up for BlogNetwork
         </h2>
         <form onSubmit={handleSignUp}>
           {/* Full Name & Email - Two Column Layout */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <div>
               <label htmlFor="fullName" className="block text-sm font-medium text-gray-700">
                 Full Name
@@ -62,7 +77,7 @@ const SignUpPage = () => {
               <input
                 type="text"
                 id="fullName"
-                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-200"
+                className="w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-200"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 required
@@ -75,7 +90,7 @@ const SignUpPage = () => {
               <input
                 type="email"
                 id="email"
-                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-200"
+                className="w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-200"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -84,7 +99,7 @@ const SignUpPage = () => {
           </div>
 
           {/* Avatar & Password - Two Column Layout */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-6">
             <div>
               <label htmlFor="avatar" className="block text-sm font-medium text-gray-700">
                 Avatar
@@ -93,7 +108,7 @@ const SignUpPage = () => {
                 type="file"
                 id="avatar"
                 accept="image/*"
-                className="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-200"
+                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-200"
                 onChange={(e) => setAvatar(e.target.files[0])}
                 required
               />
@@ -105,7 +120,7 @@ const SignUpPage = () => {
               <input
                 type="password"
                 id="password"
-                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-200"
+                className="w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-200"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
@@ -121,15 +136,23 @@ const SignUpPage = () => {
             Sign Up
           </button>
         </form>
-        <p className="mt-4 text-center text-sm text-gray-500">
-          Already have an account?{" "}
-          <a href="/login" className="text-blue-600 hover:text-blue-700">
-            Log in
-          </a>
-        </p>
+        <div className="flex justify-center items-center">
+          <button className="mt-6 text-center text-sm text-gray-500">
+            Already have an account?{" "}
+            <p
+              onClick={() => redirctToLogin()}
+              className="text-blue-600 hover:text-blue-700 cursor-pointer"
+            >
+              Log in
+            </p>
+          </button>
+        </div>
+
       </div>
     </div>
   );
 };
 
 export default SignUpPage;
+
+
