@@ -3,7 +3,7 @@ import { FaGithub, FaLinkedin, FaTwitter, FaInstagram } from "react-icons/fa";
 
 const Footer = () => {
   return (
-    <footer className="bg-black text-white py-6 px-8 flex flex-col md:flex-row justify-between items-center">
+    <footer className=" text-gray-800 py-6 px-8 flex flex-col md:flex-row justify-between items-center border-y border-gray-300">
       {/* Left Section */}
       <div className="text-sm opacity-80">
         © 2025 <span className="font-semibold">BlogHive</span>. All rights reserved.

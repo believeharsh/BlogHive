@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { FiBell, FiChevronDown, FiSearch, FiUser, FiBook, FiLogOut } from "react-icons/fi";
+import { FiBell, FiChevronDown, FiChevronUp, FiSearch, FiUser, FiBook, FiLogOut } from "react-icons/fi";
 import { HiPencilAlt } from "react-icons/hi";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -14,6 +14,7 @@ const Navbar = () => {
   const { logout } = useAuth();
   const { setBlogs, setUserProfileData } = useUserProfileData();
   const blogHiveUser = localStorage.getItem("BlogHiveUser");
+  const { userProfileData } = useUserProfileData();
 
   axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
   axios.defaults.withCredentials = true;
@@ -37,7 +38,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="bg-white text-black shadow-md p-4 relative">
+    <nav className="bg-white text-black border-b border-gray-300 p-3 relative">
       <div className="container mx-auto flex items-center justify-between">
         {/* Left Section */}
         <div className="flex items-center space-x-4">
@@ -45,20 +46,12 @@ const Navbar = () => {
             <h1 className="text-4xl font-serif">BlogHive</h1>
           </Link>
 
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="Search..."
-              className="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-400 pl-10"
-            />
-            <FiSearch className="absolute top-1/2 left-3 transform -translate-y-1/2 text-gray-400" />
-          </div>
         </div>
 
         {/* Right Section */}
-        <div className="flex items-center space-x-4">
+        <div className="flex items-center  gap-7">
           <Link to="/blog/upload">
-            <button className="flex items-center bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-800">
+            <button className="flex items-center  text-gray-800 text-xl px-4 py-2 rounded-lg hover:bg-gray-100 hover:text-black ">
               <HiPencilAlt className="mr-2" /> Write
             </button>
           </Link>
@@ -72,11 +65,11 @@ const Navbar = () => {
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
             >
               <img
-                src="/images/default_Image.jpeg"
+                src={userProfileData.profileImageURL}
                 alt="User Profile"
                 className="w-10 h-10 rounded-full object-cover border border-gray-300"
               />
-              <FiChevronDown className="ml-2" />
+              {isDropdownOpen ? <FiChevronDown className="ml-2" /> : <FiChevronUp className="ml-2" />}
             </div>
 
             {isDropdownOpen && (
@@ -108,7 +101,7 @@ const Navbar = () => {
 
       {/* Loader Overlay */}
       {loading && (
-        <Spinner/>
+        <Spinner />
       )}
     </nav>
   );

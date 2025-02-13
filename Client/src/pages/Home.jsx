@@ -20,7 +20,7 @@ const Home = () => {
         )
       }
 
-      <div className="min-h-screen bg-gray-100 py-8">
+      <div className="min-h-screen py-8">
         {/* Container for Blogs */}
 
         <div className="container mx-auto w-full max-w-2xl px-4">
