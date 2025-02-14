@@ -14,8 +14,9 @@ const Navbar = () => {
   const [loading, setLoading] = useState(false); 
   const { logout } = useAuth();
   const { setBlogs, setUserProfileData } = useUserProfileData();
-  const blogHiveUser = localStorage.getItem("BlogHiveUser");
   const { userProfileData } = useUserProfileData();
+
+  const blogHiveUser = localStorage.getItem("BlogHiveUser");
 
 
   const logoutUser = async () => {
@@ -74,7 +75,7 @@ const Navbar = () => {
             </div>
 
             {isDropdownOpen && (
-              <div className="absolute right-0 mt-2 bg-white shadow-lg rounded-lg w-48">
+              <div className="absolute right-0 mt-2 bg-white shadow-lg rounded-lg w-48 z-10">
                 <ul className="py-2 text-gray-700">
                   <Link to={`/${blogHiveUser}`}>
                     <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center space-x-2">

@@ -10,10 +10,11 @@ import BlogBody from "../components/BlogBody";
 import BlogInteractions from "../components/BlogInteractions";
 import BlogAuthorInfo from "../components/BlogAuthorInfo";
 import axiosInstance from "../utils/axiosInstance";
+import { useUserProfileData } from "../context/userContext";
 
 
 const BlogDetails = () => {
-    const [blog, setBlogs] = useState(null);
+    const [currentBlog, setCurrentBlog] = useState(null); 
     const { savedBlogsByUser, userId, setSavedBlogsByUser } = useBlogs();
     const [comments, setComments] = useState([]);
     const [isShareOpen, setIsShareOpen] = useState(false);
@@ -22,6 +23,7 @@ const BlogDetails = () => {
     const { id } = useParams();
     const [isSaved, setIsSaved] = useState(false);
     const navigate = useNavigate();
+    const {blogs, setBlogs} = useUserProfileData() ; 
 
     useEffect(() => {
         // Checking if the blog is already saved or not?
@@ -38,7 +40,7 @@ const BlogDetails = () => {
                 if (!res) {
                     console.log("Blog not found by ID");
                 }
-                setBlogs(res.data.blog);
+                setCurrentBlog(res.data.blog);
                 setComments(res.data.comments);
                 setisUserIsAuthor(res.data.isAuthor);
                 setLoading(false);
@@ -52,7 +54,8 @@ const BlogDetails = () => {
     const handleDeleteBlog = async (blogid) => {
         try {
             await axiosInstance.delete(`/blog/${blogid}`);
-            await setSavedBlogsByUser((prevBlogs) => prevBlogs.filter(blog => blog.savedBlogId._id !== blogid));
+            setBlogs((prevBlogs) => prevBlogs.filter(blog => blog._id !== blogid)) ; 
+            setSavedBlogsByUser((prevBlogs) => prevBlogs.filter(blog => blog.savedBlogId._id !== blogid));
             navigate("/");
         } catch (error) {
             console.error("Error deleting blog:", error.response?.data?.message || error.message);
@@ -101,18 +104,18 @@ const BlogDetails = () => {
             {!loading && (
                 <div className="max-w-3xl mx-auto px-4 py-6">
                     {/* Blog Title */}
-                    <h1 className="text-4xl font-extrabold text-gray-900 mb-4">{blog?.title}</h1>
+                    <h1 className="text-4xl font-extrabold text-gray-900 mb-4">{currentBlog?.title}</h1>
 
                     {/* User Profile Section */}
                     <div className="flex items-center gap-4 mb-4">
                         <img
-                            src={blog?.createdBy?.profileImageURL}
-                            alt={blog?.createdBy?.username}
+                            src={currentBlog?.createdBy?.profileImageURL}
+                            alt={currentBlog?.createdBy?.username}
                             className="w-12 h-12 rounded-full object-cover"
                         />
                         <div>
-                            <p className="text-lg font-semibold text-gray-800">{blog?.createdBy?.fullName}</p>
-                            <p className="text-sm text-gray-500">{formatDate(blog?.createdAt)}</p>
+                            <p className="text-lg font-semibold text-gray-800">{currentBlog?.createdBy?.fullName}</p>
+                            <p className="text-sm text-gray-500">{formatDate(currentBlog?.createdAt)}</p>
                         </div>
                     </div>
 
@@ -131,7 +134,7 @@ const BlogDetails = () => {
                     {/* Cover Image */}
                     <div className="mb-6 mt-4">
                         <img
-                            src={blog?.coverImage || "/images/LibraryCover_Images(2).jpg"}
+                            src={currentBlog?.coverImage || "/images/LibraryCover_Images(2).jpg"}
                             alt="Blog cover"
                             className="w-full h-80 object-cover rounded-md"
                         />
@@ -139,7 +142,7 @@ const BlogDetails = () => {
 
                     {/* Blog Content */}
                     <div className="prose prose-lg text-gray-700 py-2">
-                        <BlogBody content={blog?.body} />
+                        <BlogBody content={currentBlog?.body} />
                     </div>
 
                     {/* Comment Section */}
@@ -168,10 +171,10 @@ const BlogDetails = () => {
 
                     <div className="py-2">
                         <BlogAuthorInfo
-                            profileImageURL={blog?.createdBy?.profileImageURL}
-                            fullName={blog?.createdBy?.fullName}
+                            profileImageURL={currentBlog?.createdBy?.profileImageURL}
+                            fullName={currentBlog?.createdBy?.fullName}
                             about={"Aspiring Software Engineer"}
-                            createdAt={blog?.createdAt}
+                            createdAt={currentBlog?.createdAt}
                         />
                     </div>
 

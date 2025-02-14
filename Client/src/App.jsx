@@ -12,15 +12,20 @@ import { UserProfileProvider } from "./context/userContext";
 import { BlogsProvider } from "./context/BlogContext";
 import { useAuth } from "./context/AuthContext";
 import LandingPage from "./pages/Landing";
+import Spinner from "./components/Spinner";
 
 function App() {
-  const { isAuthenticated } = useAuth();
+  const { isAuthenticated, loading } = useAuth();
+
+  if(loading){
+    return <Spinner/>
+  }
 
   return (
     <UserProfileProvider>
       <BlogsProvider>
         <Routes>
-          {/* Show Landing Page only if NOT authenticated */}
+          {/* Showing Landing Page only if user is NOT authenticated */}
           {!isAuthenticated ? (
             <Route path="/" element={<LandingPage />} />
           ) : (
