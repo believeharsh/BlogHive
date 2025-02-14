@@ -135,9 +135,9 @@ const Home = () => {
               <Link key={blog._id} to={`/blog/${blog._id}`}>
                 <div className="border-b border-gray-300">
                   <div className="flex items-center gap-3 p-2">
-                    <img src={blog.coverImage} alt={blog.title} className="w-14 h-14 rounded-md" />
+                    <img src={blog.coverImage || "/images/LibraryCover_Image.jpg"} alt={blog.title} className="w-14 h-14 rounded-md" />
                     <div>
-                      <p className="font-semibold">{blog.title}</p>
+                      <p className="font-semibold">{blog.title || "untitled Blog"}</p>
                       <p className="text-gray-500 text-sm">by {blog.createdBy?.fullName || "Unknown"}</p>
                     </div>
                   </div>
