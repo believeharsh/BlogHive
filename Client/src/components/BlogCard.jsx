@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { MdComment } from "react-icons/md";
-import { BsBookmark, BsBookmarkFill } from "react-icons/bs";
+import { BsBookmark, BsBookmarkFill, BsHeart } from "react-icons/bs";
 import { BiDotsVerticalRounded } from "react-icons/bi";
 import formatDate from "../utils/FormateData";
 
@@ -10,16 +10,16 @@ const BlogCard = ({ authorName, title, body, coverImage, createdAt, profileImage
   return (
     <div className="border-b border-gray-300 py-4">
       <div className="flex flex-col md:flex-row items-start gap-4">
-        
+
         {/* Left Section: Text Content */}
         <div className="flex-1 space-y-2">
           <div className="flex items-center gap-2">
             <img
               src={profileImageURL}
               alt={authorName}
-              className="w-7 h-7 rounded-full border border-gray-300 object-cover"
+              className="w-9 h-9 rounded-full border border-gray-300 object-cover"
             />
-            <span className="text-xs text-gray-700 font-medium">{authorName} • {formatDate(createdAt)}</span>
+            <span className="text-sm text-gray-700 font-medium">{authorName}</span>
           </div>
 
           {/* Title */}
@@ -28,14 +28,20 @@ const BlogCard = ({ authorName, title, body, coverImage, createdAt, profileImage
           </h3>
 
           {/* Body (Shortened for compactness) */}
-          <p className="text-xm text-gray-600 line-clamp-1">
-            {body}
-          </p>
+          <div className="text-xm text-gray-600 line-clamp-1">
+            <p dangerouslySetInnerHTML={{ __html: typeof body === "string" ? body : JSON.stringify(body) }}></p>
+
+          </div>
 
           {/* Footer: Comment, Save & Options */}
           <div className="flex items-center justify-between text-sm text-gray-500">
-            <MdComment className="text-lg cursor-pointer hover:text-gray-900 transition-all duration-300" />
-            
+            <div className="flex items-center gap-4">
+              <p className="text-sm font-light text-gray-700">{formatDate(createdAt)}</p>
+              <MdComment className="text-lg cursor-pointer hover:text-gray-900 transition-all duration-300" />
+              <BsHeart className="text-lg cursor-pointer hover:text-gray-900 transition-all duration-300"/>
+
+            </div>
+
             <div className="flex items-center gap-4">
               <button onClick={() => setSaved(!saved)} className="hover:text-gray-900 transition-all duration-300">
                 {saved ? <BsBookmarkFill className="text-blue-500 text-lg" /> : <BsBookmark className="text-lg" />}

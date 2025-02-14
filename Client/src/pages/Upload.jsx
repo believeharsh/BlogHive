@@ -16,7 +16,7 @@ const Upload = () => {
   const [isPublishing, setIsPublishing] = useState(false);
   const { setBlogs } = useUserProfileData();
 
-  const isPublishDisabled = !(title && body && coverImage);
+  const isPublishDisabled = !(title && body);
 
   const handleFileChange = (e) => {
     setCoverImage(e.target.files[0]);

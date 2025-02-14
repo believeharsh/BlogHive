@@ -105,6 +105,13 @@ const handleDeleteBlogById = asyncHandler(async (req, res) => {
         throw new ApiError(403, "Unauthorized to delete this blog");
     }
 
+    const savedReferences = await SavedBlogs.find({ savedBlogId: blogId });
+
+    if (savedReferences.length > 0) {
+        console.log(`Blog ${blogId} is saved by ${savedReferences.length} user(s). Removing references.`);
+        await SavedBlogs.deleteMany({ savedBlogId: blogId });
+    }
+
     await tobeDeletedBlog.deleteOne()
 
     return res
@@ -187,9 +194,9 @@ const getAllSavedBlogsByUserId = asyncHandler(async (req, res) => {
             populate: { path: "createdBy", select: "name email profileImageURL fullName username" },
         });
 
-    if (!allSavedBlogs) {
-        throw new ApiError(409, "no blogs saved as of now ")
-    }
+        if (!allSavedBlogs || allSavedBlogs.length === 0) {
+            throw new ApiError(404, "No saved blogs found");
+        }
 
     return res
         .status(200)
@@ -224,6 +231,8 @@ const getAllBlogs = asyncHandler(async (req, res) => {
         res.status(500).json({ message: "Something went wrong" });
     }
 })
+
+
 
 
 export {

@@ -25,7 +25,9 @@ const BlogDetails = () => {
 
     useEffect(() => {
         // Checking if the blog is already saved or not?
-        setIsSaved(savedBlogsByUser.some(blog => blog.savedBlogId._id === id));
+        if (savedBlogsByUser.length !== 0) {
+            setIsSaved(savedBlogsByUser.some(blog => blog.savedBlogId._id === id));
+        }
     }, [savedBlogsByUser, id]);
 
     useEffect(() => {
@@ -50,6 +52,7 @@ const BlogDetails = () => {
     const handleDeleteBlog = async (blogid) => {
         try {
             await axiosInstance.delete(`/blog/${blogid}`);
+            await setSavedBlogsByUser((prevBlogs) => prevBlogs.filter(blog => blog.savedBlogId._id !== blogid));
             navigate("/");
         } catch (error) {
             console.error("Error deleting blog:", error.response?.data?.message || error.message);
@@ -128,7 +131,7 @@ const BlogDetails = () => {
                     {/* Cover Image */}
                     <div className="mb-6 mt-4">
                         <img
-                            src={blog?.coverImage}
+                            src={blog?.coverImage || "/images/LibraryCover_Images(2).jpg"}
                             alt="Blog cover"
                             className="w-full h-80 object-cover rounded-md"
                         />

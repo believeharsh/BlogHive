@@ -11,7 +11,7 @@ const ProfilePage = () => {
   const [activeTab, setActiveTab] = useState("Your Blogs");
   const { userProfileData, loading, blogs = [] } = useUserProfileData();
   const { savedBlogsByUser = [], userId } = useBlogs();
-
+console.log(savedBlogsByUser)
 
   if (!userProfileData) {
     return (
@@ -47,7 +47,7 @@ const ProfilePage = () => {
     }
 
     if (activeTab === "SavedBlogs") {
-      if (!Array.isArray(savedBlogsByUser) || savedBlogsByUser.length === 0) {
+      if (!Array.isArray(savedBlogsByUser) || savedBlogsByUser.length === 0 ) {
         return <div className="border-b border-gray-300 py-4">You haven't saved any blogs yet.</div>;
       }
 
@@ -58,10 +58,10 @@ const ProfilePage = () => {
               authorName={savedBlog.savedBlogId?.createdBy?.fullName || "Unknown Author"}
               profileImageURL={savedBlog.savedBlogId?.createdBy?.profileImageURL || "/images/boy_avatar.jpeg"}
               username={savedBlog.savedBlogId?.createdBy?.username || "anonymous"}
-              title={savedBlog.savedBlogId?.title}
-              body={savedBlog.savedBlogId?.body}
-              coverImage={savedBlog.savedBlogId?.coverImage}
-              createdAt={savedBlog.savedBlogId?.createdAt}
+              title={savedBlog.savedBlogId?.title || "Untitled Blog"}
+              body={savedBlog.savedBlogId?.body || "No content available"}
+              coverImage={savedBlog.savedBlogId?.coverImage || "/images/LibraryCover_Image.jpg"}
+              createdAt={savedBlog.savedBlogId?.createdAt || new Date().toISOString()}
             />
           </Link>
         ));
