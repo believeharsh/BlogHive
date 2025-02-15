@@ -11,7 +11,7 @@ import { BiDotsVerticalRounded } from "react-icons/bi";
 const ProfilePage = () => {
   const [activeTab, setActiveTab] = useState("Your Blogs");
   const { userProfileData, loading, blogs = [] } = useUserProfileData();
-  const { savedBlogsByUser = [], userId } = useBlogs();
+  const { savedBlogsByUser = [] } = useBlogs();
   const { username, fullName, profileImageURL, createdAt } = userProfileData;
 
   const Following = [

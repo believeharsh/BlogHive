@@ -9,33 +9,34 @@ export const useBlogs = () => useContext(blogContext);
 
 export const BlogsProvider = ({ children }) => {
 
-    const [loading, setLoading] = useState(false) ; 
-    const [savedBlogsByUser, setSavedBlogsByUser] = useState([]) ; 
-    const {userProfileData} = useUserProfileData() ; 
-    const userId = userProfileData._id
-  
-    useEffect(() => {
-      const fetchSavedBlogs = async () => {
-        try {
-          const response = await axiosInstance.get(`/blog/saved-blogs/${userId}`);
-          setSavedBlogsByUser(response.data.data)
-          console.log(response)
-          
-        } catch (error) {
-          console.error("Error fetching saved blogs:", error);
-        }
-      };
-  
-      if (userId) {
-        fetchSavedBlogs();
-      }
-    }, [userId]);
+  const [loading, setLoading] = useState(false);
+  const [savedBlogsByUser, setSavedBlogsByUser] = useState([]);
+  const { userProfileData } = useUserProfileData();
+  const userId = userProfileData?._id
 
-    console.log(savedBlogsByUser)
+  const fetchSavedBlogs = async () => {
+    if (!userId) return ;
+    try {
+      const response = await axiosInstance.get(`/blog/saved-blogs/${userId}`);
 
-    return (
-        <blogContext.Provider value={{ loading, savedBlogsByUser, userId, setSavedBlogsByUser }}>
-            {children}
-        </blogContext.Provider>
-    );
+      setSavedBlogsByUser(response.data.data)
+      console.log(response)
+
+    } catch (error) {
+      console.error("Error fetching saved blogs:", error);
+    }
+  }
+
+  useEffect(() => {
+    if (!userId) return; // Run only when userId is available
+  
+    fetchSavedBlogs();
+  }, [userId]);
+
+  // console.log(savedBlogsByUser)
+  return (
+    <blogContext.Provider value={{ loading, savedBlogsByUser, userId, setSavedBlogsByUser }}>
+      {children}
+    </blogContext.Provider>
+  );
 };
