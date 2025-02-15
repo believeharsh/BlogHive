@@ -147,7 +147,7 @@ const BlogDetails = () => {
 
                     {/* Comment Section */}
                     <AddNewComment blogId={id} addNewCommentToState={addNewCommentToState} />
-                    <div className="bg-white shadow-md rounded-lg p-4">
+                    <div className="bg-white  rounded-lg p-4 my-2">
                         <h2 className="text-xl font-semibold mb-4">
                             Comments <span className="text-xl text-gray-600">({comments.length})</span>
                         </h2>
