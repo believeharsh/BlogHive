@@ -45,23 +45,23 @@ const loginUser = asyncHandler(async (req, res) => {
 })
 
 const registerUser = asyncHandler(async (req, res) => {
-    const { fullName, email, password} = req.body
+    const { fullName, email, password } = req.body;
 
     if ([fullName, email, password].some((field) => field?.trim() === "")) {
-        throw new ApiError(400, "all fields are required")
+        throw new ApiError(400, "All fields are required");
     }
 
-    const isUserExists = await User.findOne({ email })
+    const isUserExists = await User.findOne({ email });
     if (isUserExists) {
-        throw new ApiError(409, "user already exists with this email")
+        throw new ApiError(409, "User already exists with this email");
     }
 
     const generatedUsername = generateUsername(email);
     if (!generatedUsername) {
-        throw new ApiError(409, "error occured while generating the username for the user")
+        throw new ApiError(409, "Error occurred while generating the username for the user");
     }
 
-    let avatarUrl
+    let avatarUrl;
     if (req.file) {
         const avatarLocalPath = path.resolve(req.file.path);
         const avatar = await uploadOnCloudinary(avatarLocalPath);
@@ -70,21 +70,39 @@ const registerUser = asyncHandler(async (req, res) => {
 
     const newUser = await User.create({
         username: generatedUsername,
-        fullName: fullName,
-        email: email,
-        password: password,
-        profileImageURL: avatarUrl
+        fullName,
+        email,
+        password,
+        profileImageURL: avatarUrl,
     });
 
-    const createdUser = await User.findById(newUser._id).select("-password")
+    const createdUser = await User.findById(newUser._id).select("-password");
+
     if (!createdUser) {
-        throw new ApiError(500, "something went wrong while creating new user")
+        throw new ApiError(500, "Something went wrong while creating new user");
     }
 
-    return res.status(201).json(
-        new ApiResponse(200, createdUser, "user registered succussfully")
-    )
+    // Generating tokens immediately after sucussful registration to make user logged in as well
+    const { accessToken, refreshToken } = await User.matchPassAndGenTokens(email, password);
+
+    const options = {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'None',
+    };
+
+    return res.status(201)
+        .cookie("accessToken", accessToken, options)
+        .cookie("refreshToken", refreshToken, options)
+        .json(
+            new ApiResponse(
+                201,
+                { user: createdUser, accessToken, refreshToken },
+                "User registered successfully and logged in"
+            )
+        );
 });
+
 
 const logoutUser = asyncHandler(async (req, res) => {
     console.log(req.user._id);

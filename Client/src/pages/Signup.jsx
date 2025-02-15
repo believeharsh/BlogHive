@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../utils/axiosInstance';
+import { useAuth } from '../context/AuthContext';
 
 const SignUpPage = ({ setShowSignUp, setShowLogin }) => {
   const navigate = useNavigate();
+  const {setIsAuthenticated} = useAuth() 
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -32,6 +34,7 @@ const SignUpPage = ({ setShowSignUp, setShowLogin }) => {
       .then((res) => {
         console.log("User is registered successfully");
         console.log(res);
+        setIsAuthenticated(true)
         navigate("/");
         setFullName("");
         setEmail("");
@@ -51,18 +54,18 @@ const SignUpPage = ({ setShowSignUp, setShowLogin }) => {
   };
 
   return (
-    <div className=" flex items-center justify-center bg-gradient-to-r from-gray-200 via-white to-gray-200">
-      <div className="w-full max-w-lg p-10 rounded-2xl shadow-lg relative">
+    <div className="fixed inset-0 flex items-center justify-center bg-white  backdrop-blur-lg z-50">
+      <div className="w-full max-w-2xl bg-white text-black p-8 rounded-3xl shadow-2xl relative flex flex-col items-center">
         {/* Close Button */}
         <button
           onClick={() => setShowSignUp(false)}
-          className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+          className="cursor-pointer absolute top-4 right-4 text-gray-500 hover:text-black text-2xl"
         >
           &times;
         </button>
 
         <h2 className="text-4xl font-semibold text-center text-gray-900 mb-6">
-          Sign Up for BlogNetwork
+          Join BlogHive
         </h2>
 
         <form onSubmit={handleSignUp}>
@@ -75,7 +78,7 @@ const SignUpPage = ({ setShowSignUp, setShowLogin }) => {
               <input
                 type="text"
                 id="fullName"
-                className="w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-200"
+                className="w-full p-4 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black placeholder-gray-500 text-lg"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
                 required
@@ -89,7 +92,7 @@ const SignUpPage = ({ setShowSignUp, setShowLogin }) => {
               <input
                 type="email"
                 id="email"
-                className="w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-200"
+                className="w-full p-4 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black placeholder-gray-500 text-lg"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -108,7 +111,7 @@ const SignUpPage = ({ setShowSignUp, setShowLogin }) => {
                 type="file"
                 id="avatar"
                 accept="image/*"
-                className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-200"
+                className="w-full p-4 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black placeholder-gray-500 text-lg"
                 onChange={(e) => setAvatar(e.target.files[0])}
                 required
               />
@@ -121,7 +124,7 @@ const SignUpPage = ({ setShowSignUp, setShowLogin }) => {
               <input
                 type="password"
                 id="password"
-                className="w-full p-4 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 transition duration-200"
+                className="w-full p-4 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black placeholder-gray-500 text-lg"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
@@ -140,7 +143,7 @@ const SignUpPage = ({ setShowSignUp, setShowLogin }) => {
         </form>
 
         <div className="flex justify-center items-center">
-          <button className="mt-6 text-center text-sm text-gray-500">
+          <button className="mt-6 text-center text-lg font-semibold text-gray-500">
             Already have an account?{" "}
             <p
               onClick={() => redirctToLogin()}
@@ -157,5 +160,6 @@ const SignUpPage = ({ setShowSignUp, setShowLogin }) => {
 };
 
 export default SignUpPage;
+
 
 
