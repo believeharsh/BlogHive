@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import BlogCard from "../components/BlogCard";
 import Spinner from "../components/Spinner";
 import { Link } from "react-router-dom";
@@ -20,26 +20,35 @@ const Home = () => {
   const [hasMore, setHasMore] = useState(true);
   const limit = 5;
 
-  useEffect(() => {
-    const fetchBlogs = async () => {
-      setLoading(true);
-      try {
-        const { data } = await axiosInstance.post(`/blog/getAllBlogs?page=${page}&limit=${limit}`);
+  const scrollRef = useRef(0);
 
-        const newBlogs = data.blogs.filter(
-          (newBlog) => !blogs.some((existingBlog) => existingBlog._id === newBlog._id)
-        );
+useLayoutEffect(() => {
+  window.scrollTo(0, scrollRef.current); // Restore scroll before render
+}, [blogs]); // Runs whenever blogs update
 
-        setBlogs((prev) => [...prev, ...newBlogs]);
-        setHasMore(data.hasMore);
-      } catch (error) {
-        console.error("Error fetching blogs:", error);
-      }
-      setLoading(false);
-    };
+useEffect(() => {
+  const fetchBlogs = async () => {
+    scrollRef.current = window.scrollY; // Save current scroll position
+    setLoading(true);
 
-    fetchBlogs();
-  }, [page]);
+    try {
+      const { data } = await axiosInstance.post(`/blog/getAllBlogs?page=${page}&limit=${limit}`);
+
+      const newBlogs = data.blogs.filter(
+        (newBlog) => !blogs.some((existingBlog) => existingBlog._id === newBlog._id)
+      );
+
+      setBlogs((prev) => [...prev, ...newBlogs]);
+      setHasMore(data.hasMore);
+    } catch (error) {
+      console.error("Error fetching blogs:", error);
+    }
+
+    setLoading(false);
+  };
+
+  fetchBlogs();
+}, [page]);
 
   useEffect(() => {
     // Simulating fetching saved blogs (you can replace this with an API call)
