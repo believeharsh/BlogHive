@@ -22,7 +22,7 @@ const BlogMoreActions = ({ isUserIsAuthor, setIsDeleteConfirmationOpen, setIsDro
     ];
 
     return (
-        <div className="absolute right-0 mt-2 w-48 bg-white shadow-sm rounded-lg p-2 transition-opacity duration-200">
+        <div className="absolute right-8 mt-2 w-48 bg-white shadow-sm rounded-lg p-2 transition-opacity duration-200">
             {(isUserIsAuthor ? authorActions : readerActions).map((action, index) => (
                 <button
                     key={index}

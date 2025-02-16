@@ -52,7 +52,7 @@ const Navbar = () => {
         <div className="flex items-center space-x-4">
           <Link to="/">
             <div className="flex items-center space-x-2">
-              <img src="/assets/bloghive-text-logo.png" alt="Logo" className="w-50 h-15" />
+              <img src="/assets/bloghive-text-logo.png" alt="Logo" className="w-40 h-auto" />
             </div>
           </Link>
         </div>
