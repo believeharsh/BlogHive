@@ -16,6 +16,7 @@ const BlogMoreActions = ({ isUserIsAuthor, setIsDeleteConfirmationOpen, setIsDro
         },
     ];
 
+
     const readerActions = [
         { name: "Follow Author", style: "text-gray-700 hover:bg-gray-100" },
         { name: "Follow Publication", style: "text-gray-700 hover:bg-gray-100" },
@@ -28,7 +29,8 @@ const BlogMoreActions = ({ isUserIsAuthor, setIsDeleteConfirmationOpen, setIsDro
                     key={index}
                     className={`cursor-pointer block w-full text-left px-4 py-2 ${action.style}`}
                     onClick={() => {
-                        setIsDropdownOpen(false); // Closing the  dropdown after any action
+                        if (action.onClick) action.onClick();
+                        setIsDropdownOpen(false);
                     }}
                 >
                     {action.name}

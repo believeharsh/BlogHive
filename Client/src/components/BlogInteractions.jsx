@@ -8,7 +8,7 @@ const BlogInteractions = ({ blogId, userId, isSaved, setIsSaved, setIsShareOpen,
 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] = useState(false);
-
+    
     const handleDeleteConfirmation = () => {
         handleDeleteBlog(blogId);
         setIsDeleteConfirmationOpen(false);
