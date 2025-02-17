@@ -174,6 +174,29 @@ const saveBlogInTheUserProfile = asyncHandler(async (req, res) => {
 
 })
 
+const removeSavedBlogByTheUser = asyncHandler(async (req, res) => {
+    const { blogId } = req.params;
+    const { userId } = req.body;  
+
+    if (!blogId || !userId) {
+        throw new ApiError(400, "Blog ID and User ID are required");
+    }
+
+    // Check if the saved blog entry exists
+    const savedBlog = await SavedBlogs.findOne({ savedBlogId: blogId, savedBy: userId });
+
+    if (!savedBlog) {
+        throw new ApiError(404, "Saved blog entry not found");
+    }
+
+    // Delete the saved blog entry
+    await savedBlog.deleteOne();
+
+    return res.status(200).json(
+        new ApiResponse(200, {}, "Blog removed successfully from saved list")
+    );
+});
+
 const getAllSavedBlogsByUserId = asyncHandler(async (req, res) => {
 
     const { userId } = req.params
@@ -242,5 +265,6 @@ export {
     handleDeleteBlogById,
     saveBlogInTheUserProfile,
     getAllSavedBlogsByUserId,
-    getAllBlogs
+    getAllBlogs,
+    removeSavedBlogByTheUser
 }

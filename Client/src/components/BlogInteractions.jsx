@@ -4,7 +4,7 @@ import { HiOutlineDotsHorizontal } from "react-icons/hi";
 import ConfirmDelete from "./ConfirmDelete";
 import BlogMoreActions from "./BlogMoreActions";
 
-const BlogInteractions = ({ blogId, userId, isSaved, setIsSaved, setIsShareOpen, isUserIsAuthor, handleSaveBlog, handleDeleteBlog }) => {
+const BlogInteractions = ({ blogId, userId, isSaved, setIsSaved, setIsShareOpen, isUserIsAuthor, handleSaveBlog, handleDeleteBlog, handleRemoveSavedBlog }) => {
 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] = useState(false);
@@ -33,8 +33,11 @@ const BlogInteractions = ({ blogId, userId, isSaved, setIsSaved, setIsShareOpen,
 
             {/* Right: Save, Share, More Options */}
             <div className=" relative flex items-center gap-6">
-                <button className=" cursor-pointer  text-gray-500 hover:text-gray-800 transition" onClick={() => handleSaveBlog(blogId, userId)}>
-                    {isSaved ? <FaBookmark className="w-5 h-5 text-gray-900" /> : <FaRegBookmark className="w-5 h-5" />}
+                <button className=" cursor-pointer  text-gray-500 hover:text-gray-800 transition" onClick={() => isSaved ? handleRemoveSavedBlog(blogId, userId) : handleSaveBlog(blogId, userId)}>
+                    {isSaved ? <FaBookmark className="w-5 h-5 text-gray-900" /> : <FaRegBookmark className="w-5 
+                    
+                    h-5" />
+                    }
                 </button>
 
                 <button className="cursor-pointer  text-gray-500 hover:text-gray-800 transition" onClick={() => setIsShareOpen(true)}>

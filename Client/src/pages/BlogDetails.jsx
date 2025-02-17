@@ -14,7 +14,7 @@ import { useUserProfileData } from "../context/userContext";
 
 
 const BlogDetails = () => {
-    const [currentBlog, setCurrentBlog] = useState(null); 
+    const [currentBlog, setCurrentBlog] = useState(null);
     const { savedBlogsByUser, userId, setSavedBlogsByUser } = useBlogs();
     const [comments, setComments] = useState([]);
     const [isShareOpen, setIsShareOpen] = useState(false);
@@ -23,7 +23,7 @@ const BlogDetails = () => {
     const { id } = useParams();
     const [isSaved, setIsSaved] = useState(false);
     const navigate = useNavigate();
-    const {blogs, setBlogs} = useUserProfileData() ; 
+    const { blogs, setBlogs } = useUserProfileData();
 
     useEffect(() => {
         // Checking if the blog is already saved or not?
@@ -54,7 +54,7 @@ const BlogDetails = () => {
     const handleDeleteBlog = async (blogid) => {
         try {
             await axiosInstance.delete(`/blog/${blogid}`);
-            setBlogs((prevBlogs) => prevBlogs.filter(blog => blog._id !== blogid)) ; 
+            setBlogs((prevBlogs) => prevBlogs.filter(blog => blog._id !== blogid));
             setSavedBlogsByUser((prevBlogs) => prevBlogs.filter(blog => blog.savedBlogId._id !== blogid));
             navigate("/");
         } catch (error) {
@@ -98,6 +98,34 @@ const BlogDetails = () => {
         }
     };
 
+    const handleRemoveSavedBlog = async (blogId, userId) => {
+        try {
+            if (!blogId || !userId) {
+                console.log("Blog ID and User ID are required");
+                return;
+            }
+
+            if (isSaved) {
+                const response =  await axiosInstance.delete(
+                    `/blog/remove-saved-blog/${blogId}`,
+                    { headers: { "Content-Type": "application/json" }, data: { userId } }
+                );
+
+
+                if (response.status === 200) {
+                    console.log("blog is removed succussfully")
+                }
+
+                setSavedBlogsByUser((prevBlogs) => prevBlogs.filter(blog => blog.savedBlogId._id !== blogId));
+                setIsSaved(false) ; 
+            }
+
+
+        } catch (error) {
+            console.error("Error occurred while saving the blog:", error.response?.data || error.message);
+        }
+    }
+
     return (
         <>
             {loading && <Spinner />}
@@ -129,6 +157,7 @@ const BlogDetails = () => {
                         isUserIsAuthor={isUserIsAuthor}
                         handleSaveBlog={handleSaveBlog}
                         handleDeleteBlog={handleDeleteBlog}
+                        handleRemoveSavedBlog={handleRemoveSavedBlog}
                     />
 
                     {/* Cover Image */}

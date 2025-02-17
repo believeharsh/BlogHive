@@ -6,7 +6,8 @@ import {
     handleDeleteBlogById,
     saveBlogInTheUserProfile,
     getAllSavedBlogsByUserId,
-    getAllBlogs
+    getAllBlogs,
+    removeSavedBlogByTheUser
 } from "../controllers/blog.js";
 import { upload } from "../middlewares/multer.middleware.js"
 import { verifyUserJwtToken } from "../middlewares/auth.middleware.js"
@@ -21,5 +22,6 @@ router.get("/", getAllBlogsByUserId)
 router.delete("/:blogId", handleDeleteBlogById)
 router.post("/saveBlog/:blogId", saveBlogInTheUserProfile )
 router.get("/saved-blogs/:userId" , getAllSavedBlogsByUserId)
+router.delete("/remove-saved-blog/:blogId" , removeSavedBlogByTheUser)
 
 export default router; 
