@@ -4,7 +4,6 @@ import Comments from "../models/comments.js";
 import { ApiResponse } from "../services/apiResponse.js";
 import { ApiError } from "../services/apiError.js";
 import { asyncHandler } from "../services/asyncHandler.js";
-import path from "path";
 import { uploadOnCloudinary, deleteFromCloudinary } from "../services/cloudinary.js"
 import mongoose from "mongoose";
 
@@ -32,64 +31,6 @@ const getBlogById = asyncHandler(async (req, res) => {
     });
 });
 
-// const handleAddNewBlog = asyncHandler(async (req, res) => {
-//     const { title, body } = req.body;
-
-//     if (!(title && body)) {
-//         throw new ApiError(
-//             400,
-//             "title and body are required fields"
-//         )
-//     }
-//     let coverImageURL
-//     let coverImagePublic_id
-
-//     if (req.file) {
-//         const coverImageLocalPath = path.resolve(req.file.path)
-//         console.log("Uploading file from path:", coverImageLocalPath);
-        
-//         if (!fs.existsSync(coverImageLocalPath)) {
-//             throw new ApiError(500, `File not found at ${coverImageLocalPath}`);
-//         }
-//         const coverImage = await uploadOnCloudinary(coverImageLocalPath).catch(err => {
-//             console.error("Cloudinary Upload Error:", err);
-//             throw new ApiError(500, "Error uploading image to Cloudinary");
-//         });
-
-//         console.log(coverImage)
-//         if (coverImage) {
-//             coverImageURL = coverImage.secure_url
-//             coverImagePublic_id = coverImage.public_id
-//         }
-//     }
-
-//     let newblog = await Blog.create({
-//         body: body,
-//         title: title,
-//         createdBy: req.user._id,
-//         coverImage: coverImageURL,
-//         coverImagePublicId: coverImagePublic_id
-//     })
-
-//     newblog = await newblog.populate("createdBy", "profileImageURL fullName email username")
-
-//     return res
-//         .status(200)
-//         .json(
-//             new ApiResponse(
-//                 200,
-//                 {
-//                     newBlog: newblog,
-//                 },
-//                 "new blog posted succussfully"
-//             ))
-// })
-
-
-
-// above commented out code is the previous code 
-
-// this is the new production issue resolving issue code
 const handleAddNewBlog = asyncHandler(async (req, res) => {
     const { title, body } = req.body;
 
@@ -307,8 +248,6 @@ const getAllBlogs = asyncHandler(async (req, res) => {
         res.status(500).json({ message: "Something went wrong" });
     }
 })
-
-
 
 
 export {
