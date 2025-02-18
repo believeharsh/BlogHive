@@ -46,7 +46,16 @@ const handleAddNewBlog = asyncHandler(async (req, res) => {
 
     if (req.file) {
         const coverImageLocalPath = path.resolve(req.file.path)
-        const coverImage = await uploadOnCloudinary(coverImageLocalPath)
+        console.log("Uploading file from path:", coverImageLocalPath);
+        
+        if (!fs.existsSync(coverImageLocalPath)) {
+            throw new ApiError(500, `File not found at ${coverImageLocalPath}`);
+        }
+        const coverImage = await uploadOnCloudinary(coverImageLocalPath).catch(err => {
+            console.error("Cloudinary Upload Error:", err);
+            throw new ApiError(500, "Error uploading image to Cloudinary");
+        });
+
         console.log(coverImage)
         if (coverImage) {
             coverImageURL = coverImage.secure_url
@@ -179,7 +188,7 @@ const saveBlogInTheUserProfile = asyncHandler(async (req, res) => {
 
 const removeSavedBlogByTheUser = asyncHandler(async (req, res) => {
     const { blogId } = req.params;
-    const { userId } = req.body;  
+    const { userId } = req.body;
 
     if (!blogId || !userId) {
         throw new ApiError(400, "Blog ID and User ID are required");
@@ -220,9 +229,9 @@ const getAllSavedBlogsByUserId = asyncHandler(async (req, res) => {
             populate: { path: "createdBy", select: "name email profileImageURL fullName username" },
         });
 
-        if (!allSavedBlogs || allSavedBlogs.length === 0) {
-            throw new ApiError(404, "No saved blogs found");
-        }
+    if (!allSavedBlogs || allSavedBlogs.length === 0) {
+        throw new ApiError(404, "No saved blogs found");
+    }
 
     return res
         .status(200)
