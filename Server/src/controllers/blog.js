@@ -5,7 +5,7 @@ import { ApiResponse } from "../services/apiResponse.js";
 import { ApiError } from "../services/apiError.js";
 import { asyncHandler } from "../services/asyncHandler.js";
 import path from "path";
-import { uploadOnCloudinary } from "../services/cloudinary.js"
+import { uploadOnCloudinary, deleteFromCloudinary } from "../services/cloudinary.js"
 import mongoose from "mongoose";
 
 const getBlogById = asyncHandler(async (req, res) => {
@@ -42,19 +42,24 @@ const handleAddNewBlog = asyncHandler(async (req, res) => {
         )
     }
     let coverImageURL
+    let coverImagePublic_id
 
     if (req.file) {
         const coverImageLocalPath = path.resolve(req.file.path)
         const coverImage = await uploadOnCloudinary(coverImageLocalPath)
-        // console.log(coverImage)
-        if (coverImage) coverImageURL = coverImage.secure_url
+        console.log(coverImage)
+        if (coverImage) {
+            coverImageURL = coverImage.secure_url
+            coverImagePublic_id = coverImage.public_id
+        }
     }
 
     let newblog = await Blog.create({
         body: body,
         title: title,
         createdBy: req.user._id,
-        coverImage: coverImageURL
+        coverImage: coverImageURL,
+        coverImagePublicId: coverImagePublic_id
     })
 
     newblog = await newblog.populate("createdBy", "profileImageURL fullName email username")
@@ -89,8 +94,7 @@ const getAllBlogsByUserId = asyncHandler(async (req, res) => {
 });
 
 const handleDeleteBlogById = asyncHandler(async (req, res) => {
-    // console.log(req.params) ; 
-    const { blogId } = req.params
+    const { blogId } = req.params;
 
     if (!mongoose.Types.ObjectId.isValid(blogId)) {
         throw new ApiError(400, "Invalid blog ID");
@@ -105,6 +109,12 @@ const handleDeleteBlogById = asyncHandler(async (req, res) => {
         throw new ApiError(403, "Unauthorized to delete this blog");
     }
 
+    // Deleting associated image from Cloudinary
+    if (tobeDeletedBlog.coverImagePublicId) {
+        await deleteFromCloudinary(tobeDeletedBlog.coverImagePublicId);
+    }
+
+    // Removing blog from saved references
     const savedReferences = await SavedBlogs.find({ savedBlogId: blogId });
 
     if (savedReferences.length > 0) {
@@ -112,18 +122,11 @@ const handleDeleteBlogById = asyncHandler(async (req, res) => {
         await SavedBlogs.deleteMany({ savedBlogId: blogId });
     }
 
-    await tobeDeletedBlog.deleteOne()
+    // Deleting the blog from the database
+    await tobeDeletedBlog.deleteOne();
 
-    return res
-        .status(200)
-        .json(
-            new ApiResponse(
-                200,
-                {},
-                "blog deleted succussfully"
-            )
-        )
-})
+    return res.status(200).json(new ApiResponse(200, {}, "Blog deleted successfully"));
+});
 
 const saveBlogInTheUserProfile = asyncHandler(async (req, res) => {
     const { blogId } = req.params
