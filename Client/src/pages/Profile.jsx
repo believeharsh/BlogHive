@@ -7,12 +7,14 @@ import { Link } from "react-router-dom";
 import { useUserProfileData } from "../context/userContext";
 import { useBlogs } from "../context/BlogContext";
 import { BiDotsVerticalRounded } from "react-icons/bi";
+import EditProfilePage from "./EditProfile";
 
 const ProfilePage = () => {
   const [activeTab, setActiveTab] = useState("Your Blogs");
+  const [isEditing, setIsEditing] = useState(false);
   const { userProfileData, loading, blogs = [] } = useUserProfileData();
   const { savedBlogsByUser = [] } = useBlogs();
-  const { username, fullName, profileImageURL, createdAt } = userProfileData;
+  const { username, fullName, profileImageURL, createdAt, about } = userProfileData;
 
   const Following = [
     { id: 1, name: "John Doe", username: "johndoe", profile: "/images/boy_avatar.jpeg" },
@@ -87,9 +89,11 @@ const ProfilePage = () => {
           <p className="font-semibold text-lg mt-3">{fullName}</p>
           <p className="text-gray-500 text-sm">100k Followers</p>
           <p className="text-sm text-gray-600 mt-1 px-2">
-            Enthusiast in Programming and Web Development | Learner | Bontinue
+            {about}
           </p>
-          <button className="text-green-600 hover:underline text-sm mt-2">Edit profile</button>
+          <button 
+          onClick={() => setIsEditing(true)}
+           className="text-green-600 hover:underline text-sm mt-2">Edit profile</button>
         </div>
 
         <div className="bg-white p-6 rounded-lg shadow-sm">
@@ -118,6 +122,8 @@ const ProfilePage = () => {
           ))}
         </div>
       </div>
+       {/* Render EditProfilePage as Modal */}
+       {isEditing && <EditProfilePage onCancle={() => setIsEditing(false)} />}
     </div>
   );
 };

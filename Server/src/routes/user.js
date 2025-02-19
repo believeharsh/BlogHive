@@ -5,7 +5,8 @@ import {
     registerUser, 
     getCurrentUser,
     checkAuth,
-    refreshAccessToken
+    refreshAccessToken,
+    editUserProfile
 } from "../controllers/user.js"
 import { verifyUserJwtToken } from "../middlewares/auth.middleware.js"
 import { upload } from "../middlewares/multer.middleware.js"
@@ -19,6 +20,7 @@ userRoute.post("/signup", upload.single("avatar"), registerUser)
 userRoute.get("/profile", verifyUserJwtToken,  getCurrentUser)
 userRoute.get("/checkAuth", verifyUserJwtToken, checkAuth )
 userRoute.post("/refresh-token", refreshAccessToken)
+userRoute.post("/edit-user-profile", verifyUserJwtToken, editUserProfile)
 
 
 export default userRoute

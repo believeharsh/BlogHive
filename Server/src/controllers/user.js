@@ -103,7 +103,6 @@ const registerUser = asyncHandler(async (req, res) => {
         );
 });
 
-
 const logoutUser = asyncHandler(async (req, res) => {
     console.log(req.user._id);
 
@@ -217,11 +216,37 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
 
 })
 
+const editUserProfile = asyncHandler(async (req, res) => {
+    const { aboutText } = req.body;
+    // console.log(req.user)
+    const userId = req.user._id;
+
+    if (!aboutText) {
+        throw new ApiError(400, "About section cannot be empty");
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(
+        userId,
+        { about: aboutText }, 
+        { new: true, runValidators: true }
+    ).select("about")
+    // console.log(updatedUser)
+
+    if (!updatedUser) {
+        throw new ApiError(500, "Error occurred while updating, please retry");
+    }
+
+    return res.status(200).json(
+        new ApiResponse(200, updatedUser, "User profile updated successfully")
+    );
+});
+
 export {
     loginUser,
     logoutUser,
     registerUser,
     getCurrentUser,
     checkAuth,
-    refreshAccessToken
+    refreshAccessToken,
+    editUserProfile
 }
