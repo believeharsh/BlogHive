@@ -1,10 +1,13 @@
 import React from "react";
 
 const BlogAuthorInfo = ({ profileImageURL, fullName, about, createdAt }) => {
+
+
     return (
         <div className="flex justify-between items-center border-t mt-6 pt-4">
             {/* Left: User Image */}
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4 cursor-pointer"
+            >
                 <img
                     src={profileImageURL}
                     alt={fullName}
@@ -20,7 +23,7 @@ const BlogAuthorInfo = ({ profileImageURL, fullName, about, createdAt }) => {
             </div>
 
             {/* Right: Follow Button */}
-            <button className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition">
+            <button className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition cursor-pointer">
                 Follow
             </button>
         </div>

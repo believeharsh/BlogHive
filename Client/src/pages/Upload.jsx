@@ -69,7 +69,7 @@ const Upload = () => {
         <button
           onClick={handleSubmit}
           disabled={isPublishing || isPublishDisabled}
-          className={`px-3 py-1 text-white font-medium rounded-full bg-green-600 hover:bg-green-700 transition duration-300 flex items-center gap-2 ${isPublishing || isPublishDisabled ? "opacity-50 cursor-not-allowed" : ""}`}
+          className={`cursor-pointer px-3 py-1 text-white font-medium rounded-full bg-green-600 hover:bg-green-700 transition duration-300 flex items-center gap-2 ${isPublishing || isPublishDisabled ? "opacity-50 cursor-not-allowed" : ""}`}
         >
           {isPublishing ? <ImSpinner8 className="animate-spin text-xl" /> : <FiUploadCloud />}
           Publish

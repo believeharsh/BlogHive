@@ -23,6 +23,7 @@ const BlogDetails = () => {
     const { id } = useParams();
     const [isSaved, setIsSaved] = useState(false);
     const navigate = useNavigate();
+    const blogHiveUser = localStorage.getItem("BlogHiveUser");
     const { blogs, setBlogs } = useUserProfileData();
 
     useEffect(() => {
@@ -129,6 +130,7 @@ const BlogDetails = () => {
     return (
         <>
             {loading && <Spinner />}
+
             {!loading && (
                 <div className="max-w-3xl mx-auto px-4 py-6">
                     {/* Blog Title */}
@@ -139,7 +141,7 @@ const BlogDetails = () => {
                         <img
                             src={currentBlog?.createdBy?.profileImageURL}
                             alt={currentBlog?.createdBy?.username}
-                            className="w-12 h-12 rounded-full object-cover"
+                            className="w-12 h-12 rounded-full object-cover cursor-pointer"
                         />
                         <div>
                             <p className="text-lg font-semibold text-gray-800">{currentBlog?.createdBy?.fullName}</p>

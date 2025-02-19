@@ -42,7 +42,7 @@ const AddNewComment = ({ blogId, addNewCommentToState }) => {
             <button
                 onClick={postNewComment}
                 disabled={loading}
-                className="bg-blue-500 text-white p-2 rounded-full hover:bg-blue-600 transition flex items-center justify-center"
+                className="cursor-pointer bg-blue-500 text-white p-2 rounded-full hover:bg-blue-600 transition flex items-center justify-center"
             >
                 {loading ? (
                     <FiLoader className="animate-spin w-5 h-5" />

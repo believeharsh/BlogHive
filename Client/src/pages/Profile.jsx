@@ -93,7 +93,7 @@ const ProfilePage = () => {
           </p>
           <button 
           onClick={() => setIsEditing(true)}
-           className="text-green-600 hover:underline text-sm mt-2">Edit profile</button>
+           className="cursor-pointer text-green-600 hover:underline text-sm mt-2">Edit profile</button>
         </div>
 
         <div className="bg-white p-6 rounded-lg shadow-sm">
@@ -111,7 +111,7 @@ const ProfilePage = () => {
               </div>
             ))}
           </div>
-          <button className="text-green-600 text-sm mt-4 hover:underline">See all ({Following.length})</button>
+          <button className="cursor-pointer text-green-600 text-sm mt-4 hover:underline">See all ({Following.length})</button>
         </div>
 
         <div className="flex flex-wrap gap-3 text-sm font-light text-gray-600 py-6 justify-center">
