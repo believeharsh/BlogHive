@@ -3,6 +3,8 @@ import { FaRegHeart, FaRegComment, FaRegBookmark, FaRegShareSquare, FaBookmark }
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
 import ConfirmDelete from "./ConfirmDelete";
 import BlogMoreActions from "./BlogMoreActions";
+import { PiHandsClappingLight } from "react-icons/pi";
+import { IoShareOutline } from "react-icons/io5";
 
 const BlogInteractions = ({ blogId, userId, isSaved, setIsSaved, setIsShareOpen, isUserIsAuthor, handleSaveBlog, handleDeleteBlog, handleRemoveSavedBlog }) => {
 
@@ -20,7 +22,8 @@ const BlogInteractions = ({ blogId, userId, isSaved, setIsSaved, setIsShareOpen,
             <div className="flex items-center gap-6">
 
                 <button className=" cursor-pointer flex items-center gap-1 text-gray-500 hover:text-gray-800 transition">
-                    <FaRegHeart className="w-5 h-5" />
+                    {/* <FaRegHeart className="w-5 h-5" /> */}
+                    <PiHandsClappingLight className="w-6 h-6"/>
                     <span>Like</span>
                 </button>
 
@@ -41,11 +44,12 @@ const BlogInteractions = ({ blogId, userId, isSaved, setIsSaved, setIsShareOpen,
                 </button>
 
                 <button className="cursor-pointer  text-gray-500 hover:text-gray-800 transition" onClick={() => setIsShareOpen(true)}>
-                    <FaRegShareSquare className="w-5 h-5" />
+                    {/* <FaRegShareSquare className="w-5 h-5" /> */}
+                    <IoShareOutline className="w-6 h-6" />
                 </button>
 
                 <button className="cursor-pointer  text-gray-500 hover:text-gray-800 transition" onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
-                    <HiOutlineDotsHorizontal className="w-5 h-5" />
+                    <HiOutlineDotsHorizontal className="w-6 h-6" />
                 </button>
 
                 {isDropdownOpen && (

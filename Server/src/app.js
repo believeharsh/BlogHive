@@ -8,6 +8,7 @@ import commentsRoute from "./routes/comments.js"
 import path from "path"
 import cookieParser from "cookie-parser"
 import adminRoute from "./routes/admin.js"
+import followRoute from "./routes/follow.js"
 
 dotenv.config()
 
@@ -35,6 +36,7 @@ app.use("/user", userRoute)
 app.use("/blog", blogRoute)
 app.use("/comment", commentsRoute)
 app.use("/admin", adminRoute)
+app.use("/follow", followRoute)
 
 
 export { app }

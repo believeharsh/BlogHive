@@ -11,6 +11,7 @@ import BlogInteractions from "../components/BlogInteractions";
 import BlogAuthorInfo from "../components/BlogAuthorInfo";
 import axiosInstance from "../utils/axiosInstance";
 import { useUserProfileData } from "../context/userContext";
+import FollowButton from "../components/FollowButton";
 
 
 const BlogDetails = () => {
@@ -107,7 +108,7 @@ const BlogDetails = () => {
             }
 
             if (isSaved) {
-                const response =  await axiosInstance.delete(
+                const response = await axiosInstance.delete(
                     `/blog/remove-saved-blog/${blogId}`,
                     { headers: { "Content-Type": "application/json" }, data: { userId } }
                 );
@@ -118,7 +119,7 @@ const BlogDetails = () => {
                 }
 
                 setSavedBlogsByUser((prevBlogs) => prevBlogs.filter(blog => blog.savedBlogId._id !== blogId));
-                setIsSaved(false) ; 
+                setIsSaved(false);
             }
 
 
@@ -126,6 +127,8 @@ const BlogDetails = () => {
             console.error("Error occurred while saving the blog:", error.response?.data || error.message);
         }
     }
+
+    // console.log(currentBlog)
 
     return (
         <>
@@ -146,6 +149,14 @@ const BlogDetails = () => {
                         <div>
                             <p className="text-lg font-semibold text-gray-800">{currentBlog?.createdBy?.fullName}</p>
                             <p className="text-sm text-gray-500">{formatDate(currentBlog?.createdAt)}</p>
+                        </div>
+
+                        <div className="">
+                            {/* <button className="text-blue-600 font-lg font-semibold hover:text-blue-500 cursor-pointer">Follow</button> */}
+                            <FollowButton
+                                authorId={currentBlog?.createdBy?._id}
+                                // currentUserId={ }
+                            />
                         </div>
                     </div>
 
