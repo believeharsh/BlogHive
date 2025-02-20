@@ -26,7 +26,6 @@ const LoginPage = ({ setShowLogin, setShowSignUp }) => {
     setLoading(true);
     try {
       const res = await axiosInstance.post("/user/signin", { email, password }, { headers: { "Content-Type": "application/json" } });
-      // console.log("Full server response:", res);
       const userRole = res.data.data.role ; 
       setRole(userRole);
       login();

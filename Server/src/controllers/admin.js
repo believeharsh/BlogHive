@@ -9,9 +9,9 @@ const ServeAdminDashBoard = asyncHandler(async (req, res) => {
     const totalBlogs = await Blog.countDocuments();
 
     // Fetch latest users and blogs
-    const latestUsers = await User.find().sort({ createdAt: -1 }).limit(5).select("fullName email createdAt profileImageURL");
+    const latestUsers = await User.find().sort({ createdAt: -1 }).limit(25).select("fullName email createdAt profileImageURL");
     const latestBlogs = await Blog.find().sort({ createdAt: -1 }).limit(5).select("title body createdAt coverImage")
-    .populate("createdBy", "fullName email profileImageURL")
+        .populate("createdBy", "fullName email profileImageURL")
 
     return res.status(200).json(new ApiResponse(200, {
         totalUsers,
