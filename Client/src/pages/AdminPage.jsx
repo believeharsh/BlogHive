@@ -12,6 +12,7 @@ const AdminDashboard = () => {
         pendingApprovals: 0,
     });
 
+    // console.log(dashboardData)
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -28,7 +29,7 @@ const AdminDashboard = () => {
 
     return (
         <div className="min-h-screen bg-gray-900 text-gray-200 p-6">
-            <button className="text-white font-medium text-xl my-2 flex items-center gap-2 cursor-pointer" onClick={() => navigate("/")}> 
+            <button className="text-white font-medium text-xl my-2 flex items-center gap-2 cursor-pointer" onClick={() => navigate("/")}>
                 <IoArrowBack /> Back
             </button>
             <h1 className="text-3xl font-bold text-white mb-6">Admin Dashboard</h1>
@@ -71,7 +72,7 @@ const LatestUsers = ({ users = [] }) => (
                         users.map((user) => (
                             <tr key={user._id} className="text-center">
                                 <td className="border border-gray-600 px-4 py-2">
-                                    <img src={user.profileImageURL} alt={user.fullName} className="w-10 h-10 rounded-full mx-auto" />
+                                    <img src={user.profileImageURL === "/public/Images/defaultImage.png" ? "/images/default_Image.jpeg" : user.profileImageURL} alt={user.fullName} className="w-10 h-10 rounded-full mx-auto" />
                                 </td>
                                 <td className="border border-gray-600 px-4 py-2">{user.fullName}</td>
                                 <td className="border border-gray-600 px-4 py-2">{user.email}</td>
