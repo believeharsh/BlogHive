@@ -147,17 +147,16 @@ const BlogDetails = () => {
                             className="w-12 h-12 rounded-full object-cover cursor-pointer"
                         />
                         <div>
-                            <p className="text-lg font-semibold text-gray-800">{currentBlog?.createdBy?.fullName}</p>
+                            <p className="text-lg font-semibold text-gray-800">{currentBlog?.createdBy?.fullName}
+                                <span> 
+                                <FollowButton className="text-xl font-medium"
+                                    authorId={currentBlog?.createdBy?._id}
+                                />   
+                                </span>
+                            </p>
                             <p className="text-sm text-gray-500">{formatDate(currentBlog?.createdAt)}</p>
                         </div>
 
-                        <div className="">
-                            {/* <button className="text-blue-600 font-lg font-semibold hover:text-blue-500 cursor-pointer">Follow</button> */}
-                            <FollowButton
-                                authorId={currentBlog?.createdBy?._id}
-                                // currentUserId={ }
-                            />
-                        </div>
                     </div>
 
                     {/* Interaction Buttons ✅ Using the new component */}

@@ -7,7 +7,6 @@ const FollowButton = ({ authorId }) => {
     useEffect(() => {
         const checkFollowStatus = async () => {
             try {
-                // console.log("Sending Follow request to:", `/follow/isAlreadyFollowing/${authorId}`);
 
                 const res = await axiosInstance.get(`/follow/isAlreadyFollowing/${authorId}`);
                 console.log("Response:", res);
@@ -36,7 +35,7 @@ const FollowButton = ({ authorId }) => {
 
     const handleUnfollow = async () => {
         try {
-            await axiosInstance.delete(`/follow/unfollow-an-author/${authorId}`); // ✅ Fixed URL
+            await axiosInstance.delete(`/follow/unfollow-an-author/${authorId}`); 
             setIsFollowing(false);
         } catch (error) {
             console.error("Error:", error.response ? error.response.data : error.message);
@@ -49,7 +48,7 @@ const FollowButton = ({ authorId }) => {
             className="px-4 py-2 text-blue-800 hover:text-blue-600 cursor-pointer"
             disabled={!authorId}  // Disable button if authorId is undefined
         >
-            {isFollowing ? "Unfollow" : "Follow"}
+            {isFollowing ? "Following" : "Follow"}
         </button>
     );
 };

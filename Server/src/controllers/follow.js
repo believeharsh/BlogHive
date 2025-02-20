@@ -21,7 +21,7 @@ const followAnAuthor = asyncHandler(async (req, res) => {
 
         const newFollow = new follow({
             follower: userId,
-            following: authorId,  // ✅ Corrected
+            following: authorId,  
         });
 
         await newFollow.save();
@@ -59,7 +59,6 @@ const unFollowAnAuthor = asyncHandler(async (req, res) => {
 
 
 const isAlreadyFollwing = asyncHandler(async(req, res) => {
-    // console.log(req.params)
     const authorId = req.params.authorId;
     const userId = req.user.id;
     try {
