@@ -8,8 +8,6 @@ const verifyUserJwtToken = asyncHandler(async (req, res, next) => {
 
     try {
         const userToken = req.cookies?.accessToken
-        // console.log(userToken)
-
         if (!userToken) {
             throw new ApiResponse(401, "unauthorized request")
         }

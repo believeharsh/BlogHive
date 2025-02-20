@@ -16,41 +16,43 @@ const SignUpPage = ({ setShowSignUp, setShowLogin }) => {
     setShowLogin(true)
   }
 
-  const handleSignUp = (e) => {
+  const handleSignUp = async (e) => {
     e.preventDefault();
-
-    const formData = new FormData();
-    formData.append('fullName', fullName);
-    formData.append('email', email);
-    formData.append('password', password);
-    if (avatar) {
-      formData.append('avatar', avatar);
-    }
-
-    axiosInstance
-      .post("/user/signup", formData, {
+  
+    try {
+      const formData = new FormData();
+      formData.append('fullName', fullName);
+      formData.append('email', email);
+      formData.append('password', password);
+      if (avatar) {
+        formData.append('avatar', avatar);
+      }
+  
+      const res = await axiosInstance.post("/user/signup", formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
-      })
-      .then((res) => {
-        console.log("User is registered successfully");
-        console.log(res);
-        setIsAuthenticated(true)
-        navigate("/");
-        setFullName("");
-        setEmail("");
-        setPassword("");
-        setAvatar(null);
-        setShowSignUp(false);
-      })
-      .catch((err) => {
-        if (err.response && err.response.status === 409) {
-          alert("User already exists with this email. Please login.");
-        } else {
-          console.error("Signup error:", err);
-          console.error("Error response:", err.response);
-          alert("An error occurred. Please try again.");
-        }
       });
+  
+      console.log("User is registered successfully");
+      console.log(res);
+      setIsAuthenticated(true);
+      navigate("/");
+      
+      // Reset form fields
+      setFullName("");
+      setEmail("");
+      setPassword("");
+      setAvatar(null);
+      setShowSignUp(false);
+      
+    } catch (err) {
+      if (err.response && err.response.status === 409) {
+        alert("User already exists with this email. Please login.");
+      } else {
+        console.error("Signup error:", err);
+        console.error("Error response:", err.response);
+        alert("An error occurred. Please try again.");
+      }
+    }
   };
 
   return (

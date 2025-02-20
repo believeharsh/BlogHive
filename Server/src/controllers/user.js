@@ -63,10 +63,10 @@ const registerUser = asyncHandler(async (req, res) => {
 
     let avatarUrl;
     if (req.file) {
-        const avatarLocalPath = path.resolve(req.file.path);
-        const avatar = await uploadOnCloudinary(avatarLocalPath);
+        const avatar = await uploadOnCloudinary(req.file.buffer);  // avatar is stored in memory by multer middleware
         if (avatar) avatarUrl = avatar.secure_url;
     }
+
 
     const newUser = await User.create({
         username: generatedUsername,
@@ -227,7 +227,7 @@ const editUserProfile = asyncHandler(async (req, res) => {
 
     const updatedUser = await User.findByIdAndUpdate(
         userId,
-        { about: aboutText }, 
+        { about: aboutText },
         { new: true, runValidators: true }
     ).select("about")
     // console.log(updatedUser)
