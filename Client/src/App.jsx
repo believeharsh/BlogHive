@@ -13,6 +13,8 @@ import { BlogsProvider } from "./context/BlogContext";
 import { useAuth } from "./context/AuthContext";
 import LandingPage from "./pages/Landing";
 import Spinner from "./components/Spinner";
+import AdminRoute from "./context/AdminRoute";
+import AdminPage from "./pages/AdminPage";
 
 function App() {
   const { isAuthenticated, loading } = useAuth();
@@ -40,6 +42,7 @@ function App() {
 
           {/* Upload page outside Layout */}
           <Route path="/blog/Upload" element={<ProtectedRoute><Upload /></ProtectedRoute>} />
+          <Route path="/Admin" element={<AdminRoute><AdminPage/></AdminRoute>}/>
 
           {/* Redirect any unknown route to Home or Landing Page */}
           <Route path="*" element={<Navigate to={isAuthenticated ? "/" : "/"} />} />

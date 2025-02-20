@@ -36,7 +36,8 @@ const loginUser = asyncHandler(async (req, res) => {
             new ApiResponse(
                 200,
                 {
-                    user: accessToken, refreshToken
+                    user: accessToken, refreshToken,
+                    role: user.role,
                 },
                 "user logged in succussfully"
             )
@@ -153,13 +154,13 @@ const getCurrentUser = asyncHandler(async (req, res) => {
 })
 
 const checkAuth = asyncHandler(async (req, res) => {
-    // console.log(req.user)
+    const user = req.user ; 
     return res
         .status(200)
         .json(
             new ApiResponse(
                 200,
-                {},
+                {user},
                 "user is authenticated"
             )
         )

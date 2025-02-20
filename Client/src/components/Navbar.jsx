@@ -8,12 +8,13 @@ import { useAuth } from "../context/AuthContext";
 import { useUserProfileData } from "../context/userContext";
 import Spinner from "./Spinner";
 import axiosInstance from "../utils/axiosInstance";
+import { MdAdminPanelSettings } from "react-icons/md";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { logout } = useAuth();
+  const { logout, role } = useAuth();
   const { setBlogs, setUserProfileData, userProfileData } = useUserProfileData();
   const blogHiveUser = localStorage.getItem("BlogHiveUser");
 
@@ -39,8 +40,8 @@ const Navbar = () => {
   const dropdownItems = [
     { name: "Profile", icon: <FiUser />, path: `/${blogHiveUser}` },
     { name: "Library", icon: <FiBook />, path: "/library" },
-    { name: "Stories", icon: <TiDocumentText />, path: ""},
-    { name: "Stats", icon: <IoStatsChartOutline />, path: ""},
+    { name: "Stories", icon: <TiDocumentText />, path: "" },
+    { name: "Stats", icon: <IoStatsChartOutline />, path: "" },
     { name: "Logout", icon: <FiLogOut />, action: logoutUser },
 
   ];
@@ -55,6 +56,13 @@ const Navbar = () => {
               <img src="/assets/bloghive-text-logo.png" alt="Logo" className="w-40 h-auto" />
             </div>
           </Link>
+          <Link to="/Admin">
+            <button className="text-2xl w-56 h-14 cursor-pointer text-black ">
+              {role === "ADMIN" && <MdAdminPanelSettings className="text-4xl" />}
+            </button>
+          </Link>
+
+
         </div>
 
         {/* Right Section */}
@@ -89,11 +97,11 @@ const Navbar = () => {
                       className="px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center space-x-2"
                       onClick={() => {
                         if (item.action) {
-                          item.action(); 
+                          item.action();
                         } else {
-                          navigate(item.path); 
+                          navigate(item.path);
                         }
-                        setIsDropdownOpen(false); 
+                        setIsDropdownOpen(false);
                       }}
                     >
                       {item.icon} <span>{item.name}</span>

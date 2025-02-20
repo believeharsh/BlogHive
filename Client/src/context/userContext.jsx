@@ -18,6 +18,7 @@ export const UserProfileProvider = ({ children }) => {
             const email = profiledata.email;
             const username = '@' + `${email.split("@")[0]}`;
             localStorage.setItem("BlogHiveUser", username);
+            localStorage.setItem("Role", profiledata.role) ; 
 
             setUserProfileData(profiledata);
         } catch (error) {
@@ -32,7 +33,7 @@ export const UserProfileProvider = ({ children }) => {
         setLoading(true);
         try {
             const res = await axiosInstance.get(`/blog`)
-            console.log("Blogs fetched:", res.data);
+            // console.log("Blogs fetched:", res.data);
             setBlogs(res.data.data.blogs || []);
         } catch (error) {
             console.error("Error fetching user blogs:", error);

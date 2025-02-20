@@ -13,7 +13,7 @@ const LoginPage = ({ setShowLogin, setShowSignUp }) => {
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState('');
-  const { login } = useAuth();
+  const { login, setRole } = useAuth();
   const { refreshUserData } = useUserProfileData();
 
   const redirectToSignUp = () => {
@@ -26,7 +26,9 @@ const LoginPage = ({ setShowLogin, setShowSignUp }) => {
     setLoading(true);
     try {
       const res = await axiosInstance.post("/user/signin", { email, password }, { headers: { "Content-Type": "application/json" } });
-      console.log("Full server response:", res);
+      // console.log("Full server response:", res);
+      const userRole = res.data.data.role ; 
+      setRole(userRole);
       login();
       await refreshUserData();
       navigate("/");

@@ -7,6 +7,7 @@ import blogRoute from "./routes/blog.js"
 import commentsRoute from "./routes/comments.js"
 import path from "path"
 import cookieParser from "cookie-parser"
+import adminRoute from "./routes/admin.js"
 
 dotenv.config()
 
@@ -33,6 +34,7 @@ app.get("/", (req, res) => {
 app.use("/user", userRoute)
 app.use("/blog", blogRoute)
 app.use("/comment", commentsRoute)
+app.use("/admin", adminRoute)
 
 
 export { app }
