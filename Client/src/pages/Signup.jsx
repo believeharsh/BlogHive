@@ -2,14 +2,16 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../utils/axiosInstance';
 import { useAuth } from '../context/AuthContext';
+import { ImSpinner8 } from 'react-icons/im';
 
 const SignUpPage = ({ setShowSignUp, setShowLogin }) => {
   const navigate = useNavigate();
-  const {setIsAuthenticated} = useAuth() 
+  const { setIsAuthenticated } = useAuth()
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [avatar, setAvatar] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const redirctToLogin = () => {
     setShowSignUp(false)
@@ -18,7 +20,8 @@ const SignUpPage = ({ setShowSignUp, setShowLogin }) => {
 
   const handleSignUp = async (e) => {
     e.preventDefault();
-  
+    setLoading(true);
+
     try {
       const formData = new FormData();
       formData.append('fullName', fullName);
@@ -27,13 +30,11 @@ const SignUpPage = ({ setShowSignUp, setShowLogin }) => {
       if (avatar) {
         formData.append('avatar', avatar);
       }
-  
+
       const res = await axiosInstance.post("/user/signup", formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
-  
-      console.log("User is registered successfully");
-      console.log(res);
+
       setIsAuthenticated(true);
       navigate("/");
       
@@ -43,7 +44,8 @@ const SignUpPage = ({ setShowSignUp, setShowLogin }) => {
       setPassword("");
       setAvatar(null);
       setShowSignUp(false);
-      
+      setLoading(false);
+
     } catch (err) {
       if (err.response && err.response.status === 409) {
         alert("User already exists with this email. Please login.");
@@ -52,6 +54,7 @@ const SignUpPage = ({ setShowSignUp, setShowLogin }) => {
         console.error("Error response:", err.response);
         alert("An error occurred. Please try again.");
       }
+      setLoading(false);
     }
   };
 
@@ -139,8 +142,16 @@ const SignUpPage = ({ setShowSignUp, setShowLogin }) => {
           <button
             type="submit"
             className="w-full mt-6 py-3 px-4 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-200"
+            disabled={loading}
           >
-            Sign Up
+            {loading ? (
+              <>
+                registering you ...
+                <ImSpinner8 className="animate-spin text-2xl text-green-600 ml-4" />
+              </>
+            ) : (
+              "Sign Up"
+            )}
           </button>
         </form>
 
