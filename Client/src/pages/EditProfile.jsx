@@ -30,13 +30,16 @@ const EditProfilePage = ({ initialAboutText, onCancle }) => {
     };
 
     return (
-        <div className="fixed inset-0 flex items-center justify-center backdrop-blur-xs z-50  transition-opacity duration-300 ease-in-out opacity-100">
-            <div className="bg-white p-6 rounded-lg shadow-lg w-[90%] h-[90%] max-w-lg relative  opacity-100 scale-95 transition-transform duration-300 ease-in-out">
+        <div className="fixed inset-0 flex items-center justify-center backdrop-blur-xs z-50 transition-opacity duration-300 ease-in-out opacity-100">
+            <div className="bg-white p-6 rounded-lg shadow-lg w-[90%] max-w-lg relative opacity-100 scale-95 transition-transform duration-300 ease-in-out
+                max-h-[90vh] overflow-y-auto">
                 <button className="absolute top-4 right-4" onClick={onCancle}>
                     <RxCross1 className="text-gray-700 hover:text-gray-900 cursor-pointer " />
                 </button>
                 <div className="flex justify-center items-center flex-col">
                     <h2 className="text-xl font-semibold mb-5">Profile Information</h2>
+
+                    {/* Profile Image Section */}
                     <div className="flex items-center gap-4 w-full">
                         <img
                             src="/images/boy_avatar.jpeg"
@@ -49,20 +52,17 @@ const EditProfilePage = ({ initialAboutText, onCancle }) => {
                                     <button className="text-green-600 text-sm font-medium cursor-pointer">Update
                                     </button>
                                 </MessComponent>
-
                                 <MessComponent message="Can't remove the image yet!">
-                                <button className="text-red-600 text-sm font-medium ml-4 cursor-pointer">Remove</button>
+                                    <button className="text-red-600 text-sm font-medium ml-4 cursor-pointer">Remove</button>
                                 </MessComponent>
-                               
                             </div>
-
                             <div className="text-sm font-semibold">
                                 Recommended: Square JPG, PNG, or GIF, at least 1,000 pixels per side.
                             </div>
-
                         </div>
                     </div>
 
+                    {/* Name Input */}
                     <div className="w-full">
                         <label className="block mt-4 text-lg font-medium">Name*</label>
                         <input
@@ -84,8 +84,7 @@ const EditProfilePage = ({ initialAboutText, onCancle }) => {
                         />
                     </div>
 
-
-
+                    {/* Short Bio */}
                     <div className="w-full">
                         <label className="block mt-4 text-lg font-medium">Short bio</label>
                         <textarea
@@ -95,8 +94,8 @@ const EditProfilePage = ({ initialAboutText, onCancle }) => {
                         />
                     </div>
 
-                    {/* Buttons */}
-                    <div className="flex justify-end gap-4 mt-7 w-full">
+                    {/* Buttons (Always Visible) */}
+                    <div className="sticky bottom-0 bg-white py-4 w-full flex justify-end gap-4 border-t border-gray-300 mt-7">
                         <button
                             className="px-4 py-2 border border-green-700 rounded-2xl text-green-700 cursor-pointer"
                             onClick={onCancle}
@@ -114,6 +113,7 @@ const EditProfilePage = ({ initialAboutText, onCancle }) => {
             </div>
         </div>
     );
+
 };
 
 export default EditProfilePage;
