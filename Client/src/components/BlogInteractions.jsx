@@ -16,7 +16,8 @@ const BlogInteractions = ({
     isUserIsAuthor,
     handleSaveBlog,
     handleDeleteBlog,
-    handleRemoveSavedBlog }) => {
+    handleRemoveSavedBlog,
+    scrollToComments }) => {
 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const blogMoreBTNRef = useRef();
@@ -41,7 +42,10 @@ const BlogInteractions = ({
                 </div>
 
 
-                <div className="flex items-center gap-3">
+                <div 
+                    className="flex items-center gap-3"
+                    onClick={scrollToComments}
+                    >
                     <button className="cursor-pointer  flex items-center gap-1 text-gray-500 hover:text-gray-800 transition">
                         <FaRegComment className="w-5 h-5" />
                     </button>

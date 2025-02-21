@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef} from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Spinner from "../components/Spinner";
 import AddNewComment from "../components/AddNewComment";
@@ -12,6 +12,7 @@ import BlogAuthorInfo from "../components/BlogAuthorInfo";
 import axiosInstance from "../utils/axiosInstance";
 import { useUserProfileData } from "../context/userContext";
 import FollowButton from "../components/FollowButton";
+import useScrollToElement from "../hooks/useScrollToElement";
 
 
 const BlogDetails = () => {
@@ -25,7 +26,9 @@ const BlogDetails = () => {
     const { id } = useParams();
     const [isSaved, setIsSaved] = useState(false);
     const navigate = useNavigate()
-    const { blogs, setBlogs } = useUserProfileData();
+    const { setBlogs } = useUserProfileData();
+
+    const [commentSectionRef, scrollToComments] = useScrollToElement();
 
     useEffect(() => {
         // Checking if the blog is already saved or not?
@@ -168,6 +171,7 @@ const BlogDetails = () => {
                         handleDeleteBlog={handleDeleteBlog}
                         handleRemoveSavedBlog={handleRemoveSavedBlog}
                         totalComments={comments.length}
+                        scrollToComments={scrollToComments}
                     />
 
                     {/* Cover Image */}
@@ -180,12 +184,16 @@ const BlogDetails = () => {
                     </div>
 
                     {/* Blog Content */}
-                    <div className="prose prose-lg text-gray-700 py-2">
+                    <div className="prose prose-lg text-gray-700 py-2 mb-3">
                         <BlogBody content={currentBlog?.body} />
                     </div>
 
                     {/* Comment Section */}
-                    <AddNewComment blogId={id} addNewCommentToState={addNewCommentToState} />
+                    <AddNewComment 
+                    blogId={id} 
+                    addNewCommentToState={addNewCommentToState} 
+                    CommentSectionref={commentSectionRef}
+                    />
                     <div className="bg-white  rounded-lg p-4 my-2">
                         <h2 className="text-xl font-semibold mb-4">
                             Responses <span className="text-xl text-gray-600">({comments.length})</span>

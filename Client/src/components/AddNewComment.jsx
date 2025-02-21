@@ -4,7 +4,7 @@ import { FiLoader } from "react-icons/fi";
 import axiosInstance from "../utils/axiosInstance";
 
 
-const AddNewComment = ({ blogId, addNewCommentToState }) => {
+const AddNewComment = ({ blogId, addNewCommentToState, CommentSectionref }) => {
     const [loading, setLoading] = useState(false);
     const [comment, setComment] = useState("");
 
@@ -27,7 +27,10 @@ const AddNewComment = ({ blogId, addNewCommentToState }) => {
     };
 
     return (
-        <div className="flex items-center gap-3 bg-white border border-gray-300 shadow-sm rounded-full p-2 px-4 transition focus-within:shadow-md m-1">
+        <div 
+        className="flex items-center gap-3 bg-white border border-gray-300 shadow-sm rounded-full p-2 py-2 px-4 transition focus-within:shadow-md m-1"
+        ref={CommentSectionref}
+        >
 
             <input
                 type="text"
