@@ -1,4 +1,5 @@
 import React from "react";
+import FollowButton from "../components/FollowButton"
 
 const BlogAuthorInfo = ({ profileImageURL, fullName, about, createdAt }) => {
 
@@ -23,9 +24,9 @@ const BlogAuthorInfo = ({ profileImageURL, fullName, about, createdAt }) => {
             </div>
 
             {/* Right: Follow Button */}
-            <button className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition cursor-pointer">
-                Follow
-            </button>
+            <button className="px-2 py-1 bg-black font-semibold rounded-full text-xl cursor-pointer" >
+              <FollowButton buttonColor={"text-white"}/>
+          </button>
         </div>
     );
 };

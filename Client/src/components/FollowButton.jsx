@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axiosInstance from "../utils/axiosInstance";
 
-const FollowButton = ({ authorId }) => {
+const FollowButton = ({ authorId, buttonColor }) => {
     const [isFollowing, setIsFollowing] = useState(false);
  
     useEffect(() => {
@@ -45,7 +45,7 @@ const FollowButton = ({ authorId }) => {
     return (
         <button
             onClick={authorId ? (isFollowing ? handleUnfollow : handleFollow) : null}
-            className="px-4 py-2 text-blue-800 hover:text-blue-600 cursor-pointer"
+            className={`px-4 py-2 cursor-pointer ${buttonColor}`}
             disabled={!authorId}  // Disable button if authorId is undefined
         >
             {isFollowing ? "Following" : "Follow"}

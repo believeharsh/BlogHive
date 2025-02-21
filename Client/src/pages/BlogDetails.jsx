@@ -128,8 +128,6 @@ const BlogDetails = () => {
         }
     }
 
-    // console.log(currentBlog)
-
     return (
         <>
             {loading && <Spinner />}
@@ -148,10 +146,11 @@ const BlogDetails = () => {
                         />
                         <div>
                             <p className="text-lg font-semibold text-gray-800">{currentBlog?.createdBy?.fullName}
-                                <span> 
-                                <FollowButton className="text-xl font-medium"
-                                    authorId={currentBlog?.createdBy?._id}
-                                />   
+                                <span>
+                                    <FollowButton className="text-xl font-medium"
+                                        authorId={currentBlog?.createdBy?._id}
+                                        buttonColor={"text-blue-700"}
+                                    />
                                 </span>
                             </p>
                             <p className="text-sm text-gray-500">{formatDate(currentBlog?.createdAt)}</p>
@@ -190,7 +189,7 @@ const BlogDetails = () => {
                     <AddNewComment blogId={id} addNewCommentToState={addNewCommentToState} />
                     <div className="bg-white  rounded-lg p-4 my-2">
                         <h2 className="text-xl font-semibold mb-4">
-                            Comments <span className="text-xl text-gray-600">({comments.length})</span>
+                            Responses <span className="text-xl text-gray-600">({comments.length})</span>
                         </h2>
                         {comments.length > 0 ? (
                             comments.map((comment) => <CommentCard key={comment._id} comment={comment} />)

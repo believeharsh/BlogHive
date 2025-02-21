@@ -1,6 +1,7 @@
 import React from "react";
-import { FaThumbsUp, FaThumbsDown } from "react-icons/fa";
+import { FaRegComment } from "react-icons/fa";
 import formatDate from "../utils/FormateData";
+import { PiHandsClappingLight } from "react-icons/pi";
 
 const CommentCard = ({ comment }) => {
     return (
@@ -24,13 +25,13 @@ const CommentCard = ({ comment }) => {
                 <p className="text-sm text-gray-700 mt-1">{comment.content}</p>
 
                 {/* Like & Dislike Buttons */}
-                <div className="flex gap-4 mt-1 text-gray-500 text-xs">
-                    <button className="flex items-center gap-1 hover:text-blue-500 transition">
-                        <FaThumbsUp className="w-3.5 h-3.5" /> 
+                <div className="flex gap-4 mt-1 text-gray-500 text-sm ml-2">
+                    <button className="flex items-center gap-1 hover:text-gray-900 transition cursor-pointer">
+                        <PiHandsClappingLight className="w-4 h-4" />
                         <span>{comment.likes || 0}</span>
                     </button>
-                    <button className="flex items-center gap-1 hover:text-red-500 transition">
-                        <FaThumbsDown className="w-3.5 h-3.5" /> 
+                    <button className="flex items-center gap-1 hover:text-gray-900 transition cursor-pointer">
+                        <FaRegComment className="w-3 h-3" />
                         <span>{comment.dislikes || 0}</span>
                     </button>
                 </div>
