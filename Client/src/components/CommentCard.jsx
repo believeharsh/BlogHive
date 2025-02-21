@@ -4,12 +4,13 @@ import formatDate from "../utils/FormateData";
 import { PiHandsClappingLight } from "react-icons/pi";
 
 const CommentCard = ({ comment }) => {
+    console.log(comment)
     return (
         <div className="flex items-start gap-3 p-3 border-b border-gray-200">
             {/* Profile Image */}
             <img
-                src={comment.createdBy.profileImageURL || "/default-avatar.png"}
-                alt={comment.createdBy.fullName}
+                src={comment?.createdBy?.profileImageURL || "/images/deault_Image.jpeg"}
+                alt={comment?.createdBy?.fullName || "No Name"}
                 className="w-8 h-8 rounded-full object-cover border border-gray-300"
             />
 
@@ -17,12 +18,12 @@ const CommentCard = ({ comment }) => {
             <div className="flex-1">
                 <div className="flex items-center justify-between">
                     {/* Username & Date */}
-                    <span className="text-sm font-medium text-gray-900">{comment.createdBy.fullName}</span>
-                    <span className="text-xs text-gray-500">{formatDate(comment.createdAt)}</span>
+                    <span className="text-sm font-medium text-gray-900">{comment?.createdBy?.fullName || "No Name"}</span>
+                    <span className="text-xs text-gray-500">{formatDate(comment?.createdAt) || "No Date"}</span>
                 </div>
 
                 {/* Comment Text */}
-                <p className="text-sm text-gray-700 mt-1">{comment.content}</p>
+                <p className="text-sm text-gray-700 mt-1">{comment?.content || "No content available"}</p>
 
                 {/* Like & Dislike Buttons */}
                 <div className="flex gap-4 mt-1 text-gray-500 text-sm ml-2">

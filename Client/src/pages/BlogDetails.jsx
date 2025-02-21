@@ -15,6 +15,7 @@ import FollowButton from "../components/FollowButton";
 
 
 const BlogDetails = () => {
+
     const [currentBlog, setCurrentBlog] = useState(null);
     const { savedBlogsByUser, userId, setSavedBlogsByUser } = useBlogs();
     const [comments, setComments] = useState([]);
@@ -23,8 +24,7 @@ const BlogDetails = () => {
     const [isUserIsAuthor, setisUserIsAuthor] = useState(false);
     const { id } = useParams();
     const [isSaved, setIsSaved] = useState(false);
-    const navigate = useNavigate();
-    const blogHiveUser = localStorage.getItem("BlogHiveUser");
+    const navigate = useNavigate()
     const { blogs, setBlogs } = useUserProfileData();
 
     useEffect(() => {
@@ -50,6 +50,7 @@ const BlogDetails = () => {
                 console.error(error || "Blog not found by ID");
             }
         };
+
         fetchBlogById();
     }, [id]);
 
@@ -113,7 +114,6 @@ const BlogDetails = () => {
                     { headers: { "Content-Type": "application/json" }, data: { userId } }
                 );
 
-
                 if (response.status === 200) {
                     console.log("blog is removed succussfully")
                 }
@@ -121,14 +121,12 @@ const BlogDetails = () => {
                 setSavedBlogsByUser((prevBlogs) => prevBlogs.filter(blog => blog.savedBlogId._id !== blogId));
                 setIsSaved(false);
             }
-
-
         } catch (error) {
             console.error("Error occurred while saving the blog:", error.response?.data || error.message);
         }
     }
 
-
+console.log(comments)
     return (
         <>
             {loading && <Spinner />}
@@ -159,7 +157,7 @@ const BlogDetails = () => {
 
                     </div>
 
-                    {/* Interaction Buttons ✅ Using the new component */}
+                    {/* Interaction Buttons  */}
                     <BlogInteractions
                         blogId={id}
                         userId={userId}
@@ -170,6 +168,7 @@ const BlogDetails = () => {
                         handleSaveBlog={handleSaveBlog}
                         handleDeleteBlog={handleDeleteBlog}
                         handleRemoveSavedBlog={handleRemoveSavedBlog}
+                        totalComments={comments.length}
                     />
 
                     {/* Cover Image */}
@@ -208,6 +207,8 @@ const BlogDetails = () => {
                         isUserIsAuthor={isUserIsAuthor}
                         handleSaveBlog={handleSaveBlog}
                         handleDeleteBlog={handleDeleteBlog}
+                        handleRemoveSavedBlog={handleRemoveSavedBlog}
+                        totalComments={comments.length}
                     />
 
                     <div className="py-2">

@@ -1,16 +1,25 @@
 import React, { useState } from "react";
-import { FaRegHeart, FaRegComment, FaRegBookmark, FaRegShareSquare, FaBookmark } from "react-icons/fa";
+import { FaRegComment, FaRegBookmark, FaRegShareSquare, FaBookmark } from "react-icons/fa";
 import { HiOutlineDotsHorizontal } from "react-icons/hi";
 import ConfirmDelete from "./ConfirmDelete";
 import BlogMoreActions from "./BlogMoreActions";
-import { PiHandsClappingLight } from "react-icons/pi";
 import { IoShareOutline } from "react-icons/io5";
+import LikeButton from "./LikeButton";
 
-const BlogInteractions = ({ blogId, userId, isSaved, setIsSaved, setIsShareOpen, isUserIsAuthor, handleSaveBlog, handleDeleteBlog, handleRemoveSavedBlog }) => {
+const BlogInteractions = ({
+    blogId,
+    totalComments,
+    userId,
+    isSaved,
+    setIsShareOpen,
+    isUserIsAuthor,
+    handleSaveBlog,
+    handleDeleteBlog,
+    handleRemoveSavedBlog }) => {
 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [isDeleteConfirmationOpen, setIsDeleteConfirmationOpen] = useState(false);
-    
+
     const handleDeleteConfirmation = () => {
         handleDeleteBlog(blogId);
         setIsDeleteConfirmationOpen(false);
@@ -19,18 +28,20 @@ const BlogInteractions = ({ blogId, userId, isSaved, setIsSaved, setIsShareOpen,
     return (
         <div className="flex items-center justify-between py-4 px-3">
             {/* Left: Like & Comment */}
-            <div className="flex items-center gap-8">
+            <div className="flex items-center gap-10">
 
-                <button className=" cursor-pointer flex items-center gap-1 text-gray-500 hover:text-gray-800 transition">
-                    {/* <FaRegHeart className="w-5 h-5" /> */}
-                    <PiHandsClappingLight className="w-6 h-6"/>
-                    {/* <span>Like</span> */}
-                </button>
+                <div className=" cursor-pointer flex items-center gap-1 text-gray-500 hover:text-gray-800 transition">
+                    <LikeButton blogId={blogId} />
+                </div>
 
-                <button className=" cursor-pointer  flex items-center gap-1 text-gray-500 hover:text-gray-800 transition">
-                    <FaRegComment className="w-5 h-5" />
-                    {/* <span>Comment</span> */}
-                </button>
+
+                <div className="flex items-center gap-3">
+                    <button className="cursor-pointer  flex items-center gap-1 text-gray-500 hover:text-gray-800 transition">
+                        <FaRegComment className="w-5 h-5" />
+                    </button>
+                    <span className="text-sm font-medium">{totalComments}</span>
+                </div>
+
 
             </div>
 

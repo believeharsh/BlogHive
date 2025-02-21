@@ -14,7 +14,7 @@ const ProfilePage = () => {
   const [isEditing, setIsEditing] = useState(false);
   const { userProfileData, loading, blogs = [] } = useUserProfileData();
   const { savedBlogsByUser = [] } = useBlogs();
-  const { username, fullName, profileImageURL, about } = userProfileData;
+  const { fullName, about } = userProfileData;
   const IsUserHasProfileImage = userProfileData.profileImageURL === "/public/Images/defaultImage.png"
 
   const Following = [
