@@ -2,11 +2,13 @@ import React, { useRef, useState } from "react";
 import axiosInstance from "../utils/axiosInstance";
 import { RxCross1 } from "react-icons/rx";
 import { useUserProfileData } from "../context/userContext";
+import MessComponent from "../components/MessComponent";
+
 
 
 const EditProfilePage = ({ initialAboutText, onCancle }) => {
     const [aboutText, setAboutText] = useState(initialAboutText || "");
-    const {userProfileData} = useUserProfileData() ; 
+    const { userProfileData } = useUserProfileData();
     const editUserProfile = async () => {
         if (!aboutText) {
             console.log("About field cannot be empty");
@@ -20,7 +22,7 @@ const EditProfilePage = ({ initialAboutText, onCancle }) => {
                 { headers: { "Content-Type": "application/json" } }
             );
 
-            userProfileData.about = aboutText ; 
+            userProfileData.about = aboutText;
             onCancle();
         } catch (error) {
             console.error("Error occurred while updating the profile", error);
@@ -43,8 +45,15 @@ const EditProfilePage = ({ initialAboutText, onCancle }) => {
                         />
                         <div className="flex flex-col gap-3">
                             <div className="">
-                                <button className="text-green-600 text-sm font-medium cursor-pointer">Update</button>
+                                <MessComponent message="Can't update the image yet!">
+                                    <button className="text-green-600 text-sm font-medium cursor-pointer">Update
+                                    </button>
+                                </MessComponent>
+
+                                <MessComponent message="Can't remove the image yet!">
                                 <button className="text-red-600 text-sm font-medium ml-4 cursor-pointer">Remove</button>
+                                </MessComponent>
+                               
                             </div>
 
                             <div className="text-sm font-semibold">
@@ -71,7 +80,7 @@ const EditProfilePage = ({ initialAboutText, onCancle }) => {
                             type="text"
                             disabled
                             placeholder="Add..."
-                            className="w-full p-2 mt-1 border rounded bg-gray-100 focus:bg-white"
+                            className="w-full p-2 mt-1 border rounded bg-gray-100 focus:bg-white cursor-not-allowed"
                         />
                     </div>
 

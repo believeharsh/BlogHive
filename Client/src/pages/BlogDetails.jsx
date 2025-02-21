@@ -128,6 +128,7 @@ const BlogDetails = () => {
         }
     }
 
+
     return (
         <>
             {loading && <Spinner />}
@@ -213,8 +214,9 @@ const BlogDetails = () => {
                         <BlogAuthorInfo
                             profileImageURL={currentBlog?.createdBy?.profileImageURL}
                             fullName={currentBlog?.createdBy?.fullName}
-                            about={"Aspiring Software Engineer"}
+                            about={currentBlog?.createdBy?.about || "BlogHive Author"}
                             createdAt={currentBlog?.createdAt}
+                            authorId={currentBlog?.createdBy?._id}
                         />
                     </div>
 

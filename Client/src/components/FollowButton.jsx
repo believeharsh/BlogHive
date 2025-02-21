@@ -3,14 +3,12 @@ import axiosInstance from "../utils/axiosInstance";
 
 const FollowButton = ({ authorId, buttonColor }) => {
     const [isFollowing, setIsFollowing] = useState(false);
- 
+
     useEffect(() => {
         const checkFollowStatus = async () => {
             try {
 
                 const res = await axiosInstance.get(`/follow/isAlreadyFollowing/${authorId}`);
-                console.log("Response:", res);
-
                 if (res.data) {
                     setIsFollowing(res.data.isFollowing);
                 }
@@ -21,7 +19,7 @@ const FollowButton = ({ authorId, buttonColor }) => {
         if (authorId) {
             checkFollowStatus();
         }
-        
+
     }, [authorId]);  // Dependency added
 
     const handleFollow = async () => {
@@ -35,7 +33,7 @@ const FollowButton = ({ authorId, buttonColor }) => {
 
     const handleUnfollow = async () => {
         try {
-            await axiosInstance.delete(`/follow/unfollow-an-author/${authorId}`); 
+            await axiosInstance.delete(`/follow/unfollow-an-author/${authorId}`);
             setIsFollowing(false);
         } catch (error) {
             console.error("Error:", error.response ? error.response.data : error.message);

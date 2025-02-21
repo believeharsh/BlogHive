@@ -1,7 +1,7 @@
 import React from "react";
 import FollowButton from "../components/FollowButton"
 
-const BlogAuthorInfo = ({ profileImageURL, fullName, about, createdAt }) => {
+const BlogAuthorInfo = ({ profileImageURL, fullName, about, createdAt, authorId }) => {
 
 
     return (
@@ -24,9 +24,11 @@ const BlogAuthorInfo = ({ profileImageURL, fullName, about, createdAt }) => {
             </div>
 
             {/* Right: Follow Button */}
-            <button className="px-2 py-1 bg-black font-semibold rounded-full text-xl cursor-pointer" >
-              <FollowButton buttonColor={"text-white"}/>
-          </button>
+            <div className="px-2 py-1 bg-black font-medium rounded-full text-xl cursor-pointer" >
+              <FollowButton buttonColor={"text-white"}
+                authorId={authorId}
+              />
+          </div>
         </div>
     );
 };
