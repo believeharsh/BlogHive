@@ -126,7 +126,6 @@ const BlogDetails = () => {
         }
     }
 
-console.log(comments)
     return (
         <>
             {loading && <Spinner />}

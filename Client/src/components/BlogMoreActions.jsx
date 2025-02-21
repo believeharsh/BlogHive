@@ -6,9 +6,9 @@ const BlogMoreActions = ({ isUserIsAuthor, setIsDeleteConfirmationOpen, setIsDro
         { name: "Story Settings", style: "text-gray-700 hover:bg-gray-100" },
         { name: "Story Stats", style: "text-gray-700 hover:bg-gray-100" },
         { name: "Hide Responses", style: "text-gray-700 hover:bg-gray-100" },
-        { 
-            name: "Delete Story", 
-            style: "text-red-600 hover:bg-red-100", 
+        {
+            name: "Delete Story",
+            style: "text-red-600 hover:bg-red-100",
             onClick: () => {
                 setIsDeleteConfirmationOpen(true);
                 setIsDropdownOpen(false);
@@ -23,7 +23,7 @@ const BlogMoreActions = ({ isUserIsAuthor, setIsDeleteConfirmationOpen, setIsDro
     ];
 
     return (
-        <div className="absolute right-8 mt-2 w-48 bg-white shadow-sm rounded-lg p-2 transition-opacity duration-200">
+        <>
             {(isUserIsAuthor ? authorActions : readerActions).map((action, index) => (
                 <button
                     key={index}
@@ -36,7 +36,8 @@ const BlogMoreActions = ({ isUserIsAuthor, setIsDeleteConfirmationOpen, setIsDro
                     {action.name}
                 </button>
             ))}
-        </div>
+        </>
+
     );
 };
 

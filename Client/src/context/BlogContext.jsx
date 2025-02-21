@@ -17,10 +17,9 @@ export const BlogsProvider = ({ children }) => {
   const fetchSavedBlogs = async () => {
     if (!userId) return ;
     try {
+      
       const response = await axiosInstance.get(`/blog/saved-blogs/${userId}`);
-
       setSavedBlogsByUser(response.data.data)
-      console.log(response)
 
     } catch (error) {
       console.error("Error fetching saved blogs:", error);

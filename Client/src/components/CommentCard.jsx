@@ -4,7 +4,6 @@ import formatDate from "../utils/FormateData";
 import { PiHandsClappingLight } from "react-icons/pi";
 
 const CommentCard = ({ comment }) => {
-    console.log(comment)
     return (
         <div className="flex items-start gap-3 p-3 border-b border-gray-200">
             {/* Profile Image */}

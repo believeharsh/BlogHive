@@ -1,23 +1,27 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { FiBell, FiChevronDown, FiChevronUp, FiUser, FiBook, FiLogOut } from "react-icons/fi";
 import { TiDocumentText } from "react-icons/ti";
 import { IoStatsChartOutline } from "react-icons/io5";
 import { HiPencilAlt } from "react-icons/hi";
-import { Link, Navigate, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useUserProfileData } from "../context/userContext";
 import Spinner from "./Spinner";
 import axiosInstance from "../utils/axiosInstance";
 import { MdAdminPanelSettings } from "react-icons/md";
+import useOutsideClick from "../hooks/useOutSideClick";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { logout, role } = useAuth();
+  const { logout } = useAuth();
   const { setBlogs, setUserProfileData, userProfileData } = useUserProfileData();
   const blogHiveUser = localStorage.getItem("BlogHiveUser");
 
+  const navbarMoreBtnRef = useRef(null);
+  const toggleButtonRef = useRef(null)
+  useOutsideClick(navbarMoreBtnRef, () => setIsDropdownOpen(false), toggleButtonRef); // outside click to close modle custom hook 
 
   const IsUserHasProfileImage = userProfileData.profileImageURL === "/public/Images/defaultImage.png"
 
@@ -55,7 +59,7 @@ const Navbar = () => {
   return (
     <nav className="bg-white text-black border-b border-gray-300 p-3">
       <div className="container mx-auto flex items-center justify-between">
-        
+
         {/* Left Section */}
         <div className="flex items-center space-x-3 sm:space-x-5 cursor-pointer">
           <Link to="/">
@@ -76,18 +80,28 @@ const Navbar = () => {
           </Link>
 
           {/* User Dropdown */}
-          <div className="relative">
-            <div className="flex items-center cursor-pointer" onClick={() => setIsDropdownOpen(!isDropdownOpen)}>
+          <div className="relative"
+           ref={toggleButtonRef}>
+            <div
+              className="flex items-center cursor-pointer"
+              onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            >
               <img
-                src={ IsUserHasProfileImage ?  "/images/default_Image.jpeg" : userProfileData.profileImageURL}
+                src={IsUserHasProfileImage ? "/images/default_Image.jpeg" : userProfileData.profileImageURL}
                 alt="User Profile"
                 className="w-8 sm:w-10 h-8 sm:h-10 rounded-full object-cover border border-gray-300"
               />
-              {isDropdownOpen ? <FiChevronDown className="ml-1 sm:ml-2" /> : <FiChevronUp className="ml-1 sm:ml-2" />}
+              {isDropdownOpen ?
+                <FiChevronDown className="ml-1 sm:ml-2" />
+                : <FiChevronUp className="ml-1 sm:ml-2" />}
             </div>
 
             {isDropdownOpen && (
-              <div className="absolute right-0 mt-2 bg-white shadow-lg rounded-lg w-44 sm:w-48 z-10">
+              <div
+                ref={navbarMoreBtnRef}
+                className="absolute right-0 mt-2 bg-white shadow-lg rounded-lg w-44 sm:w-48 z-10"
+                onClick={() => setIsDropdownOpen(true)}
+              >
                 <ul className="py-2 text-gray-700">
                   {dropdownItems.map((item, index) => (
                     <li
@@ -113,7 +127,7 @@ const Navbar = () => {
       </div>
 
       {loading && <Spinner />}
-    </nav>
+    </nav >
   );
 };
 
