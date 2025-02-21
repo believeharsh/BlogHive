@@ -15,7 +15,7 @@ const ProfilePage = () => {
   const { userProfileData, loading, blogs = [] } = useUserProfileData();
   const { savedBlogsByUser = [] } = useBlogs();
   const { username, fullName, profileImageURL, about } = userProfileData;
-    const IsUserHasProfileImage = userProfileData.profileImageURL === "/public/Images/defaultImage.png"
+  const IsUserHasProfileImage = userProfileData.profileImageURL === "/public/Images/defaultImage.png"
 
   const Following = [
     { id: 1, name: "John Doe", username: "johndoe", profile: "/images/boy_avatar.jpeg" },
@@ -80,7 +80,7 @@ const ProfilePage = () => {
 
       <div className="w-full md:w-1/3 space-y-6 py-6 md:h-screen md:sticky md:top-0 overflow-y-auto no-scrollbar md:border-l md:border-gray-300">
         <div className="bg-white p-6 rounded-lg shadow-sm flex flex-col items-center text-center ">
-          <img src={ IsUserHasProfileImage ?  "/images/default_Image.jpeg" : userProfileData.profileImageURL} alt="" className="w-24 h-24 md:w-32 md:h-32 rounded-full border border-gray-300" />
+          <img src={IsUserHasProfileImage ? "/images/default_Image.jpeg" : userProfileData.profileImageURL} alt="" className="w-24 h-24 md:w-32 md:h-32 rounded-full border border-gray-300" />
           <p className="font-semibold text-lg mt-3">{fullName}</p>
           <p className="text-gray-500 text-sm">100k Followers</p>
           <p className="text-sm text-gray-600 mt-1 px-2">{about}</p>
@@ -107,7 +107,10 @@ const ProfilePage = () => {
           <button className="cursor-pointer text-green-600 text-sm mt-4 hover:underline">See all ({Following.length})</button>
         </div>
       </div>
-      {isEditing && <EditProfilePage onCancle={() => setIsEditing(false)} />}
+      {isEditing && <EditProfilePage
+        about={about}
+        onCancle={() => setIsEditing(false)}
+      />}
     </div>
   );
 };

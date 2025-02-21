@@ -4,10 +4,8 @@ import { RxCross1 } from "react-icons/rx";
 import { useUserProfileData } from "../context/userContext";
 import MessComponent from "../components/MessComponent";
 
-
-
-const EditProfilePage = ({ initialAboutText, onCancle }) => {
-    const [aboutText, setAboutText] = useState(initialAboutText || "");
+const EditProfilePage = ({ onCancle, about }) => {
+    const [aboutText, setAboutText] = useState(about || "");
     const { userProfileData } = useUserProfileData();
     const editUserProfile = async () => {
         if (!aboutText) {
@@ -89,6 +87,7 @@ const EditProfilePage = ({ initialAboutText, onCancle }) => {
                         <label className="block mt-4 text-lg font-medium">Short bio</label>
                         <textarea
                             className="w-full p-3 border border-gray-200 rounded bg-gray-100 focus:bg-white h-[72px] text-lg resize-none focus:outline-1"
+
                             value={aboutText}
                             onChange={(e) => setAboutText(e.target.value)}
                         />
