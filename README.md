@@ -30,7 +30,7 @@ Start sharing your voice with the world, one blog at a time! 🖊✨
 - **✍️ Write, Publish, and Share** : Express your thoughts, publish your stories, and share them with the world.
 
 <div align="center">
-  <img src="/public/Assets/scanning-demo.png" alt="Scanning Feature" width="1000"/>
+  <img src="/public/Assets/BlogHive-htc.png" alt="Scanning Feature" width="1000"/>
 </div>
 
 ## 🚀 Getting Started
@@ -126,19 +126,19 @@ BlogHive/
 
 <div align="center">
   <div style="display: inline-block; margin: 10px;">
-    <img src="/public/Assets/demo1.png" alt="demo1" width="1000"/>
-    <img src="/public/Assets/scanning-demo.png" alt="AI Chat" width="1000"/>
+    <img src="/public/Assets/Landing-Page.png" alt="demo1" width="1000"/>
+    <img src="/public/Assets/ProfilePage.png" alt="AI Chat" width="1000"/>
   </div>
   <div style="display: inline-block; margin: 10px;">
-    <img src="/public/Assets/demo2.png" alt="Analysis Detail" width="1000"/>
-    <img src="/public/Assets/nutrition-demo.png" alt="Ingredients" width="1000"/>
+    <img src="/public/Assets/Blog-details-one.png" alt="Analysis Detail" width="1000"/>
+    <img src="/public/Assets/Blog-details-two.png" alt="Ingredients" width="1000"/>
   </div>
   <div style="display: inline-block; margin: 10px;">
-    <img src="/public/Assets/alternative-demo.png" alt="alt" width="1000"/>
-    <img src="/public/Assets/compare-demo.png" alt="alt" width="1000"/>
+    <img src="/public/Assets/blogdetails-three.png" alt="alt" width="1000"/>
+    <img src="/public/Assets/Upload-page.png" alt="alt" width="1000"/>
   </div>
   <div style="display: inline-block; margin: 10px;">
-    <img src="/public/Assets/chat-demo.png" alt="chat" width="1000"/>
+    <img src="/public/Assets/Notification-page.png" alt="chat" width="1000"/>
   </div>
 </div>
 
