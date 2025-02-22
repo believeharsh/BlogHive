@@ -111,13 +111,17 @@ const Navbar = () => {
                     <li
                       key={index}
                       className="px-3 sm:px-4 py-2 hover:bg-gray-100 cursor-pointer flex items-center space-x-2"
-                      onClick={() => {
-                        if (item.action) {
-                          item.action();
-                        } else {
-                          navigate(item.path);
-                        }
-                        setIsDropdownOpen(false);
+                      onClick={(e) => {
+                        e.stopPropagation(); 
+                        setIsDropdownOpen(false); 
+
+                        setTimeout(() => {  
+                          if (item.action) {
+                            item.action();
+                          } else {
+                            navigate(item.path);
+                          }
+                        }, 100);
                       }}
                     >
                       {item.icon} <span>{item.name}</span>
