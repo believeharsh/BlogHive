@@ -15,7 +15,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { logout } = useAuth();
+  const { logout, role } = useAuth();
   const { setBlogs, setUserProfileData, userProfileData } = useUserProfileData();
   const blogHiveUser = localStorage.getItem("BlogHiveUser");
 
@@ -23,7 +23,8 @@ const Navbar = () => {
   const toggleButtonRef = useRef(null)
   useOutsideClick(navbarMoreBtnRef, () => setIsDropdownOpen(false), toggleButtonRef); // outside click to close modle custom hook 
 
-  const IsUserHasProfileImage = userProfileData.profileImageURL === "/public/Images/defaultImage.png"
+  const IsUserHasProfileImage = userProfileData.profileImageURL === "/public/Images/defaultImage.png";
+
 
   const logoutUser = async () => {
     setLoading(true);
@@ -53,8 +54,11 @@ const Navbar = () => {
     { name: "Stories", icon: <TiDocumentText />, path: "" },
     { name: "Stats", icon: <IoStatsChartOutline />, path: "" },
     { name: "Logout", icon: <FiLogOut />, action: logoutUser },
-    { name: "Admin", icon: <MdAdminPanelSettings />, action: NevigateToAdminPage },
   ];
+
+  if (role === "ADMIN") {
+    dropdownItems.push({ name: "Admin", icon: <MdAdminPanelSettings />, action: NevigateToAdminPage });
+  };
 
   return (
     <nav className="bg-white text-black border-b border-gray-300 p-3">
@@ -81,7 +85,7 @@ const Navbar = () => {
 
           {/* User Dropdown */}
           <div className="relative"
-           ref={toggleButtonRef}>
+            ref={toggleButtonRef}>
             <div
               className="flex items-center cursor-pointer"
               onClick={() => setIsDropdownOpen(!isDropdownOpen)}
