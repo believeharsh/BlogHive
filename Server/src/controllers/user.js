@@ -3,7 +3,6 @@ import { ApiError } from "../services/apiError.js"
 import { ApiResponse } from "../services/apiResponse.js"
 import { asyncHandler } from "../services/asyncHandler.js"
 import { uploadOnCloudinary } from "../services/cloudinary.js"
-import path from "path"
 import { generateUsername } from "../services/generateUsername.js"
 import JWT from "jsonwebtoken";
 import { createAccessToken, createRefreshToken } from "../services/userTokens.js"
@@ -166,56 +165,118 @@ const checkAuth = asyncHandler(async (req, res) => {
         )
 })
 
-const refreshAccessToken = asyncHandler(async (req, res) => {
-    const incomingRefreshToken = req.cookies.refreshToken || req.body.refreshToken
+// const refreshAccessToken = asyncHandler(async (req, res) => {
+//     const incomingRefreshToken = req.cookies.refreshToken || req.body.refreshToken
+
+//     if (!incomingRefreshToken) {
+//         throw new ApiError(401, "unauthorized Request")
+//     }
+
+//     try {
+
+//         const decodedToken = JWT.verify(
+//             incomingRefreshToken,
+//             process.env.REFRESH_TOKEN_SECRET
+//         )
+
+//         const user = await User.findById(decodedToken._id);
+
+//         if (!user) {
+//             throw new ApiError(401, "Invalid refresh token")
+//         }
+
+//         if (incomingRefreshToken !== user?.refreshToken) {
+//             throw new ApiError(401, "Refresh token is expired or used")
+//         }
+
+//         const options = {
+//             httpOnly: true,
+//             secure: true
+//         }
+
+//         const newAccessToken = await createAccessToken(user)
+//         const newRefreshToken = await createRefreshToken(user._id)
+
+//         return res
+//             .status(200)
+//             .cookie("accessToken", newAccessToken, options)
+//             .cookie("refreshToken", newRefreshToken, options)
+//             .json(
+//                 new ApiResponse(
+//                     200,
+//                     { newAccessToken, refreshToken: newRefreshToken },
+//                     "accessToken Refreshed"
+//                 )
+//             )
+
+//     } catch (error) {
+//         throw new ApiError(401, error?.message || "Invalid refresh token")
+
+//     }
+
+// })
+
+const refreshAccessToken = asyncHandler(async (req, res, next) => {
+    console.log("🔹 Incoming refresh token:", req.cookies.refreshToken || req.body.refreshToken);
+
+    const incomingRefreshToken = req.cookies.refreshToken || req.body.refreshToken;
 
     if (!incomingRefreshToken) {
-        throw new ApiError(401, "unauthorized Request")
+        console.log("❌ No refresh token provided");
+        return next(new ApiError(401, "Unauthorized Request"));
     }
 
+    let decodedToken;
     try {
-
-        const decodedToken = JWT.verify(
-            incomingRefreshToken,
-            process.env.REFRESH_TOKEN_SECRET
-        )
-
-        const user = await User.findById(decodedToken._id);
-
-        if (!user) {
-            throw new ApiError(401, "Invalid refresh token")
-        }
-
-        if (incomingRefreshToken !== user?.refreshToken) {
-            throw new ApiError(401, "Refresh token is expired or used")
-        }
-
-        const options = {
-            httpOnly: true,
-            secure: true
-        }
-
-        const newAccessToken = await createAccessToken(user)
-        const newRefreshToken = await createRefreshToken(user._id)
-
-        return res
-            .status(200)
-            .cookie("accessToken", newAccessToken, options)
-            .cookie("refreshToken", newRefreshToken, options)
-            .json(
-                new ApiResponse(
-                    200,
-                    { newAccessToken, refreshToken: newRefreshToken },
-                    "accessToken Refreshed"
-                )
-            )
-
-    } catch (error) {
-        throw new ApiError(401, error?.message || "Invalid refresh token")
-
+        console.log("🔹 Verifying Refresh Token...");
+        decodedToken = JWT.verify(incomingRefreshToken, process.env.REFRESH_TOKEN_SECRET);
+    } catch (err) {
+        console.log("❌ JWT Verification Failed:", err.message);
+        return res.status(401).json({ message: "Invalid refresh token" });
     }
 
-})
+    console.log("✅ Token Verified, Fetching User...");
+    const user = await User.findById(decodedToken._id);
+
+    if (!user) {
+        console.log("❌ User Not Found");
+        return next(new ApiError(401, "Invalid refresh token"));
+    }
+
+    if (incomingRefreshToken !== user.refreshToken) {
+        console.log("❌ Refresh token mismatch");
+        return next(new ApiError(401, "Refresh token is expired or used"));
+    }
+
+    console.log("🔹 Generating New Tokens...");
+    const newAccessToken = createAccessToken(user);
+    const newRefreshToken = createRefreshToken(user._id);
+
+    console.log("🔹 Updating refresh token in DB...");
+    await User.findByIdAndUpdate(user._id, { refreshToken: newRefreshToken }, { new: true });
+
+    console.log("✅ Refresh token updated in DB");
+
+    const options = {
+        httpOnly: true,
+        secure: true,
+        sameSite: "Strict",
+    };
+
+    console.log("✅ Sending Response...");
+    return res
+        .status(200)
+        .cookie("accessToken", newAccessToken, options)
+        .cookie("refreshToken", newRefreshToken, options)
+        .json(
+            new ApiResponse(
+                200,
+                { newAccessToken, refreshToken: newRefreshToken },
+                "Access token refreshed"
+            )
+        );
+});
+
 
 const editUserProfile = asyncHandler(async (req, res) => {
     const { aboutText } = req.body;
