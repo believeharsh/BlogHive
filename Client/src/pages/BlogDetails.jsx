@@ -225,7 +225,8 @@ const BlogDetails = () => {
 
                     <div className="py-2">
                         <BlogAuthorInfo
-                            profileImageURL={currentBlog?.createdBy?.profileImageURL}
+                            // profileImageURL={currentBlog?.createdBy?.profileImageURL}
+                            profileImageURL={isAuthrohasProfileImage ? "/images/default_Image.jpeg" : currentBlog?.createdBy?.profileImageURL}
                             fullName={currentBlog?.createdBy?.fullName}
                             about={currentBlog?.createdBy?.about || "BlogHive Author"}
                             createdAt={currentBlog?.createdAt}
