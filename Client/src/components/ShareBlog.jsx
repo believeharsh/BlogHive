@@ -24,7 +24,6 @@ const SharePage = ({ blogUrl, onClose }) => {
 
             <div className="absolute inset-0 bg-white/50 backdrop-blur-lg"></div>
 
-
             <div className="relative bg-white shadow-xl rounded-2xl p-6 w-[400px] border border-gray-200">
 
                 <button

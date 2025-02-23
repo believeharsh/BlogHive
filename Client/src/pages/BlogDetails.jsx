@@ -26,9 +26,11 @@ const BlogDetails = () => {
     const { id } = useParams();
     const [isSaved, setIsSaved] = useState(false);
     const navigate = useNavigate()
-    const { setBlogs } = useUserProfileData();
+    const { setBlogs} = useUserProfileData();
 
     const [commentSectionRef, scrollToComments] = useScrollToElement();
+    const isAuthrohasProfileImage = currentBlog?.createdBy?.profileImageURL === "/public/Images/defaultImage.png"
+  
 
     useEffect(() => {
         // Checking if the blog is already saved or not?
@@ -129,6 +131,8 @@ const BlogDetails = () => {
         }
     }
 
+
+
     return (
         <>
             {loading && <Spinner />}
@@ -141,7 +145,8 @@ const BlogDetails = () => {
                     {/* User Profile Section */}
                     <div className="flex items-center gap-4 mb-4">
                         <img
-                            src={currentBlog?.createdBy?.profileImageURL}
+                 
+                            src={isAuthrohasProfileImage ? "/images/default_Image.jpeg" : currentBlog?.createdBy?.profileImageURL}
                             alt={currentBlog?.createdBy?.username}
                             className="w-12 h-12 rounded-full object-cover cursor-pointer"
                         />
@@ -229,7 +234,7 @@ const BlogDetails = () => {
                     </div>
 
 
-                    {isShareOpen && <SharePage blogUrl={`https://bloghive-lac.vercel.app/blog/${id}`} onClose={() => setIsShareOpen(false)} />}
+                    {isShareOpen && <SharePage blogUrl={`https://bloghive-htc.vercel.app/blog/${id}`} onClose={() => setIsShareOpen(false)} />}
                 </div>
             )}
         </>

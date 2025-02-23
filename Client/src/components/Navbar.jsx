@@ -2,13 +2,14 @@ import React, { useRef, useState } from "react";
 import { FiBell, FiChevronDown, FiChevronUp, FiUser, FiBook, FiLogOut } from "react-icons/fi";
 import { TiDocumentText } from "react-icons/ti";
 import { IoStatsChartOutline } from "react-icons/io5";
+import { MdAdminPanelSettings } from "react-icons/md";
 import { HiPencilAlt } from "react-icons/hi";
+import { IoMdNotificationsOutline } from "react-icons/io";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useUserProfileData } from "../context/userContext";
 import Spinner from "./Spinner";
 import axiosInstance from "../utils/axiosInstance";
-import { MdAdminPanelSettings } from "react-icons/md";
 import useOutsideClick from "../hooks/useOutSideClick";
 
 const Navbar = () => {
@@ -51,6 +52,7 @@ const Navbar = () => {
   const dropdownItems = [
     { name: "Profile", icon: <FiUser />, path: `/${blogHiveUser}` },
     { name: "Library", icon: <FiBook />, path: "/library" },
+    { name: "Notificatins", icon: <IoMdNotificationsOutline/>, path: "/notifications" },
     { name: "Stories", icon: <TiDocumentText />, path: "" },
     { name: "Stats", icon: <IoStatsChartOutline />, path: "" },
     { name: "Logout", icon: <FiLogOut />, action: logoutUser },

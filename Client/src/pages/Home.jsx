@@ -22,33 +22,33 @@ const Home = () => {
 
   const scrollRef = useRef(0);
 
-useLayoutEffect(() => {
-  window.scrollTo(0, scrollRef.current); // Restore scroll before render
-}, [blogs]); // Runs whenever blogs update
+  useLayoutEffect(() => {
+    window.scrollTo(0, scrollRef.current); // Restore scroll before render
+  }, [blogs]); // Runs whenever blogs update
 
-useEffect(() => {
-  const fetchBlogs = async () => {
-    scrollRef.current = window.scrollY; // Save current scroll position
-    setLoading(true);
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      scrollRef.current = window.scrollY; // Save current scroll position
+      setLoading(true);
 
-    try {
-      const { data } = await axiosInstance.post(`/blog/getAllBlogs?page=${page}&limit=${limit}`);
+      try {
+        const { data } = await axiosInstance.post(`/blog/getAllBlogs?page=${page}&limit=${limit}`);
 
-      const newBlogs = data.blogs.filter(
-        (newBlog) => !blogs.some((existingBlog) => existingBlog._id === newBlog._id)
-      );
+        const newBlogs = data.blogs.filter(
+          (newBlog) => !blogs.some((existingBlog) => existingBlog._id === newBlog._id)
+        );
 
-      setBlogs((prev) => [...prev, ...newBlogs]);
-      setHasMore(data.hasMore);
-    } catch (error) {
-      console.error("Error fetching blogs:", error);
-    }
+        setBlogs((prev) => [...prev, ...newBlogs]);
+        setHasMore(data.hasMore);
+      } catch (error) {
+        console.error("Error fetching blogs:", error);
+      }
 
-    setLoading(false);
-  };
+      setLoading(false);
+    };
 
-  fetchBlogs();
-}, [page]);
+    fetchBlogs();
+  }, [page]);
 
   useEffect(() => {
     // Simulating fetching saved blogs (you can replace this with an API call)
@@ -62,21 +62,30 @@ useEffect(() => {
       <div className="w-full md:w-2/3 border-r border-gray-300 px-4 h-screen overflow-y-auto no-scrollbar">
         {loading && <Spinner />}
         {blogs.length > 0 &&
-          blogs.map((blog) => (
-            <div key={blog._id} className="mb-6">
-              <Link to={`/blog/${blog._id}`}>
-                <BlogCard
-                  authorName={blog.createdBy?.fullName || "Unknown Author"}
-                  profileImageURL={blog.createdBy?.profileImageURL || "/images/boy_avatar.jpeg"}
-                  username={blog.createdBy?.username || "anonymous"}
-                  title={blog.title || "Untitled Blog"}
-                  body={blog.body || "No content available"}
-                  coverImage={blog.coverImage || "/images/LibraryCover_Image.jpg"}
-                  createdAt={blog.createdAt || new Date().toISOString()}
-                />
-              </Link>
-            </div>
-          ))}
+          blogs.map((blog) => {
+
+            const defaultProfileImage = "/images/default_Image.jpeg";
+            const profileImage =
+              blog.createdBy?.profileImageURL === "/public/Images/defaultImage.png"
+                ? defaultProfileImage
+                : blog.createdBy?.profileImageURL || defaultProfileImage;
+
+            return (
+              <div key={blog._id} className="mb-6">
+                <Link to={`/blog/${blog._id}`}>
+                  <BlogCard
+                    authorName={blog.createdBy?.fullName || "Unknown Author"}
+                    profileImageURL={profileImage}
+                    username={blog.createdBy?.username || "anonymous"}
+                    title={blog.title || "Untitled Blog"}
+                    body={blog.body || "No content available"}
+                    coverImage={blog.coverImage || "/images/LibraryCover_Image.jpg"}
+                    createdAt={blog.createdAt || new Date().toISOString()}
+                  />
+                </Link>
+              </div>
+            );
+          })}
         {hasMore && (
           <div className="flex justify-center mt-6">
             <button
@@ -92,6 +101,7 @@ useEffect(() => {
 
       {/* Right Section: Sidebar (Sticky) */}
       <div className="w-full md:w-1/3 space-y-4 h-screen sticky top-0 overflow-y-auto no-scrollbar">
+
         {/* Recommended Topics */}
         <div className="bg-white p-3 rounded-lg">
           <h2 className="text-lg font-semibold mb-3">Recommended Topics</h2>
@@ -161,6 +171,7 @@ useEffect(() => {
             ))}
           </div>
         </div>
+        
       </div>
     </div>
 
