@@ -22,10 +22,10 @@ const Navbar = () => {
 
   const navbarMoreBtnRef = useRef(null);
   const toggleButtonRef = useRef(null)
-  useOutsideClick(navbarMoreBtnRef, () => setIsDropdownOpen(false), toggleButtonRef); // outside click to close modle custom hook 
+  
+  useOutsideClick(navbarMoreBtnRef, () => setIsDropdownOpen(false), toggleButtonRef);
 
   const IsUserHasProfileImage = userProfileData.profileImageURL === "/public/Images/defaultImage.png";
-
 
   const logoutUser = async () => {
     setLoading(true);

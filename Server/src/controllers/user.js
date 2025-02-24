@@ -24,9 +24,11 @@ const loginUser = asyncHandler(async (req, res) => {
 
     const options = {
         httpOnly: true,
-        secure: true,
-        sameSite: 'None',
-    }
+        secure: true, 
+        sameSite: "None",
+        domain: ".vercel.app",  
+        path: "/"
+    };
 
     return res.status(200)
         .cookie("accessToken", accessToken, options)
@@ -108,8 +110,11 @@ const logoutUser = asyncHandler(async (req, res) => {
 
     const options = {
         httpOnly: true,
-        secure: true
-    }
+        secure: true,
+        sameSite: "None",
+        domain: ".vercel.app",
+        path: "/"
+    };
 
     res.status(200)
         .clearCookie("accessToken", options)
@@ -164,57 +169,6 @@ const checkAuth = asyncHandler(async (req, res) => {
             )
         )
 })
-
-// const refreshAccessToken = asyncHandler(async (req, res) => {
-//     const incomingRefreshToken = req.cookies.refreshToken || req.body.refreshToken
-
-//     if (!incomingRefreshToken) {
-//         throw new ApiError(401, "unauthorized Request")
-//     }
-
-//     try {
-
-//         const decodedToken = JWT.verify(
-//             incomingRefreshToken,
-//             process.env.REFRESH_TOKEN_SECRET
-//         )
-
-//         const user = await User.findById(decodedToken._id);
-
-//         if (!user) {
-//             throw new ApiError(401, "Invalid refresh token")
-//         }
-
-//         if (incomingRefreshToken !== user?.refreshToken) {
-//             throw new ApiError(401, "Refresh token is expired or used")
-//         }
-
-//         const options = {
-//             httpOnly: true,
-//             secure: true
-//         }
-
-//         const newAccessToken = await createAccessToken(user)
-//         const newRefreshToken = await createRefreshToken(user._id)
-
-//         return res
-//             .status(200)
-//             .cookie("accessToken", newAccessToken, options)
-//             .cookie("refreshToken", newRefreshToken, options)
-//             .json(
-//                 new ApiResponse(
-//                     200,
-//                     { newAccessToken, refreshToken: newRefreshToken },
-//                     "accessToken Refreshed"
-//                 )
-//             )
-
-//     } catch (error) {
-//         throw new ApiError(401, error?.message || "Invalid refresh token")
-
-//     }
-
-// })
 
 const refreshAccessToken = asyncHandler(async (req, res, next) => {
     console.log("🔹 Incoming refresh token:", req.cookies.refreshToken || req.body.refreshToken);
