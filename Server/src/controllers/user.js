@@ -17,7 +17,7 @@ const loginUser = asyncHandler(async (req, res) => {
 
     const user = await User.findOne({ email })
     if (!user) {
-        throw new ApiError(400, "user does not exists")
+        throw new ApiError(400, "user does not exist")
     }
 
     const { accessToken, refreshToken } = await User.matchPassAndGenTokens(email, password);
@@ -213,8 +213,10 @@ const refreshAccessToken = asyncHandler(async (req, res, next) => {
 
     const options = {
         httpOnly: true,
-        secure: true,
-        sameSite: "Strict",
+        secure: true, 
+        sameSite: "None",
+        domain: ".vercel.app",  
+        path: "/"
     };
 
     console.log("✅ Sending Response...");
