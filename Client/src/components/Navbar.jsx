@@ -37,7 +37,7 @@ const Navbar = () => {
       localStorage.removeItem("BlogHiveUser");
       setTimeout(() => {
         setLoading(false);
-        navigate("/login");
+        navigate("/");
       }, 5000);
     } catch (error) {
       console.error("Logout failed:", error.response?.data || error.message);
