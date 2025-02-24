@@ -6,6 +6,7 @@ import { ApiError } from "../services/apiError.js";
 const verifyUserJwtToken = asyncHandler(async (req, res, next) => {
     try {
         const userToken = req.cookies?.accessToken;
+        console.log("This is the User Token", userToken)
         if (!userToken) {
             throw new ApiError(401, "Unauthorized request");
         }

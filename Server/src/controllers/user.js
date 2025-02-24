@@ -26,7 +26,6 @@ const loginUser = asyncHandler(async (req, res) => {
         httpOnly: true,
         secure: true, 
         sameSite: "None",
-        domain: ".vercel.app",  
         path: "/"
     };
 
@@ -89,8 +88,9 @@ const registerUser = asyncHandler(async (req, res) => {
 
     const options = {
         httpOnly: true,
-        secure: true,
-        sameSite: 'None',
+        secure: true, 
+        sameSite: "None",
+        path: "/"
     };
 
     return res.status(201)
@@ -110,9 +110,8 @@ const logoutUser = asyncHandler(async (req, res) => {
 
     const options = {
         httpOnly: true,
-        secure: true,
+        secure: true, 
         sameSite: "None",
-        domain: ".vercel.app",
         path: "/"
     };
 
@@ -215,7 +214,6 @@ const refreshAccessToken = asyncHandler(async (req, res, next) => {
         httpOnly: true,
         secure: true, 
         sameSite: "None",
-        domain: ".vercel.app",  
         path: "/"
     };
 
