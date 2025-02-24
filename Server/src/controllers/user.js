@@ -105,23 +105,41 @@ const registerUser = asyncHandler(async (req, res) => {
         );
 });
 
+// const logoutUser = asyncHandler(async (req, res) => {
+//     console.log(req.user._id);
+
+//     const options = {
+//         httpOnly: true,
+//         secure: true, 
+//         sameSite: "None",
+//         path: "/"
+//     };
+
+//     res.status(200)
+//         .clearCookie("accessToken", options)
+//         .clearCookie("refreshToken", options)
+//         .json(
+//             new ApiResponse(200, {}, "user is logged out now")
+//         )
+// })
+
 const logoutUser = asyncHandler(async (req, res) => {
     console.log(req.user._id);
 
     const options = {
-        httpOnly: true,
-        secure: true, 
-        sameSite: "None",
-        path: "/"
+        httpOnly: true, 
+        secure: true,    
+        sameSite: "None", 
+        path: "/",       
     };
 
     res.status(200)
-        .clearCookie("accessToken", options)
-        .clearCookie("refreshToken", options)
+        .cookie("accessToken", "", { ...options, expires: new Date(0) })
+        .cookie("refreshToken", "", { ...options, expires: new Date(0) })
         .json(
-            new ApiResponse(200, {}, "user is logged out now")
-        )
-})
+            new ApiResponse(200, {}, "User is logged out now")
+        );
+});
 
 const changeCurrentPassword = asyncHandler(async (req, res) => {
     const { oldPassword, newPassword } = req.body;
