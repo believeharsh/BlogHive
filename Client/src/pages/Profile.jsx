@@ -27,7 +27,7 @@ const ProfilePage = () => {
       <div className="w-full md:w-2/3 00 px-4 h-auto md:h-screen overflow-y-auto no-scrollbar">
         <ProfileHeader userProfileData={userProfileData} />
         <ProfileNav activeTab={activeTab} setActiveTab={setActiveTab} />
-        <div className="bg-white p-4 rounded-lg w-full">
+        <div className="bg-white  rounded-lg ">
           <ProfilePageContent activeTab={activeTab} blogs={blogs} savedBlogsByUser={savedBlogsByUser} loading={loading} />
         </div>
       </div>

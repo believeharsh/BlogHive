@@ -105,24 +105,6 @@ const registerUser = asyncHandler(async (req, res) => {
         );
 });
 
-// const logoutUser = asyncHandler(async (req, res) => {
-//     console.log(req.user._id);
-
-//     const options = {
-//         httpOnly: true,
-//         secure: true, 
-//         sameSite: "None",
-//         path: "/"
-//     };
-
-//     res.status(200)
-//         .clearCookie("accessToken", options)
-//         .clearCookie("refreshToken", options)
-//         .json(
-//             new ApiResponse(200, {}, "user is logged out now")
-//         )
-// })
-
 const logoutUser = asyncHandler(async (req, res) => {
     console.log(req.user._id);
 
@@ -248,7 +230,6 @@ const refreshAccessToken = asyncHandler(async (req, res, next) => {
             )
         );
 });
-
 
 const editUserProfile = asyncHandler(async (req, res) => {
     const { aboutText } = req.body;
