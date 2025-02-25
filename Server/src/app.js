@@ -33,6 +33,12 @@ app.get("/", (req, res) => {
     res.json("Hello, from server")
 });
 
+if (process.env.NODE_ENV === 'production') {
+    const url = 'https://purepick-backend.onrender.com/';
+    keepAlive(url);
+}
+
+
 app.use("/user", userRoute)
 app.use("/blog", blogRoute)
 app.use("/comment", commentsRoute)
