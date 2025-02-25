@@ -34,7 +34,7 @@ app.get("/", (req, res) => {
 });
 
 if (process.env.NODE_ENV === 'production') {
-    const url = 'https://purepick-backend.onrender.com/';
+    const url = 'https://bloghive-api.onrender.com/';
     keepAlive(url);
 }
 
