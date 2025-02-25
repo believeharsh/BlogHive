@@ -10,6 +10,7 @@ import cookieParser from "cookie-parser"
 import adminRoute from "./routes/admin.js"
 import followRoute from "./routes/follow.js"
 import likeRoute from "./routes/likes.js"
+import { keepAlive } from "./services/KeepAlive.js"
 
 dotenv.config()
 
