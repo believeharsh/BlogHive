@@ -1,5 +1,4 @@
 <div align="center">
-  <img src="/public/Assets/bloghive-text-logo.png" alt="PurePick Logo" width="100"/>
   <h1>BlogHive</h1>
   <p>Write Your Stories, Publish Your Ideas, Interact with People, With Bloghive</p>
 
