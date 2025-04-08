@@ -3,7 +3,6 @@ import FollowButton from "../components/FollowButton"
 
 const BlogAuthorInfo = ({ profileImageURL, fullName, about, createdAt, authorId }) => {
 
-
     return (
         <div className="flex justify-between items-center border-t mt-6 pt-4">
             {/* Left: User Image */}
@@ -25,10 +24,10 @@ const BlogAuthorInfo = ({ profileImageURL, fullName, about, createdAt, authorId 
 
             {/* Right: Follow Button */}
             <div className="px-2 py-1 bg-black font-medium rounded-full text-xl cursor-pointer" >
-              <FollowButton buttonColor={"text-white"}
-                authorId={authorId}
-              />
-          </div>
+                <FollowButton buttonColor={"text-white"}
+                    authorId={authorId}
+                />
+            </div>
         </div>
     );
 };

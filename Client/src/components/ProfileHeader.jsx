@@ -22,12 +22,11 @@ const ProfileHeader = ({ userProfileData }) => {
       <div className="container mx-auto flex items-center justify-between p-4  bg-white">
         {/* Left Side - Username */}
         <div className="flex gap-2">
-          {/* <img src={profileImageURL} alt="" className="w-32 h-32 rounded-full" /> */}
+
           <div className="flex flex-col justify-center items-center">
             <h1 className="text-4xl font-semibold text-gray-800">{fullName}</h1>
             <p className="text-sm font-semibold text-gray-800">{`Since ${formatDate(createdAt)}`}</p>
           </div>
-
 
         </div>
 

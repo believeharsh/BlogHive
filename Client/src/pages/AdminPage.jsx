@@ -12,7 +12,6 @@ const AdminDashboard = () => {
         pendingApprovals: 0,
     });
 
-    // console.log(dashboardData)
     const navigate = useNavigate();
 
     useEffect(() => {
