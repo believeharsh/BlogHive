@@ -4,6 +4,7 @@ import Spinner from "../components/Spinner";
 import { Link } from "react-router-dom";
 import axiosInstance from "../utils/axiosInstance";
 import formatDate from "../utils/FormateData";
+import TopicSlider from "../components/TopicsSearchSliders";
 
 const topics = ["React", "JavaScript", "Web Dev", "MERN", "CSS", "Tailwind"];
 const usersToFollow = [
@@ -60,7 +61,9 @@ const Home = () => {
     <div className="flex flex-col md:flex-row min-h-screen py-4 container mx-auto px-1 gap-8">
       {/* Left Section: Blogs (Scrollable) */}
       <div className="w-full md:w-2/3 border-r border-gray-300 px-4 h-screen overflow-y-auto no-scrollbar">
+        
         {loading && <Spinner />}
+        <TopicSlider/>
         {blogs.length > 0 &&
           blogs.map((blog) => {
 
