@@ -7,7 +7,7 @@ const topics = [
   "Backend", "Design", "Database", "DevOps", "TypeScript", "Express", "API", "Next.js"
 ];
 
-export default function TopicSlider({ onTopicClick }) {
+export default function TopicSlider() {
   const scrollRef = useRef();
   const [showLeftArrow, setShowLeftArrow] = useState(false);
   const [showRightArrow, setShowRightArrow] = useState(true);
@@ -62,7 +62,6 @@ export default function TopicSlider({ onTopicClick }) {
         {topics.map((topic, idx) => (
           <button
             key={idx}
-            onClick={() => onTopicClick(topic)}
             className="whitespace-nowrap bg-gray-100 hover:bg-gray-200 px-4 py-2 rounded-full text-sm transition font-medium cursor-pointer"
           >
             {topic}
